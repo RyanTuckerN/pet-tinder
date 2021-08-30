@@ -1,7 +1,7 @@
 const { Sequelize } = require("sequelize");
 
 const db = new Sequelize(
-  "journal-walkthrough",
+  "pet-tinder",
   process.env.dbName,
   process.env.dbPass,
   {
@@ -10,7 +10,7 @@ const db = new Sequelize(
   }
 )
 
-async function sqlize() {
+async function authenticateDB() {
   try {
     await db.authenticate()  
     console.log("🔥🔥🔥 Connection has been established successfully. 🔥🔥🔥")
@@ -19,6 +19,6 @@ async function sqlize() {
   }
 }
 
-sqlize()
+authenticateDB()
 
 module.exports = db;

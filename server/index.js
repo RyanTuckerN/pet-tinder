@@ -3,25 +3,19 @@ const express = require("express");
 const db = require("./db");
 const app = express();
 
+db.sync()
 // app.use(require("./middleware/headers"));
 
 app.use(express.json());
+const controllers = require("./controllers");
 
 //USER ENDPOINT
-const controllers = require("./controllers");
+app.use("/user", controllers.usercontroller);
 
 //PROTECTED ENDPOINTS
 // app.use(require("./middleware/validate-session"));
-app.use("/user", controllers.usercontroller);
+app.use("/dog", controllers.dogcontroller)
 
-
-db.authenticate()
-  .then(() => db.sync())
-  .then(() => {
-    app.listen(process.env.PORT, () =>
-      console.log(`🚢 Server listening on port ${process.env.PORT} 🚢`)  
-    );
-  })
-  .catch((err) => {
-    console.error(err);
-  });
+app.listen(process.env.PORT, () =>
+  console.log(`🚢 Server listening on port ${process.env.PORT} 🚢`)
+);
