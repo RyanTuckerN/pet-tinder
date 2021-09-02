@@ -1,4 +1,12 @@
+const User = require("./user");
+const Dog = require("./dog");
+// const Like = require("./like");
+
+User.hasMany(Like)
+Like.belongsTo(User)
+
 module.exports = {
-  user: require('./user'),
-  dog: require('./dog')
-}
+  User,
+  Dog,
+  // Like,
+};
