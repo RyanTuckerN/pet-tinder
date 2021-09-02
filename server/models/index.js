@@ -1,4 +1,4 @@
 module.exports = {
-  user: require('./user'),
-  dog: require('./dog')
+  User: require('./user'),
+  Dog: require('./dog')
 }
