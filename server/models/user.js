@@ -1,4 +1,4 @@
-// USER TABLE MODEL GOES HERE!
+
 const { DataTypes} = require('sequelize')//bringing in the DataTypes from the sequelize files so that when we type we can select from a pre-selected list of data types
 const sequelize = require('../db')//this is where we connect to the local database
 
@@ -27,8 +27,3 @@ module.exports = User = sequelize.define( 'user', {
 
 }  
 );
-
-
-
-
-
