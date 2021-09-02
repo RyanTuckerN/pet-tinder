@@ -1,4 +1,6 @@
-// DOG TABLE MODEL GOES HERE!rts = User = sequelize.define(
+const { DataTypes} = require('sequelize')//bringing in the DataTypes from the sequelize files so that when we type we can select from a pre-selected list of data types
+const sequelize = require('../db')//this is where we connect to the local database
+
 module.exports = (sequelize, DataTypes) => {
     const Dog = sequelize.define('dog', {
         photo_url: {
@@ -29,4 +31,3 @@ module.exports = (sequelize, DataTypes) => {
     })
     return Dog;
 }
-
