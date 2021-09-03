@@ -41,4 +41,3 @@ module.exports = Dog = sequelize.define('dog', {
     
 )
 
-

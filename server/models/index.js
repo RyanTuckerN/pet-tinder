@@ -1,4 +1,11 @@
+const User = require("./user");
+const Dog = require("./dog");
+const Like = require("./like");
+
+
 module.exports = {
-  User: require('./user'),
-  Dog: require('./dog')
-}
+  User,
+  Dog,
+  Like
+};
+
