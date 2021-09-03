@@ -1,12 +1,12 @@
 const express = require('express')
 const { Dog } = require('../models')
 const router = express.Router()
-// let validateSession = require('../middleware/validateSession');
+const validateSession = require('../middleware/validateSession');
 
 // ALL OUR CONTROLLERS FOR DOG GO HERE 
 
 // GET DOG BY ID
-router.get("/:id", (req, res) => {
+router.get("/:id",validateSession, (req, res) => {
     const query = {where:{id:req.params.id, owner_id: req.user.id} };
     Dog.findAll(query)
     .then((dog) => res.status(200).json(dog))
@@ -14,8 +14,8 @@ router.get("/:id", (req, res) => {
 });
 
 // DELETE DOG BY ID
-router.delete("/:id", (req, res) => {
-    const query = {where: {id: req.params.id, owner: req.user.id} };
+router.delete("/:id",validateSession, (req, res) => {
+    const query = {where: {id: req.params.id, owner_id: req.user.id} };
 
     Dog.destroy(query)
     .then(()=> res.status(200).json({message: "Dog Entry Deleted"}))
@@ -23,14 +23,12 @@ router.delete("/:id", (req, res) => {
 
 });
 
-//router.get?
-
 //router.put?
 
 //explain what each is doing
 
 // CREATES A DOG PROFILE //
-router.post('/', (req, res) => {
+router.post('/', validateSession, (req, res) => {
     const { photo_url, name, breed, weight, age, ad_description, temperament, is_female } = req.body
     const dogEntry = {
         photo_url, name, breed, weight, age, ad_description, temperament, is_female,
@@ -42,9 +40,9 @@ router.post('/', (req, res) => {
 });
 
 // GETS ALL DOGS FROM ALL USERS //
-router.get('/all', (req, res) => {
+router.get('/all', validateSession, (req, res) => {
     Dog.findAll()
-        .then(dog => res.status(200).json(dog))
+        .then(dogs => res.status(200).json({dogs}))
         .catch(err => res.status(500).json({ error: err }))
 });
 

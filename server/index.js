@@ -4,7 +4,7 @@ const db = require("./db");
 const app = express();
 
 db.sync()
-// db.drop()
+db.drop()
 
 app.use(require("./middleware/headers"));
 
