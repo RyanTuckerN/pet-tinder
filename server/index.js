@@ -5,7 +5,8 @@ const app = express();
 
 db.sync()
 // db.drop()
-// app.use(require("./middleware/headers"));
+
+app.use(require("./middleware/headers"));
 
 app.use(express.json());
 const controllers = require("./controllers");
