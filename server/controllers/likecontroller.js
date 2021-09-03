@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-// const validateSession = require("../middleware/validateSession");
+const validateSession = require("../middleware/validateSession");
 const { Like } = require("../models");
 
 /*IN ORDER FOR THIS TO WORK, NEED TO SET UP A useEffect ON CLIENT LOGIN THAT FETCHES
@@ -34,7 +34,7 @@ router.delete("/:liked_id", validateSession, (req, res) => {
     where: { liked_dog_id: req.params.liked_id, owner_id: req.user.id },
   }).then((like) => {
     res.status(200).json(
-      like > 0 
+      like > 0
         ? {
             message: `💔 You have removed Dog ${req.params.liked_id} from your list of likes. 💔`,
             deleteCount: like,
@@ -45,4 +45,3 @@ router.delete("/:liked_id", validateSession, (req, res) => {
 });
 
 module.exports = router;
-
