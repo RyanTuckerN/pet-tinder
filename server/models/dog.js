@@ -1,9 +1,8 @@
-const { DataTypes} = require('sequelize')//bringing in the DataTypes from the sequelize files so that when we type we can select from a pre-selected list of data types
-const sequelize = require('../db')//this is where we connect to the local database
+const { DataTypes } = require('sequelize') //for checking datatypes
+const sequelize = require('../db')//for connecting to our database
 
-module.exports = (sequelize, DataTypes) => {
-    const Dog = sequelize.define('dog', {
-        photo_url: {
+module.exports = Dog = sequelize.define('dog', {
+    photo_url: {
             type: DataTypes.STRING(2048),
             allowNull: false
         },
@@ -27,7 +26,19 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(500),
             allowNull: false
         },
-
-    })
-    return Dog;
+    temperament: {
+        type: DataTypes.ARRAY(DataTypes.STRING)
+    },
+    owner_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    is_female: {
+        type: DataTypes.BOOLEAN,
+        allowNUll: false
+    }
 }
+    
+)
+
+
