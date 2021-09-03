@@ -29,9 +29,10 @@ module.exports = Dog = sequelize.define("dog", {
   temperament: {
     type: DataTypes.ARRAY(DataTypes.STRING),
   },
-  owner_id: {
-    type: DataTypes.INTEGER,
+  id: {
+    type: DataTypes.INTEGER, //MATCH OWNER ID
     allowNull: false,
+    primaryKey: true
   },
   is_female: {
     type: DataTypes.BOOLEAN,
