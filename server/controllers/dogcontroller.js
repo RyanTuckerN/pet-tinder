@@ -28,7 +28,8 @@ router.post('/', validateSession, (req, res) => {
     const { photo_url, name, breed, weight, age, ad_description, temperament, is_female } = req.body
     const dogEntry = {
         photo_url, name, breed, weight, age, ad_description, temperament, is_female,
-        id: req.user.id,
+        id: req.user.id, 
+        userId: req.user.id // *** MAKE SURE THIS MATCHES ON THE PUT!!! *** //
     }
     Dog.create(dogEntry)
         .then(dog => res.status(200).json(dog))
