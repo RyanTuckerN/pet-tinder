@@ -17,6 +17,7 @@ app.use("/user", controllers.usercontroller);
 //PROTECTED ENDPOINTS
 // app.use(require("./middleware/validate-session"));
 app.use("/dog", controllers.dogcontroller)
+app.use("/like", controllers.likecontroller)
 
 app.listen(process.env.PORT, () =>
   console.log(`🚢 Server listening on port ${process.env.PORT} 🚢`)
