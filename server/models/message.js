@@ -1,7 +1,7 @@
-const connection = require("../db");
 const { DataTypes } = require("sequelize");
+const sequelize = require("../db");
 
-const Message = connection.define("message", {
+const Message = sequelize.define("message", {
   text: { 
     type: DataTypes.STRING, 
     allowNull: false 
@@ -12,7 +12,7 @@ const Message = connection.define("message", {
 });
  
 Message.createMessage = (text, sender, receiver) => {
-  console.log(`🖥 Saving to database: ${text} from ${sender.username} to ${receiver.username}`)
+  console.log(`🖥 Saving to database: ${text} from ${sender.profile_name} to ${receiver.profile_name}`)
   return Promise.all([
     Message.create({
       text,
@@ -21,7 +21,7 @@ Message.createMessage = (text, sender, receiver) => {
         name: sender.profile_name
       }
     }),
-    connection.models.conversation.findOrCreateConversation(sender.id, receiver.id)
+    sequelize.models.conversation.findOrCreateConversation(sender.id, receiver.id)
   ])
     .then(([message, conversation]) => message.setConversation(conversation));
 };

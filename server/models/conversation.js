@@ -1,8 +1,8 @@
-const conn = require('../db');
-const { Sequelize } = conn;
+const sequelize = require('../db');
+const { Sequelize } = sequelize;
 const { Op } = Sequelize;
 
-const Conversation = conn.define('conversation', {
+const Conversation = sequelize.define('conversation', {
 
 });
 
@@ -17,13 +17,13 @@ Conversation.findOrCreateConversation = function(user1Id, user2Id) {
         [Op.or]: [user1Id, user2Id]
       }
     },
-    include: [ conn.models.message ],
-    order: [[ conn.models.message, 'createdAt', 'DESC' ]]
+    include: [ sequelize.models.message ],
+    order: [[ sequelize.models.message, 'createdAt', 'ASC' ]]
   })
     .then(conversation => {
       if(conversation) {
         // console.log(conversation.messages.map(m=>m.dataValues))
-        console.log('📑 sent the coversation')  
+        console.log('📑 sent the coversation', conversation.messages)  
         return conversation;
       } else {
          console.log('✏✏✏📑 creating new conversation!')  
@@ -31,8 +31,8 @@ Conversation.findOrCreateConversation = function(user1Id, user2Id) {
           user1Id,
           user2Id
         }, {
-          include: [ conn.models.message ],
-          order: [[ conn.models.message, 'createdAt', 'DESC' ]]
+          include: [ sequelize.models.message ],
+          order: [[ sequelize.models.message, 'createdAt', 'DESC' ]]
         });
       }
     });
