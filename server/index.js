@@ -15,7 +15,7 @@ const controllers = require("./controllers");
 //USER ENDPOINT
 app.use("/user", controllers.usercontroller);
 //PROTECTED ENDPOINTS
-app.use(require("./middleware/validateSession"));
+// app.use(require("./middleware/validateSession"));
 app.use("/dog", controllers.dogcontroller)
 app.use("/like", controllers.likecontroller)
 

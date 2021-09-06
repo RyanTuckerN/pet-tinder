@@ -46,5 +46,13 @@ const Dog = sequelize.define(
     // }
   });
 
+  Dog.filterResults = async(callback) => {
+    const allDogs = await Dog.findAll()
+    return allDogs.filter(callback)
+  }
+  Dog.sortResults = async(callback) => {
+    const allDogs = await Dog.findAll()
+    return allDogs.sort(callback)
+  }
 
 module.exports = Dog
