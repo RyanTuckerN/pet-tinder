@@ -21,7 +21,7 @@ const Chat = (props) => {
     if (socket) {
       //send to server 'newLogin' event
       socket.emit("newLogin", { 
-        profile_name: "user20", id: 20 
+        profile_name: "user20", id: 20 //this needs to come from user info, 
       });
       //listening for 'userCreated' from server
       socket.on("userCreated", (obj) => {

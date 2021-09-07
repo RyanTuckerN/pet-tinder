@@ -27,9 +27,9 @@ const User = sequelize.define(
       allowNull: false,
       unique: false,
     },
-    location: {
-      type: DataTypes.JSON,
-    },
+    // location: {
+    //   type: DataTypes.JSON,
+    // },
   });
 
 module.exports = User
