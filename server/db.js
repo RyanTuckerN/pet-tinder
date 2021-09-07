@@ -21,4 +21,6 @@ async function authenticateDB() {
 
 authenticateDB()
 
+
+
 module.exports = db;

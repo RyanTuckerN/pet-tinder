@@ -7,15 +7,16 @@ const Dog = require('../models/dog');
 // ALL OUR CONTROLLERS FOR DOG GO HERE 
 
 router.get("/:id",validateSession, (req, res) => {
-    const query = {where:{id:req.params.id, owner_id: req.user.id} };
+    const query = {where:{id: req.user.id}};
     Dog.findAll(query)
     .then((dog) => res.status(200).json(dog))
     .catch((err) => res.status(500).json({error:err}))
 });
 
-router.delete("/:id",validateSession, (req, res) => {
-    const query = {where: {id: req.params.id, owner_id: req.user.id} };
 
+// DELETE DOG BY ID
+router.delete("/",validateSession, (req, res) => {
+    const query = {where: {id: req.user.id} };
     Dog.destroy(query)
     .then(()=> res.status(200).json({message: "Dog Entry Deleted"}))
     .catch((err) => res.status(500).json({error:err}));
@@ -47,11 +48,13 @@ router.put("/:id", validateSession, (req, res) => {
 })
 
 
+
 router.post('/', validateSession, (req, res) => {
     const { photo_url, name, breed, weight, age, ad_description, temperament, is_female } = req.body
     const dogEntry = {
         photo_url, name, breed, weight, age, ad_description, temperament, is_female,
-        owner_id: req.user.id,
+        id: req.user.id, 
+        userId: req.user.id // *** MAKE SURE THIS MATCHES ON THE PUT!!! *** //
     }
     Dog.create(dogEntry)
         .then(dog => res.status(200).json(dog))

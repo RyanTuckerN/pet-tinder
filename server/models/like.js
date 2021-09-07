@@ -1,18 +1,22 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../db");
 
-module.exports = Like = sequelize.define('like', {
-  //SAVE PK of target user Liked along with PK of 'this' user
+const Like = sequelize.define(
+  "like",
+  {
+    //SAVE PK of target user Liked along with PK of 'this' user
     liked_dog_id: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
     },
     superlike: {
       type: DataTypes.BOOLEAN,
-      defaultValue: false
+      defaultValue: false,
     },
-    owner_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    }
+    // owner_id: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false
+    // }
   });
+
+module.exports = Like
