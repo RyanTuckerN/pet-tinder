@@ -23,7 +23,7 @@ Conversation.findOrCreateConversation = function(user1Id, user2Id) {
     .then(conversation => {
       if(conversation) {
         // console.log(conversation.messages.map(m=>m.dataValues))
-        console.log('📑 sent the coversation', conversation.messages)  
+        // console.log('📑 sent the coversation', conversation.messages.map(m=>m.id))  
         return conversation;
       } else {
          console.log('✏✏✏📑 creating new conversation!')  

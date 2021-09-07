@@ -23,7 +23,7 @@ const Like = sequelize.define(
 
   Like.getMatches = user_id => {
     console.log('Getting Matches')
-    console.log(user_id)
+    console.log('User ID: ',user_id)
     return Like.findAll({ where: { liked_dog_id: user_id } })
     .then((data) => {
        
@@ -67,6 +67,7 @@ const Like = sequelize.define(
           },
         })
         .then((matches) => {
+          // console.log(matches.rows)
           return matches.rows
         });
       });

@@ -19,14 +19,14 @@ module.exports = (socket) => {
       sequelize.models.like.getMatches(id),
     ])
       .then(([user, matches]) => {
-        // console.log('USER: ', user, 'Matches: ', users)
+        console.log('USER: ', user.dataValues, 'Matches: ', matches.map(m=>{return {name: m.dataValues.name, id: m.dataValues.id}}))
         mobileSockets[user.id] = socket.id;
         socket.emit("userCreated", {
           user, matches
           // users: users.filter((u) => u.id !== user.id), //only show users that aren't 'this' user
         });
         socket.broadcast.emit("newUser");
-        console.log(mobileSockets);
+        console.log("SOCKET USERS ONLINE: ", mobileSockets);
       })
       .catch((err) => console.log(err));
   });
@@ -37,8 +37,9 @@ module.exports = (socket) => {
       users.sender.id,
       users.receiver.id
     ).then((conversation) => {
-       
-      console.log('🔥🔥🔥🔥🔥', conversation) 
+         
+      console.log(`🔸🔸🔸 Current conversation between user ${conversation.dataValues.user1Id} and user ${conversation.dataValues.user2Id}. 🔸🔸🔸`)
+      console.log('Sending Conversation 🚚🚚🚚') 
       socket.emit("priorMessages", conversation);
     });
   });
@@ -47,9 +48,11 @@ module.exports = (socket) => {
   //***MESSAGE EVENT***//
   socket.on("message", ({ text, sender, receiver }) => {
     Message.createMessage(text, sender, receiver).then((message) => {
-      socket.emit("incomingMessage", message); //send the message back to the sender
-      const receiverSocketId = mobileSockets[receiver.id];
-      socket.to(receiverSocketId).emit("incomingMessage", message); //send the message to the other user if they are online? maybe?
+      Conversation.findOrCreateConversation(sender.id, receiver.id).then(conversation=>{
+        socket.emit("incomingMessage", {message, conversation}); //send the message back to the sender
+        const receiverSocketId = mobileSockets[receiver.id];
+        socket.to(receiverSocketId).emit("incomingMessage", {message, conversation}); //send the message to the other user if they are online? maybe?
+      })
     });
   });
 
