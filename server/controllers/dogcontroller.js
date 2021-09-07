@@ -2,7 +2,6 @@ const express = require('express')
 const { Dog } = require('../models')
 const router = express.Router()
 const validateSession = require('../middleware/validateSession');
-const Dog = require('../models/dog');
 
 // ALL OUR CONTROLLERS FOR DOG GO HERE 
 
