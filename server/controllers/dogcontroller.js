@@ -51,7 +51,7 @@ router.put("/:id", validateSession, (req, res) => {
 router.post('/', validateSession, (req, res) => {
     const { photo_url, name, breed, weight, age, ad_description, temperament, is_female } = req.body
     const dogEntry = {
-        photo_url, name, breed, weight, age, ad_description, temperament, is_female,
+        photo_url, name, breed, weight, age, ad_description, temperament, is_female, location, 
         id: req.user.id, 
         userId: req.user.id // *** MAKE SURE THIS MATCHES ON THE PUT!!! *** //
     }

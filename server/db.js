@@ -7,6 +7,7 @@ const db = new Sequelize(
   {
     host: "localhost",
     dialect: "postgres",
+    logging: false //comment out for SQL commands in console
   }
 )
 

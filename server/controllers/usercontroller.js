@@ -12,7 +12,6 @@ router.post("/signup", function (req, res) {
     name,
     passwordhash: bcrypt.hashSync(password, 13),
     email,
-    location,
   })
     .then(function signupSuccess(user) {
         const token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {expiresIn: 86400})

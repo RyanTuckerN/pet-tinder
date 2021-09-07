@@ -40,6 +40,9 @@ const Dog = sequelize.define(
       type: DataTypes.BOOLEAN,
       allowNUll: false,
     },
+    location: {
+        type: DataTypes.JSON,
+      },
     // owner_id: {
     //   type: DataTypes.INTEGER,
     //   allowNull: false
