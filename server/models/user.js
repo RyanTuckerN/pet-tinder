@@ -4,11 +4,6 @@ const sequelize = require("../db"); //this is where we connect to the local data
 const User = sequelize.define(
   "user",
   {
-    // id: {
-    //   type: DataTypes.INTEGER,
-    //   primaryKey: true,
-    //   autoIncrement: true
-    // },
     profile_name: {
       type: DataTypes.STRING(20),
       allowNull: false,
@@ -27,9 +22,6 @@ const User = sequelize.define(
       allowNull: false,
       unique: false,
     },
-    // location: {
-    //   type: DataTypes.JSON,
-    // },
   });
 
 module.exports = User
