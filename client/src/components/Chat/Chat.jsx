@@ -99,7 +99,8 @@ const Chat = (props) => {
         <button>click me</button>
       </form>
       <ul>
-        {messages.length
+        {
+        messages
           ? messages.map((message) => (
               <li key={message.id}>
                 message: {message.text} date:{" "}
@@ -107,7 +108,8 @@ const Chat = (props) => {
                 {message.user.name}{" "}
               </li>
             ))
-          : null}
+          : null
+        }
       </ul>
     </div>
   );

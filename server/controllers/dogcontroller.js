@@ -23,9 +23,9 @@ router.delete("/",validateSession, (req, res) => {
 });
 
 router.put("/:id", validateSession, (req, res) => {
-    const { photo_url, name, breed, weight, age, ad_description, temperament, is_female } = req.body
+    const { photo_url, name, breed, weight, age, ad_description, temperament, is_female, location } = req.body
     const updateDog = {
-        photo_url, name, breed, weight, age, ad_description, temperament, is_female,
+        photo_url, name, breed, weight, age, ad_description, temperament, is_female, location,
         owner_id: req.user.id,
     };
     const query = {where: {id:req.params.id, owner_id:req.user.id}}
@@ -49,7 +49,7 @@ router.put("/:id", validateSession, (req, res) => {
 
 
 router.post('/', validateSession, (req, res) => {
-    const { photo_url, name, breed, weight, age, ad_description, temperament, is_female } = req.body
+    const { photo_url, name, breed, weight, age, ad_description, temperament, is_female, location } = req.body
     const dogEntry = {
         photo_url, name, breed, weight, age, ad_description, temperament, is_female, location, 
         id: req.user.id, 

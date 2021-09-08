@@ -1,5 +1,5 @@
 import fetch from "node-fetch";
-const port = process.env.PORT || 3333;
+const port = 3333
 import dogOptions from "./dogOptions.js";
 
 const petTinderSeeder = async () => {
@@ -9,11 +9,6 @@ const petTinderSeeder = async () => {
       name: `${dogOptions.names[i]}'s breeder`,
       password: "password",
       email: `test${i}@test.com`,
-      location: {
-        zip: 46200 + Math.floor(Math.random() * 30),
-        lat: 39 + Math.random(),
-        lon: -89 + Math.random(),
-      },
     };
 
     const seedThatDB = async () => {
@@ -38,14 +33,21 @@ const petTinderSeeder = async () => {
         ad_description: dogOptions.ipsum,
         is_female: i % 2 === 0 ? true : false,
         temperament: dogOptions.temp.slice(sliceNum, sliceNum + 2),
+        location: {
+          zip: 46200 + Math.floor(Math.random() * 30),
+          lat: 39 + Math.random(),
+          lon: -89 + Math.random(),
+        },
+        userId: i
       };
+      // console.log(dogBody)
       const dog = await fetch(`http://localhost:${port}/dog/`, {
         method: "POST",
         mode: "cors",
         body: JSON.stringify(dogBody),
         headers: {
           "Content-type": "application/json",
-          Authorization: userJson.sessionToken,
+          "Authorization": userJson.sessionToken,
         },
       });
       const dogJson = await dog.json();
@@ -61,7 +63,7 @@ const petTinderSeeder = async () => {
             body: JSON.stringify(likeBody),
             headers: {
               "Content-type": "application/json",
-              Authorization: userJson.sessionToken,
+              "Authorization": userJson.sessionToken,
             },
           }
         );
