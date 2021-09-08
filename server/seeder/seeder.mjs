@@ -38,7 +38,7 @@ const petTinderSeeder = async () => {
           lat: 39 + Math.random(),
           lon: -89 + Math.random(),
         },
-        userId: i
+
       };
       // console.log(dogBody)
       const dog = await fetch(`http://localhost:${port}/dog/`, {
