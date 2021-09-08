@@ -9,7 +9,6 @@ const petTinderSeeder = async () => {
       name: `${dogOptions.names[i]}'s breeder`,
       password: "password",
       email: `test${i}@test.com`,
-
     };
 
     const seedThatDB = async () => {
