@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs');
 
 // ALL OUR CONTROLLERS FOR USER GO HERE
 router.post("/signup", function (req, res) {
-    const { profile_name, name, password, email, location, } = req.body
+    const { profile_name, name, password, email } = req.body
   User.create({
     profile_name,
     name,
