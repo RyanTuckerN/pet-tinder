@@ -1,4 +1,3 @@
-import { Typography, TextField, Button } from "@material-ui/core";
 import React, { useState, useEffect, useRef } from "react";
 import ChatMessage from "./ChatMessage";
 import StickyFooter from "./StickyFooter";
