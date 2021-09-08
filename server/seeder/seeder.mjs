@@ -1,5 +1,5 @@
 import fetch from "node-fetch";
-const port = 3333
+const port = process.env.PORT
 import dogOptions from "./dogOptions.js";
 
 const petTinderSeeder = async () => {
