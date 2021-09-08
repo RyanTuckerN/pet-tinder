@@ -24,10 +24,12 @@ router.delete("/",validateSession, (req, res) => {
 
 router.put("/:id", validateSession, (req, res) => {
 
+
     const { photo_url, name, breed, weight, age, ad_description, temperament, is_female, location } = req.body
     const updateDog = {
         photo_url, name, breed, weight, age, ad_description, temperament, is_female, location,
         userId: req.user.id,
+
     };
     const query = {where: {id:req.params.id, owner_id:req.user.id}}
 

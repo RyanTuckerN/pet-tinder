@@ -1,6 +1,5 @@
 import fetch from "node-fetch";
-
-
+const port = process.env.PORT
 import dogOptions from "./dogOptions.js";
 
 const petTinderSeeder = async () => {
@@ -39,14 +38,16 @@ const petTinderSeeder = async () => {
           lat: 39 + Math.random(),
           lon: -89 + Math.random(),
         },
+
       };
+      // console.log(dogBody)
       const dog = await fetch(`http://localhost:${port}/dog/`, {
         method: "POST",
         mode: "cors",
         body: JSON.stringify(dogBody),
         headers: {
           "Content-type": "application/json",
-          Authorization: userJson.sessionToken,
+          "Authorization": userJson.sessionToken,
         },
       });
       const dogJson = await dog.json();
@@ -62,7 +63,7 @@ const petTinderSeeder = async () => {
             body: JSON.stringify(likeBody),
             headers: {
               "Content-type": "application/json",
-              Authorization: userJson.sessionToken,
+              "Authorization": userJson.sessionToken,
             },
           }
         );
