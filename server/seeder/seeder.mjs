@@ -1,5 +1,5 @@
 import fetch from "node-fetch";
-const port = 3030;
+const port = 3333;
 import dogOptions from "./dogOptions.js";
 
 const petTinderSeeder = async () => {
@@ -9,7 +9,6 @@ const petTinderSeeder = async () => {
       name: `${dogOptions.names[i]}'s breeder`,
       password: "password",
       email: `test${i}@test.com`,
-      
     };
 
     const seedThatDB = async () => {

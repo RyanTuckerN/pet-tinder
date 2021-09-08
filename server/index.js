@@ -22,7 +22,7 @@ app.use(cors());
 ////////////////////////
 
 db.sync(
-  // {force: true},
+  // { force: true },
   { logging: false }
 );
 // db.drop()

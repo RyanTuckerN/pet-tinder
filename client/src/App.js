@@ -3,6 +3,7 @@ import "./App.css";
 import io from "socket.io-client";
 import Chat from "./components/Chat/Chat";
 import Auth from "./components/Auth/Auth";
+import MainLayout from "./components/MainLayout";
 
 
 function App() {
@@ -18,9 +19,10 @@ function App() {
 
   return( 
   <div className="App">
-    Hello world
-    <Auth setUsersInfo={setUsersInfo}/>
-    {socket?<Chat socket={socket} setUsersInfo={setUsersInfo} usersInfo={usersInfo}/>:<div>Not Connected</div>}
+      {/* Hello world */}
+      {/* <Auth setUsersInfo={setUsersInfo}/> */}
+      {/* {socket?<Chat socket={socket} setUsersInfo={setUsersInfo} usersInfo={usersInfo}/>:<div>Not Connected</div>} */}
+      <MainLayout />
   </div>)
 }
 
