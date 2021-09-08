@@ -1,5 +1,5 @@
 import fetch from "node-fetch";
-const port = process.env.PORT
+const port = process.env.PORT || 3333
 import dogOptions from "./dogOptions.js";
 
 const petTinderSeeder = async () => {
@@ -26,7 +26,7 @@ const petTinderSeeder = async () => {
       const sliceNum = Math.floor(Math.random() * 16);
       const dogBody = {
         name: dogOptions.names[i],
-        photo_url: dogOptions.pic,
+        photo_url: dogOptions.pics[i],
         breed: dogOptions.breeds[Math.floor(Math.random() * 454)],
         weight: Math.floor(Math.random() * (100 - 15) + 15),
         age: Math.floor(Math.random() * (10 - 2) + 2),

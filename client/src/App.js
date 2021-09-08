@@ -1,28 +1,28 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import io from "socket.io-client";
-import Chat from "./components/Chat/Chat";
 import Auth from "./components/Auth/Auth";
 import MainLayout from "./components/MainLayout";
 
 
 function App() {
   const [socket, setSocket] = useState(null);
-  const [usersInfo, setUsersInfo] = useState({});
+  const [usersInfo, setUsersInfo] = useState({user: {id:20, profile_name: 'user20'}});
+  const [onlineUsers, setOnlineUsers] = useState({});
+  const mainLayoutProps = {socket, usersInfo, setUsersInfo, onlineUsers, setOnlineUsers}
 
   useEffect(() => {
     const newSocket = io(`http://${window.location.hostname}:3333`);
     setSocket(newSocket);
     return () => newSocket.close();
   }, [setSocket]);
-
+  // console.log(usersInfo)
 
   return( 
   <div className="App">
       {/* Hello world */}
       {/* <Auth setUsersInfo={setUsersInfo}/> */}
-      {/* {socket?<Chat socket={socket} setUsersInfo={setUsersInfo} usersInfo={usersInfo}/>:<div>Not Connected</div>} */}
-      <MainLayout />
+      <MainLayout mainLayoutProps={mainLayoutProps}/>
   </div>)
 }
 

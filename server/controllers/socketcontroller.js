@@ -1,4 +1,4 @@
-const { User, Conversation, Message, Like } = require("../models");
+const { User, Conversation, Message, Dog } = require("../models");
 const sequelize = require('../db')
 const mobileSockets = {};
 
@@ -14,7 +14,7 @@ module.exports = (socket) => {
     //change to userJoined?
     const { profile_name, id } = credentials;
     Promise.all([
-      User.findOne({ where: { profile_name } }),
+      User.findOne({ where: { profile_name }, include: {model : Dog} }),
       // User.findAll() //change this to only find matches
       sequelize.models.like.getMatches(id),
     ])
@@ -25,7 +25,7 @@ module.exports = (socket) => {
           user, matches
           // users: users.filter((u) => u.id !== user.id), //only show users that aren't 'this' user
         });
-        socket.broadcast.emit("newUser");
+        socket.emit("newUser", {mobileSockets});
         console.log("SOCKET USERS ONLINE: ", mobileSockets);
       })
       .catch((err) => console.log(err));
