@@ -8,46 +8,56 @@ import {
   Avatar,
   ListItemAvatar,
   IconButton,
+  Tooltip
 } from "@material-ui/core";
-import { Chat } from "@material-ui/icons";
+import { Chat, ChevronLeft } from "@material-ui/icons";
 
 const MatchList = (props) => {
-  const { usersInfo, setChatTarget, socket, handleDrawerToggle, onlineUsers } =
-    props.matchListProps;
+  const {
+    usersInfo,
+    setChatTarget,
+    socket,
+    handleDrawerToggle,
+    onlineUsers,
+    open,
+  } = props.matchListProps;
 
   return (
     <List>
       <ListItemIcon>
         <IconButton onClick={handleDrawerToggle}>
-          <Chat />
+          {open ? <ChevronLeft /> : <Tooltip title='Select a match to begin chatting'>
+            <Chat />
+          </Tooltip>}
         </IconButton>
       </ListItemIcon>
       {usersInfo.matches
         ? usersInfo.matches.map((match) => (
-            <ListItem
-              button
-              key={match.id}
-              onClick={() => {
-                console.log("CHAT TARGET: ", match.user);
-                setChatTarget(match.user);
-                socket.emit("chat", {
-                  sender: usersInfo.user,
-                  receiver: match.user,
-                });
-              }}
-            >
-              <ListItemAvatar>
-                <Avatar src={match.photo_url} />
-              </ListItemAvatar>
-              <OnlineStatus onlineUsers={onlineUsers} match={match} />
-              <ListItemText primary={match.name} />
-            </ListItem>
+           
+            <Tooltip title={`Bark at ${match.name}!`}>
+              <ListItem
+                button
+                key={match.id}
+                onClick={() => {
+                  console.log("CHAT TARGET: ", match);
+                  setChatTarget(match);
+                  socket.emit("chat", {
+                    sender: usersInfo.user,
+                    receiver: match.user,
+                  });
+                }}
+              >
+                <ListItemAvatar>
+                  <Avatar src={match.photo_url} />
+                </ListItemAvatar>
+                <OnlineStatus onlineUsers={onlineUsers} match={match} />
+                <ListItemText primary={match.name} />
+              </ListItem>
+            </Tooltip>
           ))
         : null}
     </List>
   );
 };
-
-
 
 export default MatchList;

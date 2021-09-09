@@ -15,7 +15,8 @@ const StickyFooter = (props) => {
     paddingRight: '0 !important',
     paddingLeft: '0 !important',
     // marginRight:'auto',
-    width: open ? width - 210 : width - 75
+    // width: open ? width - 210 : width - 75
+    width: '100vw'
     
   };
   return (

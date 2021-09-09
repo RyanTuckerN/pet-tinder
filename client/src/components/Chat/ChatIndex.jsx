@@ -1,3 +1,5 @@
+import { Avatar, Tooltip, Typography } from "@material-ui/core";
+import './Chat.css'
 import React, { useState, useEffect, useRef } from "react";
 import ChatMessage from "./ChatMessage";
 import StickyFooter from "./StickyFooter";
@@ -20,19 +22,24 @@ const ChatIndex = (props) => {
   // console.log(socket)
   useEffect(() => {
     if (socket) {
-      socket.emit("newLogin", {
-        profile_name: "user18",
-        id: 18, //this needs to come from user info,
-      });
+
+      // MOVE THESE TO LOGIN/SIGNUP!
       socket.on("userCreated", (obj) => {
         setUsersInfo(obj);
         console.log("💎 USER/MATCHES: ", obj);
         console.log("🔧 SOCKET ID: ", socket.id);
       });
+
       socket.on('newUser', socketIds=>{
         setOnlineUsers(socketIds)
         console.log('ONLINE USERS SOCKETS: ', socketIds.mobileSockets)
       })
+
+      socket.emit("newLogin", {
+        profile_name: "user18",
+        id: 18, //this needs to come from user info,
+      });
+
             socket.on("priorMessages", (conversation) => {
         console.log("CONVERSATION: ", conversation);
         setMessages(conversation.messages);
@@ -58,7 +65,7 @@ const ChatIndex = (props) => {
       socket.emit("message", {
         text: chatMessage,
         sender: usersInfo.user,
-        receiver: chatTarget,
+        receiver: chatTarget.user,
       });}
     }
     setChatMessage("");
@@ -79,27 +86,42 @@ const ChatIndex = (props) => {
     useEffect(()=>{
       scrollToBottom()
     },[messages])
-    
+    console.log(chatTarget)
   return (
     <>
-      <div style={{ width: "100%", marginBottom:100 }}>
-        {messages
-          ? messages.map((message) => (
-              <div
-                key={message.id}
-                style={{
-                  display: "flex",
-                  justifyContent: handleAlign(message, usersInfo),
-                  overflowAnchor: 'none'
-                }}
-              >
-                <ChatMessage message={message} usersInfo={usersInfo} />
-                <div ref={messagesEndRef}/>
-                <br />
+      <section id='chat'>
+        {chatTarget? 
+        <div className='chat-target-banner' 
+        // style={{position: "fixed", width: '100%', zIndex:999, backgroundColor:'red'}}
+        >
+              <Avatar src={chatTarget.photo_url} id='chat-target-avatar' />
+              <div>
+                <Typography variant='h5' >{chatTarget.name}</Typography>
+                <Typography variant='caption'>{`${chatTarget.breed}, ${chatTarget.age} years old.`}</Typography>
               </div>
-            ))
-          : null}
-      </div>
+        </div> : <div>
+          Click a match from the left to start chatting!
+        </div>}
+        <div className='chat-messages' style={{ width: "100%", marginBottom:100, }}>
+          {messages
+            ? messages.map((message) => (
+                <div
+                  
+                  key={message.id}
+                  style={{
+                    display: "flex",
+                    justifyContent: handleAlign(message, usersInfo),
+                    overflowAnchor: 'none'
+                  }}
+                >
+                  <ChatMessage message={message} usersInfo={usersInfo} />
+                  <div ref={messagesEndRef}/>
+                  <br />
+                </div>
+              ))
+            : null}
+        </div>
+      </section>
 
       <StickyFooter
         handleChange={handleChange}

@@ -9,14 +9,14 @@ function App() {
   const [socket, setSocket] = useState(null);
   const [usersInfo, setUsersInfo] = useState({user: {id:20, profile_name: 'user20'}});
   const [onlineUsers, setOnlineUsers] = useState({});
-  const mainLayoutProps = {socket, usersInfo, setUsersInfo, onlineUsers, setOnlineUsers}
+
+  const mainLayoutProps = {socket, usersInfo, onlineUsers, setUsersInfo, setOnlineUsers}
 
   useEffect(() => {
     const newSocket = io(`http://${window.location.hostname}:3333`);
     setSocket(newSocket);
     return () => newSocket.close();
   }, [setSocket]);
-  // console.log(usersInfo)
 
   return( 
   <div className="App">

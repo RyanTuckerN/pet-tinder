@@ -22,21 +22,17 @@ import {
   ListItemIcon,
   ListItemText,
   Toolbar,
+  Tooltip,
   Typography,
 } from "@material-ui/core";
 
 import ChatIndex from "./Chat/ChatIndex";
+import Profile from "./Profile/Profile";
 import MatchList from "./MainLayoutComponents/MatchList";
 import dogPic from "./MainLayoutComponents/assets/dog.png";
 import useWindowDimensions from "./customHooks/useWindowDimension";
 
-let width = window.innerWidth;
-let drawerWidth = 220;
-const handleResize = () => {
-  width = window.innerWidth;
-  drawerWidth = width > 500 ? 220 : width;
-};
-window.addEventListener("resize", handleResize);
+const drawerWidth = 220;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -114,32 +110,33 @@ export default function MainLayout(props) {
 
   const [open, setOpen] = useState(false);
   const [chatTarget, setChatTarget] = useState(null);
-  const { width } = useWindowDimensions()
+  const { width } = useWindowDimensions();
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
   const handleDrawerToggle = () => setOpen(!open);
-  
+
   const chatProps = {
     chatTarget,
-    socket,
     usersInfo,
     setUsersInfo,
-    open,
     setOnlineUsers,
+    socket,
+    open,
     setChatTarget,
   };
   const matchListProps = {
     usersInfo,
-    socket,
     onlineUsers,
+    socket,
+    open,
     setChatTarget,
     handleDrawerToggle,
   };
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
-      <AppBar
+      <CssBaseline /> {/* This is from MUI*/}
+      <AppBar  // THIS IS TOP NAVBAR
         position="fixed"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
@@ -149,10 +146,13 @@ export default function MainLayout(props) {
             "radial-gradient(circle, rgba(180,155,79,1) 1%, rgba(195,85,19,1) 35%, rgba(186,23,97,1) 100%)",
         }}
       >
-        <Toolbar style={{display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-      }}>
+        <Toolbar
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -161,14 +161,16 @@ export default function MainLayout(props) {
             className={clsx(classes.menuButton, {
               [classes.hide]: open,
             })}
-            style={{marginRight: 'auto'}}
+            style={{ marginRight: "auto" }}
           >
             <Menu />
           </IconButton>
-          {width>500&&!open?<Typography variant="h6" noWrap className={classes.title}>
-            Pet Tinder
-          </Typography>:null}
-          <div style={{marginLeft: 'auto'}}>
+          {width > 500 && !open ? (
+            <Typography variant="h6" noWrap className={classes.title}>
+                   Pet Tinder
+            </Typography>
+          ) : null}
+          <div style={{ marginLeft: "auto" }}>
             <IconButton>
               <Notifications color="inherit" />
             </IconButton>
@@ -181,7 +183,7 @@ export default function MainLayout(props) {
           </div>
         </Toolbar>
       </AppBar>
-      <Drawer
+      <Drawer  // THIS IS SIDE NAVBAR
         variant="permanent"
         className={clsx(classes.drawer, {
           [classes.drawerOpen]: open,
@@ -194,43 +196,49 @@ export default function MainLayout(props) {
           }),
         }}
       >
-        <div className={classes.toolbar} >
+        <div className={classes.toolbar}>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? <ChevronRight /> : <ChevronLeft />}
           </IconButton>
         </div>
         <Divider />
-        <ListItem button >
-          <ListItemIcon >
-            <AccountBox />
-          </ListItemIcon>
-          <ListItemText primary="Profile" />
-        </ListItem>
-        <ListItem button >
-          <ListItemIcon>
-            <Pets />
-          </ListItemIcon>
-          <ListItemText primary="Dogs" />
-        </ListItem>
-        <ListItem button >
-          <ListItemIcon>
-            <Favorite />
-          </ListItemIcon>
-          <ListItemText primary="Matches" />
-        </ListItem>
+        <Tooltip title='View or edit your profile'>
+          <ListItem button>
+            <ListItemIcon>
+              <AccountBox />
+            </ListItemIcon>
+            <ListItemText primary="Profile" />
+          </ListItem>
+        </Tooltip>
+        <Tooltip title='See potential matches'>
+          <ListItem button>
+            <ListItemIcon>
+              <Pets />
+            </ListItemIcon>
+            <ListItemText primary="Dogs" />
+          </ListItem>
+        </Tooltip>
+        <Tooltip title='See your matches'>
+          <ListItem button>
+            <ListItemIcon>
+              <Favorite />
+            </ListItemIcon>
+            <ListItemText primary="Matches" />
+          </ListItem>
+        </Tooltip>
         <Divider />
         <MatchList matchListProps={matchListProps} />
       </Drawer>
-      <main className={classes.content} >
+      <main className={classes.content}>
         <div className={classes.toolbar} />
-
-        <div id="body-container">
-          {/* Mount your component here */}
-          {socket ? (
+        <div id="body-container" //OUR COMPONENTS WILL BE RENDERED HERE FROM REACT-ROUTER-DOM
+        >  
+          {/* {socket ? (
             <ChatIndex chatProps={chatProps} />
           ) : (
             <div>Not Connected</div>
-          )}
+          )} */}
+          <Profile />
         </div>
       </main>
     </div>
