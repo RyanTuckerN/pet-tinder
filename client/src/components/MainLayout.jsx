@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import { Route, Link, Switch } from "react-router-dom";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-
 import {
   Notifications,
   AccountBox,
-  Chat,
   Favorite,
   Pets,
   ChevronLeft,
@@ -29,9 +27,16 @@ import {
 
 import ChatIndex from "./Chat/ChatIndex";
 import MatchList from "./MainLayoutComponents/MatchList";
-import dogPic from './MainLayoutComponents/assets/dog.png'
+import dogPic from "./MainLayoutComponents/assets/dog.png";
+import useWindowDimensions from "./customHooks/useWindowDimension";
 
-const drawerWidth = 220;
+let width = window.innerWidth;
+let drawerWidth = 220;
+const handleResize = () => {
+  width = window.innerWidth;
+  drawerWidth = width > 500 ? 220 : width;
+};
+window.addEventListener("resize", handleResize);
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,8 +44,8 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-    display: 'flex',
-    justifyContent:'space-around',
+    display: "flex",
+    justifyContent: "space-around",
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -97,9 +102,7 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
-    paddingBottom: 120,
     // height: '100vh',
-    // backgroundColor: '#fff1cc'
   },
 }));
 
@@ -108,12 +111,14 @@ export default function MainLayout(props) {
     props.mainLayoutProps;
   const classes = useStyles();
   const theme = useTheme();
+
   const [open, setOpen] = useState(false);
   const [chatTarget, setChatTarget] = useState(null);
+  const { width } = useWindowDimensions()
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
   const handleDrawerToggle = () => setOpen(!open);
-
+  
   const chatProps = {
     chatTarget,
     socket,
@@ -123,7 +128,6 @@ export default function MainLayout(props) {
     setOnlineUsers,
     setChatTarget,
   };
-
   const matchListProps = {
     usersInfo,
     socket,
@@ -140,9 +144,15 @@ export default function MainLayout(props) {
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
-        style={{background: 'radial-gradient(circle, rgba(180,155,79,1) 1%, rgba(195,85,19,1) 35%, rgba(186,23,97,1) 100%)'}}
+        style={{
+          background:
+            "radial-gradient(circle, rgba(180,155,79,1) 1%, rgba(195,85,19,1) 35%, rgba(186,23,97,1) 100%)",
+        }}
       >
-        <Toolbar>
+        <Toolbar style={{display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+      }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -151,21 +161,24 @@ export default function MainLayout(props) {
             className={clsx(classes.menuButton, {
               [classes.hide]: open,
             })}
+            style={{marginRight: 'auto'}}
           >
             <Menu />
           </IconButton>
-          <Typography variant="h6" noWrap className={classes.title}>
+          {width>500&&!open?<Typography variant="h6" noWrap className={classes.title}>
             Pet Tinder
-          </Typography>
-          <IconButton>
-            <Notifications color="inherit" />
-          </IconButton>
-          <IconButton>
-            <Avatar
-              alt="Profile Avatar"
-              src={usersInfo.user.dog ? usersInfo.user.dog.photo_url : dogPic}
-            />
-          </IconButton>
+          </Typography>:null}
+          <div style={{marginLeft: 'auto'}}>
+            <IconButton>
+              <Notifications color="inherit" />
+            </IconButton>
+            <IconButton>
+              <Avatar
+                alt="Profile Avatar"
+                src={usersInfo.user.dog ? usersInfo.user.dog.photo_url : dogPic}
+              />
+            </IconButton>
+          </div>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -181,47 +194,44 @@ export default function MainLayout(props) {
           }),
         }}
       >
-        <div className={classes.toolbar} style={{backgroundColor: '#fff1cc'}}>
+        <div className={classes.toolbar} >
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? <ChevronRight /> : <ChevronLeft />}
           </IconButton>
         </div>
         <Divider />
-        <ListItem button style={{backgroundColor: '#fff1cc'}}>
-          <ListItemIcon>
+        <ListItem button >
+          <ListItemIcon >
             <AccountBox />
           </ListItemIcon>
           <ListItemText primary="Profile" />
         </ListItem>
-        <ListItem button style={{backgroundColor: '#fff1cc'}}>
+        <ListItem button >
           <ListItemIcon>
             <Pets />
           </ListItemIcon>
           <ListItemText primary="Dogs" />
         </ListItem>
-        <ListItem button style={{backgroundColor: '#fff1cc'}}>
+        <ListItem button >
           <ListItemIcon>
             <Favorite />
           </ListItemIcon>
           <ListItemText primary="Matches" />
         </ListItem>
-        {/* <ListItem button style={{backgroundColor: '#fff1cc'}}>
-          <ListItemIcon>
-            <Chat />
-          </ListItemIcon>
-          <ListItemText primary="Chat" />
-        </ListItem> */}
         <Divider />
         <MatchList matchListProps={matchListProps} />
       </Drawer>
-      <main className={classes.content}>
+      <main className={classes.content} >
         <div className={classes.toolbar} />
-        {/* Mount your component here */}
-        {socket ? (
-          <ChatIndex chatProps={chatProps} />
-        ) : (
-          <div>Not Connected</div>
-        )}
+
+        <div id="body-container">
+          {/* Mount your component here */}
+          {socket ? (
+            <ChatIndex chatProps={chatProps} />
+          ) : (
+            <div>Not Connected</div>
+          )}
+        </div>
       </main>
     </div>
   );

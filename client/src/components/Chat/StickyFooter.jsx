@@ -1,5 +1,5 @@
 import { TextField, Button } from "@material-ui/core";
-import useWindowDimensions from "./customHooks/useWindowDimension";
+import useWindowDimensions from "../customHooks/useWindowDimension";
 
 const StickyFooter = (props) => {
   const { handleChange, handleSubmit, chatMessage, open } = props;
@@ -11,22 +11,27 @@ const StickyFooter = (props) => {
     paddingBottom: 20,
     paddingTop: 20,
     height: "100px",
-    // backgroundColor: '#fff1cc'
+    backgroundColor: 'gainsboro', //MAKE SURE THIS MATCHES MAIN BACKGROUND!!
+    paddingRight: '0 !important',
+    paddingLeft: '0 !important',
+    // marginRight:'auto',
+    width: open ? width - 210 : width - 75
+    
   };
   return (
     <div style={bottomPush}>
       <form
         action="submit"
         onSubmit={handleSubmit}
-        style={{ width: "100%", display: "flex", justifyContent: "flex-start" }}
+        style={{ width: "100%",  display: open && width < 470 ? 'none' : 'flex' , justifyContent: "flex-start" }}
       >
         <TextField
-          label="Direct message"
+          label=""
           id="outlined-size-normal"
           variant="outlined"
           value={chatMessage}
           onChange={handleChange}
-          style={{ width: open ? width - 320 : width - 170 }}
+          style={{ width: open ? width - 320 : width - 180}}
         />
         <Button type="submit">SEND</Button>
       </form>

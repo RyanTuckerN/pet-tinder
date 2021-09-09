@@ -36,3 +36,17 @@
     transform: rotate(360deg);
   }
 }
+
+main{
+  min-height: 100vh;
+  background-color: gainsboro;
+  -left: 100px;
+}
+
+.top-icons {
+  padding-left: 100px;
+}
+
+.MuiListItemIcon-root{
+  padding-left: 7px;
+}

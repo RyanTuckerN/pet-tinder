@@ -10,13 +10,13 @@ const ChatMessage = (props) => {
     textAlign: "right",
     backgroundColor: "orange",
     padding: "8px",
-    borderRadius: 4,
+    borderRadius: 12,
   };
   const targetStyle = {
     textAlign: "left",
     backgroundColor: "red",
     padding: "8px",
-    borderRadius: 4,
+    borderRadius: 12,
   };
 
   return (
@@ -29,9 +29,9 @@ const ChatMessage = (props) => {
             : targetStyle
         }
       >
-        <Typography variant="caption">{`${month}/${date}/${year}`}</Typography>
-        <Typography variant="h6">{message.text}</Typography>
+        {/* <Typography variant="caption">{`${month}/${date}/${year}`}</Typography> */}
         <Typography variant="caption">{time}</Typography>
+        <Typography variant="h6" style={{ paddingLeft: 8, paddingRight: 8}}>{message.text}</Typography>
       </div>
     </div>
   );

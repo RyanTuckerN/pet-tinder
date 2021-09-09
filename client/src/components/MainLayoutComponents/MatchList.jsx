@@ -9,14 +9,14 @@ import {
   ListItemAvatar,
   IconButton,
 } from "@material-ui/core";
-import { Group, Chat } from "@material-ui/icons";
+import { Chat } from "@material-ui/icons";
 
 const MatchList = (props) => {
   const { usersInfo, setChatTarget, socket, handleDrawerToggle, onlineUsers } =
     props.matchListProps;
 
   return (
-    <List style={{backgroundColor: '#fff1cc'}}>
+    <List>
       <ListItemIcon>
         <IconButton onClick={handleDrawerToggle}>
           <Chat />

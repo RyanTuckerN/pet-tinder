@@ -82,7 +82,7 @@ const ChatIndex = (props) => {
     
   return (
     <>
-      <div style={{ width: "100%" }}>
+      <div style={{ width: "100%", marginBottom:100 }}>
         {messages
           ? messages.map((message) => (
               <div
@@ -94,7 +94,6 @@ const ChatIndex = (props) => {
                 }}
               >
                 <ChatMessage message={message} usersInfo={usersInfo} />
-                {/* <div id="anchor" style={{overflowAnchor: 'auto', height: 1}}></div> */}
                 <div ref={messagesEndRef}/>
                 <br />
               </div>
