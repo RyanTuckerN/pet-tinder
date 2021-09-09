@@ -13,6 +13,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Login from './Login';
+import Signup from './Signup';
 
 function Copyright() {
   return (
@@ -65,7 +66,8 @@ export default function Auth(props) {
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
-      <Login classes={classes} />
+      {/* <Login classes={classes} /> */}
+      <Signup classes={classes} />
       <Box mt={5}>
           <Copyright />
         </Box>
