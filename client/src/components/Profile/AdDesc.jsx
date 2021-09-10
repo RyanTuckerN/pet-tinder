@@ -1,29 +1,39 @@
-import React, {useState} from 'react';
-import { makeStyles } from '@material-ui/styles';
-import { Typography, Grid, TextField, Chip, Paper } from '@material-ui/core';
-
+import React, { useState } from "react";
+import { makeStyles } from "@material-ui/styles";
+import { Typography, Grid, TextField, Chip, Button} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-    listStyle: 'none',
+    display: "flex",
+    justifyContent: "center",
+    flexWrap: "wrap",
+    listStyle: "none",
     margin: 0,
   },
-  chip: {
-  },
+  chip: {},
 }));
 
-export default function PaymentForm() {
-  const classes = useStyles() 
+export default function PaymentForm(props) {
+  const { ad_description, temperament, setTemperament, setAdDescription } = props.oneProps;
+  const classes = useStyles();
+  const [temporaryTemperament, setTemporaryTemperament] = useState('');
   const [length, setLength] = useState(0);
-  const [chipData, setChipData] = useState(['happy', 'sad', 'playful', 'cool', 'protective'] ); 
 
-  const handleChange = e => setLength(e.target.value.length)
-  const handleDelete = (chipToDelete) => () => {
-    setChipData((chips) => chips.filter(chip=>chip!=chipToDelete));
+  const handleAdChange = (e) => {
+    setLength(e.target.value.length);
+    setAdDescription(e.target.value);
   };
+  const handleDelete = (chipToDelete) => () => {
+    setTemperament((chips) => chips.filter((chip) => chip != chipToDelete));
+  };
+  const handleTempTemp = e => {
+    setTemporaryTemperament(e.target.value)
+  }
+  const handleTemperament = e => {
+    e.preventDefault()
+    setTemperament(temperament => [...temperament, temporaryTemperament])
+    setTemporaryTemperament('')
+  }
 
   return (
     <React.Fragment>
@@ -33,41 +43,61 @@ export default function PaymentForm() {
       <Typography variant="subtitle1" gutterBottom>
         Help other users get a feel for your dog! (500 character maximum length)
       </Typography>
-      <div style={{height:20}}/>
+      <div style={{ height: 20 }} />
       <Grid container spacing={3}>
-        <Grid xs={12}>
-          <TextField variant='outlined' required id="adDesc" label="Describe your dog!" fullWidth onChange={handleChange}/>
+        <Grid item xs={12}>
+          <TextField
+            variant="outlined"
+            required
+            id="adDesc"
+            multiline
+            label="Describe your dog!"
+            fullWidth
+            value={ad_description}
+            onChange={handleAdChange}
+            inputProps={{ maxLength: 500 }}
+          />
         </Grid>
       </Grid>
-      <div style={{height:20}}/>
-      <Typography variant='caption'>{`${length}/500`} </Typography>
-      <div style={{height:20}}/>
+      <div style={{ height: 20 }} />
+      <Typography variant="caption">{`${length}/500`} </Typography>
+      <div style={{ height: 20 }} />
       <Typography variant="h6" gutterBottom>
         Temperament
       </Typography>
       <Typography variant="subtitle1" gutterBottom>
         Add some descriptive keywords that describe your dog's temperament
       </Typography>
-      <div style={{height:20}}/>
-      <Grid container spacing={3}>
-        <Grid xs={12}>
-          <TextField variant='outlined' required id="adDesc" label="Temperament keywords" fullWidth onChange={handleChange}/>
+      <div style={{ height: 20 }} />
+      <Grid container spacing={3} style={{display: 'flex', justifyContent: 'center'}}>
+        <Grid xs={6}>
+          <form action="submit" style={{display:'flex'}} onSubmit={handleTemperament}>
+            <TextField
+              variant="outlined"
+              required
+              id="adDesc"
+              label="Keyword"
+              fullWidth
+              value={temporaryTemperament}
+              onChange={handleTempTemp}
+            />
+          </form>
         </Grid>
       </Grid>
-      <div style={{height:40}}/>
+      <div style={{ height: 40 }} />
       <ul className={classes.root}>
-      {chipData.map((temp,i) => {
-        return (
-          <li key={i}>
-            <Chip
-              label={temp}
-              onDelete={handleDelete(temp)}
-              className={classes.chip}
-            />
-          </li>
-        );
-      })}
-    </ul>
+        {temperament.map((temp, i) => {
+          return (
+            <li key={i}>
+              <Chip
+                label={temp}
+                onDelete={handleDelete(temp)}
+                className={classes.chip}
+              />
+            </li>
+          );
+        })}
+      </ul>
     </React.Fragment>
   );
 }

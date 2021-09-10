@@ -1,21 +1,24 @@
-import React from "react";
+import React, {useState} from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
-import { Input } from "@material-ui/core";
+import { Autocomplete } from '@material-ui/lab'
+import breeds from './assets/breedlist'
 
-export default function AddressForm() {
-  const [value, setValue] = React.useState("female");
-
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
+export default function AddressForm(props) {
+  // console.log(breeds)
+  const { name, breed, age, weight, is_female, location, setName, setBreed, setAge, setWeight, setIsFemale, setLocation } = props.zeroProps
+  const handleName = e => setName(e.target.value)
+  const handleBreed = e => setBreed(e.target.value)
+  const handleAge = e => setAge(e.target.value)
+  const handleWeight = e => setWeight(e.target.value)
+  const handleGender = e => setIsFemale(e.target.value==='female'?true:false)
+  const handleLocation = e => setLocation({zip: e.target.value})
 
   return (
     <React.Fragment>
@@ -23,98 +26,62 @@ export default function AddressForm() {
         Basic Information
       </Typography>
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <TextField
             required
             id="name"
             name="name"
             label="Name"
             fullWidth
-            autoComplete="given-name"
+            value={name}
+            onChange={handleName}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <TextField
             required
             id="breed"
             name="breed"
             label="Breed"
             fullWidth
-            autoComplete="family-name"
+            value={breed}
+            onChange={handleBreed}
           />
         </Grid>
-        {/* <Grid item xs={12}>
-          <TextField
-            required
-            id="address1"
-            name="address1"
-            label="Address line 1"
-            fullWidth
-            autoComplete="shipping address-line1"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            id="address2"
-            name="address2"
-            label="Address line 2"
-            fullWidth
-            autoComplete="shipping address-line2"
-          />
-        </Grid> */}
-        {/* <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="city"
-            name="city"
-            label="City"
-            fullWidth
-            autoComplete="shipping address-level2"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField id="state" name="state" label="State/Province/Region" fullWidth />
-        </Grid> */}
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <TextField
             required
             id="zip"
             name="zip"
             label="Zip / Postal code"
             fullWidth
+            value={location.zip}
             autoComplete="shipping postal-code"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="country"
-            name="country"
-            label="Country"
-            fullWidth
-            autoComplete="shipping country"
+            onChange={handleLocation}
           />
         </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               required
-              defaultValue='5'
               id='age'
               name='age'
               label='Age'
               fullWidth
+              value={age}
               type='number'
+              onChange={handleAge}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
           <TextField
               required
-              defaultValue='5'
               id='weight'
               name='weight'
               label='Weight (lbs)'
               fullWidth
+              value={weight}
               type='number'
+              onChange={handleWeight}
             />
           </Grid>
           <Grid item xs={12}>
@@ -123,8 +90,8 @@ export default function AddressForm() {
               <RadioGroup
                 aria-label="gender"
                 name="gender1"
-                value={value}
-                onChange={handleChange}
+                onChange={handleGender}
+                value={is_female?'female':'male'}
               >
                 <FormControlLabel
                   value="female"
