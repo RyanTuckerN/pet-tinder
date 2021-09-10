@@ -31,10 +31,29 @@ const Signup = (props) => {
           margin="normal"
           required
           fullWidth
+          id="full-name"
+          label="Full Name"
+          name="full-name"
+          autoFocus
+        />
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
           id="username"
           label="Username"
           name="username"
-          autoFocus
+        />
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          type="email"
+          fullWidth
+          id="email"
+          label="Email"
+          name="email"
         />
         <TextField
           variant="outlined"
