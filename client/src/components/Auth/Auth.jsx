@@ -60,14 +60,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Auth(props) {
+  const {setToken}= props
   const classes = useStyles();
 
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
-      {/* <Login classes={classes} /> */}
-      <Signup classes={classes} />
+      {/* <Login classes={classes} setToken={setToken}  /> */}
+      <Signup classes={classes} setToken={setToken} />
       <Box mt={5}>
           <Copyright />
         </Box>

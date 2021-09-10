@@ -15,7 +15,31 @@ import { makeStyles } from '@material-ui/core/styles';
 
 
 const Signup = (props) => {
-  const {classes} = props
+  const {classes, setToken } = props
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const fetchResults = await fetch('http://localhost:3333/user/signup', {
+    method: 'POST',
+    body: JSON.stringify({ 
+      profile_name: "test25",
+      name: "lilly",
+      password: "password",
+      email: "email@email.com",
+    }),
+    headers: new Headers({
+      "Content-Type": "application/json"
+    })
+
+  }) 
+  const json = await fetchResults.json()
+  console.log("json response", json)
+  setToken(json.sessionToken)
+
+}
+
+
+
   return ( 
     <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
     <div className={classes.paper}>
@@ -25,7 +49,7 @@ const Signup = (props) => {
       <Typography component="h1" variant="h5">
         Sign Up
       </Typography>
-      <form className={classes.form} noValidate>
+      <form className={classes.form} noValidate onSubmit={handleSubmit}>
         <TextField
           variant="outlined"
           margin="normal"

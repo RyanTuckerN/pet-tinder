@@ -9,6 +9,7 @@ import MainLayout from "./components/MainLayout";
 function App() {
   const [socket, setSocket] = useState(null);
   const [usersInfo, setUsersInfo] = useState({});
+  const [token, setToken] = useState("");
 
   useEffect(() => {
     const newSocket = io(`http://${window.location.hostname}:3333`);
@@ -20,7 +21,7 @@ function App() {
   return( 
   <div className="App">
       {/* Hello world */}
-      <Auth setUsersInfo={setUsersInfo}/>
+      <Auth setUsersInfo={setUsersInfo} setToken={setToken}/>
       {/* {socket?<Chat socket={socket} setUsersInfo={setUsersInfo} usersInfo={usersInfo}/>:<div>Not Connected</div>} */}
       {/* <MainLayout /> */}
   </div>)
