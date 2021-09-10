@@ -38,11 +38,7 @@ function App() {
 
   //DECODING THE TOKEN IF IT EXISTS
   useEffect(() => {
-<<<<<<< HEAD
-    if (token && localStorage.getItem('token')) {
-=======
     if (token && localStorage.getItem("token") !== undefined) {
->>>>>>> aa17df47ba39d166fa06e239749d98644decb9e2
       setUserId(jwt_decode(token).id);
     }
   }, [token]);
