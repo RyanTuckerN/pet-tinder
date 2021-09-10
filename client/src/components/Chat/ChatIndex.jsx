@@ -1,5 +1,5 @@
 import { Avatar, Typography } from "@material-ui/core";
-import './Chat.css'
+import "./Chat.css";
 import React, { useState, useEffect, useRef } from "react";
 import ChatMessage from "./ChatMessage";
 import StickyFooter from "./StickyFooter";
@@ -14,7 +14,7 @@ I NEED TO DO A FEW THINGS, BUT I KNOW THE SOCKET IS OPEN AND WORKING!!! WOOHOO!!
 6. ~~ STILL NEED TO SORT OUT LOGIC FOR MATCHES ~~
 */
 const ChatIndex = (props) => {
-  const { socket, setUsersInfo, usersInfo, chatTarget, setChatTarget, setOnlineUsers, open } =
+  const { socket, usersInfo, chatTarget, setChatTarget, open } =
     props.chatProps;
   const [chatMessage, setChatMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -22,7 +22,6 @@ const ChatIndex = (props) => {
   // console.log(socket)
   useEffect(() => {
     if (socket) {
-
       // MOVE THESE TO LOGIN/SIGNUP!
       // socket.on("userCreated", (obj) => {
       //   setUsersInfo(obj);
@@ -40,7 +39,7 @@ const ChatIndex = (props) => {
       //   id: 11, //this needs to come from user info,
       // });
 
-            socket.on("priorMessages", (conversation) => {
+      socket.on("priorMessages", (conversation) => {
         console.log("CONVERSATION: ", conversation);
         setMessages(conversation.messages);
       });
@@ -50,7 +49,7 @@ const ChatIndex = (props) => {
         setMessages(conversation.messages);
       });
     }
-    return handleExitChat
+    return handleExitChat;
   }, [socket]);
 
   const handleSubmit = (e) => {
@@ -59,14 +58,15 @@ const ChatIndex = (props) => {
       console.log("no chat target");
       return;
     } else {
-      if(chatMessage.length>=255){
-        console.log('message too long!')
-      }else{
-      socket.emit("message", {
-        text: chatMessage,
-        sender: usersInfo.user,
-        receiver: chatTarget.user,
-      });}
+      if (chatMessage.length >= 255) {
+        console.log("message too long!");
+      } else {
+        socket.emit("message", {
+          text: chatMessage,
+          sender: usersInfo.user,
+          receiver: chatTarget.user,
+        });
+      }
     }
     setChatMessage("");
   };
@@ -79,42 +79,44 @@ const ChatIndex = (props) => {
   const handleAlign = (m, i) =>
     m.user._id == i.user.id ? "flex-end" : "flex-start";
 
-    const messagesEndRef = useRef(null)
-    const scrollToBottom = () => {
-      messagesEndRef.current?.scrollIntoView({behavior: "smooth"})
-    }
-    useEffect(()=>{
-      scrollToBottom()
-    },[messages])
-    console.log(chatTarget)
+  const messagesEndRef = useRef(null);
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+  console.log(chatTarget);
   return (
     <>
-      <section id='chat'>
-        {chatTarget? 
-        <div className='chat-target-banner' 
+      <section id="chat">
+        {chatTarget ? (
+          <div className="chat-target-banner">
+            <Avatar src={chatTarget.photo_url} id="chat-target-avatar" />
+            <div>
+              <Typography variant="h5">{chatTarget.name}</Typography>
+              <Typography variant="caption">{`${chatTarget.breed}, ${chatTarget.age} years old.`}</Typography>
+            </div>
+          </div>
+        ) : (
+          <div>Click a match from the left to start chatting!</div>
+        )}
+        <div
+          className="chat-messages"
+          style={{ width: "100%", marginBottom: 100 }}
         >
-              <Avatar src={chatTarget.photo_url} id='chat-target-avatar' />
-              <div>
-                <Typography variant='h5' >{chatTarget.name}</Typography>
-                <Typography variant='caption'>{`${chatTarget.breed}, ${chatTarget.age} years old.`}</Typography>
-              </div>
-        </div> : <div>
-          Click a match from the left to start chatting!
-        </div>}
-        <div className='chat-messages' style={{ width: "100%", marginBottom:100, }}>
           {messages
             ? messages.map((message) => (
                 <div
-                  
                   key={message.id}
                   style={{
                     display: "flex",
                     justifyContent: handleAlign(message, usersInfo),
-                    overflowAnchor: 'none'
+                    overflowAnchor: "none",
                   }}
                 >
                   <ChatMessage message={message} usersInfo={usersInfo} />
-                  <div ref={messagesEndRef}/>
+                  <div ref={messagesEndRef} />
                   <br />
                 </div>
               ))
@@ -131,6 +133,5 @@ const ChatIndex = (props) => {
     </>
   );
 };
-
 
 export default ChatIndex;
