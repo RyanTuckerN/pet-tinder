@@ -9,8 +9,9 @@ function App() {
   const [socket, setSocket] = useState(null);
   const [usersInfo, setUsersInfo] = useState({user: {id:20, profile_name: 'user20'}});
   const [onlineUsers, setOnlineUsers] = useState({});
-
   const mainLayoutProps = {socket, usersInfo, onlineUsers, setUsersInfo, setOnlineUsers}
+  const [token, setToken] = useState("");
+
 
   useEffect(() => {
     const newSocket = io(`http://${window.location.hostname}:3333`);
@@ -21,8 +22,13 @@ function App() {
   return( 
   <div className="App">
       {/* Hello world */}
-      {/* <Auth setUsersInfo={setUsersInfo}/> */}
-      <MainLayout mainLayoutProps={mainLayoutProps}/>
+
+      
+      {/* <MainLayout mainLayoutProps={mainLayoutProps}/> */}
+      <Auth setUsersInfo={setUsersInfo} setToken={setToken}/>
+      {/* {socket?<Chat socket={socket} setUsersInfo={setUsersInfo} usersInfo={usersInfo}/>:<div>Not Connected</div>} */}
+      
+
   </div>)
 }
 
