@@ -19,25 +19,8 @@ const ChatIndex = (props) => {
   const [chatMessage, setChatMessage] = useState("");
   const [messages, setMessages] = useState([]);
 
-  // console.log(socket)
   useEffect(() => {
     if (socket) {
-      // MOVE THESE TO LOGIN/SIGNUP!
-      // socket.on("userCreated", (obj) => {
-      //   setUsersInfo(obj);
-      //   console.log("💎 USER/MATCHES: ", obj);
-      //   console.log("🔧 SOCKET ID: ", socket.id);
-      // });
-
-      // socket.on('newUser', socketIds=>{
-      //   setOnlineUsers(socketIds)
-      //   console.log('ONLINE USERS SOCKETS: ', socketIds.mobileSockets)
-      // })
-
-      // socket.emit("newLogin", {
-      //   profile_name: "user11",
-      //   id: 11, //this needs to come from user info,
-      // });
 
       socket.on("priorMessages", (conversation) => {
         console.log("CONVERSATION: ", conversation);

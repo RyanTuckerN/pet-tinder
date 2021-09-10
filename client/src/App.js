@@ -3,81 +3,86 @@ import "./App.css";
 import io from "socket.io-client";
 import Auth from "./components/Auth/Auth";
 import MainLayout from "./components/MainLayout";
-import jwt_decode from 'jwt-decode'
+import jwt_decode from "jwt-decode";
 
 function App() {
+  //STATE VARIABLE AND SETTERS
   const [socket, setSocket] = useState(null);
   const [userId, setUserId] = useState(null);
   const [usersInfo, setUsersInfo] = useState({});
   const [onlineUsers, setOnlineUsers] = useState(null);
   const [token, setToken] = useState("");
 
-  
-  
+  //LOGGING IN AND SIGNING UP
   const updateToken = (t) => {
     localStorage.setItem("token", t);
     setToken(t);
   };
-  
+
+  //LOGGING OUT
   const clearToken = () => {
-    localStorage.clear()
-    setToken("")
-    setUsersInfo({})
-    setOnlineUsers(null)
-    setSocket(null)
-    setUserId(null)
-  }
-  
+    localStorage.clear();
+    setToken("");
+    setUsersInfo({});
+    setOnlineUsers(null);
+    setSocket(null);
+    setUserId(null);
+  };
+
+  //LOOKING FOR TOKEN IN LOCAL STORAGE WHEN APP LOADS
   useEffect(() => {
     if (localStorage.getItem("token")) {
       setToken(localStorage.getItem("token"));
     }
   }, []);
-  useEffect(()=>{
-    if(token) {
-      setUserId(jwt_decode(token).id)
+
+  //DECODING THE TOKEN IF IT EXISTS
+  useEffect(() => {
+    if (token) {
+      setUserId(jwt_decode(token).id);
     }
-  }, [token])
-  
+  }, [token]);
+
+  //OPENING A NEW SOCKET FOR CHAT AND REAL-TIME FEATURES
   useEffect(() => {
     const newSocket = io(`http://${window.location.hostname}:3333`);
     setSocket(newSocket);
     return () => newSocket.close();
   }, [setSocket]);
-  
-  useEffect(()=>{
-    if(token && userId && socket){
-      socket.emit("newLogin", userId)
+
+  //EMITTING SOCKET EVENTS
+  useEffect(() => {
+    if (token && userId && socket) {
+      socket.emit("newLogin", userId);
       socket.on("userCreated", (obj) => {
         setUsersInfo(obj);
         console.log("💎 USER/MATCHES: ", obj);
         console.log("🔧 SOCKET ID: ", socket.id);
-      })
-      
-      socket.on('newUser', socketIds=>{
-        setOnlineUsers(socketIds)
-        console.log('ONLINE USERS SOCKETS: ', socketIds.mobileSockets)
-      })
+      });
+      socket.on("newUser", (socketIds) => {
+        setOnlineUsers(socketIds);
+        console.log("ONLINE USERS SOCKETS: ", socketIds.mobileSockets);
+      });
     }
-  },[socket, token, userId])
-  
+  }, [socket, token, userId]);
+
+  //PROPS OBJECT
   const mainLayoutProps = {
     socket,
     usersInfo,
     onlineUsers,
     setUsersInfo,
     setOnlineUsers,
-    clearToken
+    clearToken,
   };
 
   return (
     <div className="App">
-      { token ? (
+      {token ? (
         <MainLayout mainLayoutProps={mainLayoutProps} />
-        ) : (
+      ) : (
         <Auth setUsersInfo={setUsersInfo} updateToken={updateToken} />
-        )}
-      {/* {socket?<Chat socket={socket} setUsersInfo={setUsersInfo} usersInfo={usersInfo}/>:<div>Not Connected</div>} */}
+      )}
     </div>
   );
 }

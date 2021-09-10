@@ -120,22 +120,30 @@ export default function MainLayout(props) {
   const classes = useStyles();
   const theme = useTheme();
   const { width } = useWindowDimensions();
-
+  
   //STATE
   const [open, setOpen] = useState(false);
   const [chatTarget, setChatTarget] = useState(null);
   const [avatarPhoto, setAvatarPhoto] = useState(dogPic);
   const [anchorEl, setAnchorEl] = useState(null)
-
+  
   //FUNCTIONS FOR DRAWER OPEN/CLOSE
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
   const handleDrawerToggle = () => setOpen(!open);
-
+  
   //FUNCTION FOR USER DROPDOWN
   const handleAvatarClick = (e) => setAnchorEl(e.currentTarget)
   const handleDropdownClose = () => setAnchorEl(null)
   
+  //LOADING USER AVATAR ON LOGIN IF USER HAS A PROFILE
+  useEffect(() => {
+    if (usersInfo.user) {
+      if (usersInfo.user.dog) {
+        setAvatarPhoto(usersInfo.user.dog.photo_url);
+      }
+    }
+  }, [usersInfo]);
   
   //PROP COMPONENTS
   const chatProps = {
@@ -145,7 +153,7 @@ export default function MainLayout(props) {
     open,
     setChatTarget,
   };
-
+  
   const matchListProps = {
     usersInfo,
     onlineUsers,
@@ -154,18 +162,9 @@ export default function MainLayout(props) {
     setChatTarget,
     handleDrawerToggle,
   };
-
-  //LOADING USER AVATAR ON LOGIN IF USER HAS A PROFILE
-  useEffect(() => {
-    if (usersInfo.user) {
-      if (usersInfo.user.dog) {
-        setAvatarPhoto(usersInfo.user.dog.photo_url);
-      }
-    }
-  }, [usersInfo]);
-
+  
   const dropdownProps = {anchorEl, clearToken, handleDropdownClose}
-
+  
   //JSX 
   return (
     <Router>
