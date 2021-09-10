@@ -3,15 +3,37 @@ import "./App.css";
 import io from "socket.io-client";
 import Auth from "./components/Auth/Auth";
 import MainLayout from "./components/MainLayout";
-
+import jwt_decode from 'jwt-decode'
 
 function App() {
   const [socket, setSocket] = useState(null);
-  const [usersInfo, setUsersInfo] = useState({user: {id:20, profile_name: 'user20'}});
-  const [onlineUsers, setOnlineUsers] = useState({});
-  const mainLayoutProps = {socket, usersInfo, onlineUsers, setUsersInfo, setOnlineUsers}
+  const [userId, setUserId] = useState(null);
+  const [usersInfo, setUsersInfo] = useState({});
+  const [onlineUsers, setOnlineUsers] = useState(null);
+  const mainLayoutProps = {
+    socket,
+    usersInfo,
+    onlineUsers,
+    setUsersInfo,
+    setOnlineUsers,
+  };
   const [token, setToken] = useState("");
 
+  const updateToken = (t) => {
+    localStorage.setItem("token", t);
+    setToken(t);
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      setToken(localStorage.getItem("token"));
+    }
+  }, []);
+  useEffect(()=>{
+    if(token) {
+      setUserId(jwt_decode(token).id)
+    }
+  }, [token])
 
   useEffect(() => {
     const newSocket = io(`http://${window.location.hostname}:3333`);
@@ -19,17 +41,32 @@ function App() {
     return () => newSocket.close();
   }, [setSocket]);
 
-  return( 
-  <div className="App">
-      {/* Hello world */}
+  useEffect(()=>{
+    if(token && userId){
+      socket.emit("newLogin", userId)
+      socket.on("userCreated", (obj) => {
+        setUsersInfo(obj);
+        console.log("💎 USER/MATCHES: ", obj);
+        console.log("🔧 SOCKET ID: ", socket.id);
+      })
 
-      
-      {/* <MainLayout mainLayoutProps={mainLayoutProps}/> */}
-      <Auth setUsersInfo={setUsersInfo} setToken={setToken}/>
+      socket.on('newUser', socketIds=>{
+        setOnlineUsers(socketIds)
+        console.log('ONLINE USERS SOCKETS: ', socketIds.mobileSockets)
+      })
+    }
+  },[socket, token, userId])
+
+  return (
+    <div className="App">
+      { token ? (
+        <MainLayout mainLayoutProps={mainLayoutProps} />
+      ) : (
+        <Auth setUsersInfo={setUsersInfo} updateToken={updateToken} />
+      )}
       {/* {socket?<Chat socket={socket} setUsersInfo={setUsersInfo} usersInfo={usersInfo}/>:<div>Not Connected</div>} */}
-      
-
-  </div>)
+    </div>
+  );
 }
 
 export default App;

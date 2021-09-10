@@ -34,10 +34,10 @@ const MatchList = (props) => {
       {usersInfo.matches
         ? usersInfo.matches.map((match) => (
            
-            <Tooltip title={`Bark at ${match.name}!`}>
+            <Tooltip key={match.id} title={`Bark at ${match.name}!`}>
               <ListItem
                 button
-                key={match.id}
+                
                 onClick={() => {
                   console.log("CHAT TARGET: ", match);
                   setChatTarget(match);

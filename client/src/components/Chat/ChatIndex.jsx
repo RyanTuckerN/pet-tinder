@@ -1,4 +1,4 @@
-import { Avatar, Tooltip, Typography } from "@material-ui/core";
+import { Avatar, Typography } from "@material-ui/core";
 import './Chat.css'
 import React, { useState, useEffect, useRef } from "react";
 import ChatMessage from "./ChatMessage";
@@ -24,21 +24,21 @@ const ChatIndex = (props) => {
     if (socket) {
 
       // MOVE THESE TO LOGIN/SIGNUP!
-      socket.on("userCreated", (obj) => {
-        setUsersInfo(obj);
-        console.log("💎 USER/MATCHES: ", obj);
-        console.log("🔧 SOCKET ID: ", socket.id);
-      });
+      // socket.on("userCreated", (obj) => {
+      //   setUsersInfo(obj);
+      //   console.log("💎 USER/MATCHES: ", obj);
+      //   console.log("🔧 SOCKET ID: ", socket.id);
+      // });
 
-      socket.on('newUser', socketIds=>{
-        setOnlineUsers(socketIds)
-        console.log('ONLINE USERS SOCKETS: ', socketIds.mobileSockets)
-      })
+      // socket.on('newUser', socketIds=>{
+      //   setOnlineUsers(socketIds)
+      //   console.log('ONLINE USERS SOCKETS: ', socketIds.mobileSockets)
+      // })
 
-      socket.emit("newLogin", {
-        profile_name: "user18",
-        id: 18, //this needs to come from user info,
-      });
+      // socket.emit("newLogin", {
+      //   profile_name: "user11",
+      //   id: 11, //this needs to come from user info,
+      // });
 
             socket.on("priorMessages", (conversation) => {
         console.log("CONVERSATION: ", conversation);
@@ -92,7 +92,6 @@ const ChatIndex = (props) => {
       <section id='chat'>
         {chatTarget? 
         <div className='chat-target-banner' 
-        // style={{position: "fixed", width: '100%', zIndex:999, backgroundColor:'red'}}
         >
               <Avatar src={chatTarget.photo_url} id='chat-target-avatar' />
               <div>

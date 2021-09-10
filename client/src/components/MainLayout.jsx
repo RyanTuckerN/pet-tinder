@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Route, Link, Switch } from "react-router-dom";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -103,14 +103,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MainLayout(props) {
-  const { socket, usersInfo, setUsersInfo, onlineUsers, setOnlineUsers } =
-    props.mainLayoutProps;
+  const { socket, usersInfo, onlineUsers } = props.mainLayoutProps;
   const classes = useStyles();
   const theme = useTheme();
 
   const [open, setOpen] = useState(false);
   const [chatTarget, setChatTarget] = useState(null);
+  const [avatarPhoto, setAvatarPhoto] = useState(dogPic);
   const { width } = useWindowDimensions();
+
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
   const handleDrawerToggle = () => setOpen(!open);
@@ -118,8 +119,6 @@ export default function MainLayout(props) {
   const chatProps = {
     chatTarget,
     usersInfo,
-    setUsersInfo,
-    setOnlineUsers,
     socket,
     open,
     setChatTarget,
@@ -133,10 +132,18 @@ export default function MainLayout(props) {
     handleDrawerToggle,
   };
 
+  useEffect(() => {
+    if (usersInfo.user) {
+      if (usersInfo.user.dog) {
+        setAvatarPhoto(usersInfo.user.dog.photo_url);
+      }
+    }
+  }, [usersInfo]);
+
   return (
     <div className={classes.root}>
       <CssBaseline /> {/* This is from MUI*/}
-      <AppBar  // THIS IS TOP NAVBAR
+      <AppBar // THIS IS TOP NAVBAR
         position="fixed"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
@@ -167,7 +174,7 @@ export default function MainLayout(props) {
           </IconButton>
           {width > 500 && !open ? (
             <Typography variant="h6" noWrap className={classes.title}>
-                   Pet Tinder
+              Pet Tinder
             </Typography>
           ) : null}
           <div style={{ marginLeft: "auto" }}>
@@ -175,15 +182,12 @@ export default function MainLayout(props) {
               <Notifications color="inherit" />
             </IconButton>
             <IconButton>
-              <Avatar
-                alt="Profile Avatar"
-                src={usersInfo.user.dog ? usersInfo.user.dog.photo_url : dogPic}
-              />
+              <Avatar alt="Profile Avatar" src={avatarPhoto} />
             </IconButton>
           </div>
         </Toolbar>
       </AppBar>
-      <Drawer  // THIS IS SIDE NAVBAR
+      <Drawer // THIS IS SIDE NAVBAR
         variant="permanent"
         className={clsx(classes.drawer, {
           [classes.drawerOpen]: open,
@@ -202,7 +206,7 @@ export default function MainLayout(props) {
           </IconButton>
         </div>
         <Divider />
-        <Tooltip title='View or edit your profile'>
+        <Tooltip title="View or edit your profile">
           <ListItem button>
             <ListItemIcon>
               <AccountBox />
@@ -210,7 +214,7 @@ export default function MainLayout(props) {
             <ListItemText primary="Profile" />
           </ListItem>
         </Tooltip>
-        <Tooltip title='See potential matches'>
+        <Tooltip title="See potential matches">
           <ListItem button>
             <ListItemIcon>
               <Pets />
@@ -218,7 +222,7 @@ export default function MainLayout(props) {
             <ListItemText primary="Dogs" />
           </ListItem>
         </Tooltip>
-        <Tooltip title='See your matches'>
+        <Tooltip title="See your matches">
           <ListItem button>
             <ListItemIcon>
               <Favorite />
@@ -231,14 +235,15 @@ export default function MainLayout(props) {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <div id="body-container" //OUR COMPONENTS WILL BE RENDERED HERE FROM REACT-ROUTER-DOM
-        >  
-          {/* {socket ? (
+        <div
+          id="body-container" //OUR COMPONENTS WILL BE RENDERED HERE FROM REACT-ROUTER-DOM
+        >
+          {socket ? (
             <ChatIndex chatProps={chatProps} />
           ) : (
             <div>Not Connected</div>
-          )} */}
-          <Profile />
+          )}
+          {/* <Profile /> */}
         </div>
       </main>
     </div>

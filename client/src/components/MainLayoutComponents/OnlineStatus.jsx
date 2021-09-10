@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react'
 
 const OnlineStatus = (props) => {
   const { match, onlineUsers } = props;
-  const { mobileSockets } = props.onlineUsers;
+  // const { mobileSockets } = props.onlineUsers;
   const [socketsListExists, setSocketsListExists] = useState(false);
   useEffect(() => {
-    setSocketsListExists(mobileSockets ? true : false);
+    setSocketsListExists(onlineUsers ? true : false);
   }, [onlineUsers]);
 
   // if (socketsListExists) {
@@ -21,7 +21,7 @@ const OnlineStatus = (props) => {
     right: 24,
     top: 15,
     backgroundColor: socketsListExists
-      ? Object.keys(mobileSockets).includes(match.id.toString())
+      ? Object.keys(onlineUsers.mobileSockets).includes(match.id.toString())
         ? "#2ec72c"
         : "white"
       : null,

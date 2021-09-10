@@ -20,7 +20,7 @@ const ChatMessage = (props) => {
   };
 
   return (
-    <div style={{ color: "white", padding: "2px", display: "inline-block" }}>
+    <div className='chat-message' style={{ color: "white", padding: "2px", display: "inline-block" }}>
       <div
         key={message.id}
         style={
