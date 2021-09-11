@@ -3,9 +3,9 @@ const sequelize = require("../db");
 const mobileSockets = {};
 
 module.exports = (socket) => {
-  console.log("A user connected! 🤸🤸🤸");
   //***LOGIN EVENT***//
   socket.on("newLogin", (id) => {
+    console.log("ON CONNECTION: ", mobileSockets);
     console.log("🛂🛂🛂 CREDENTIALS: ", id);
     Promise.all([
       User.findOne({ where: { id }, include: { model: Dog } }),
@@ -21,11 +21,14 @@ module.exports = (socket) => {
           })
         );
         mobileSockets[user.id] = socket.id;
+        console.log("A user connected! 🤸🤸🤸", id);
         socket.emit("userCreated", {
           user,
           matches,
         });
         socket.emit("newUser", { mobileSockets });
+        socket.broadcast.emit("newUser", { mobileSockets });
+
         console.log("SOCKET USERS ONLINE: ", mobileSockets);
       })
       .catch((err) => console.log(err));
@@ -61,7 +64,16 @@ module.exports = (socket) => {
     });
   });
 
+  socket.on("socketUpdate", () => {
+    socket.emit("newUser", { mobileSockets });
+    socket.broadcast.emit("newUser", { mobileSockets });
+  });
   socket.on("disconnect", () => {
-    console.log("user disconnected🚪🚪🚪");
+    const getKeyByValue = (object, value) => {
+      return Object.keys(object).find((key) => object[key] === value);
+    };
+    delete mobileSockets[getKeyByValue(mobileSockets, socket.id)];
+    socket.emit("newUser", { mobileSockets });
+    socket.broadcast.emit("newUser", { mobileSockets });
   });
 };

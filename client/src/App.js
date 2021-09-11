@@ -19,6 +19,10 @@ function App() {
     localStorage.setItem("token", t);
     setToken(t);
   };
+  //LOGGING OUT OF SOCKET
+  // const disconnectSocket = () => {
+  //   socket.broadcast.emit('disconnect', )
+  // }
 
   //LOGGING OUT
   const clearToken = () => {
@@ -48,8 +52,9 @@ function App() {
   useEffect(() => {
     const newSocket = io(`http://${window.location.hostname}:3333`);
     setSocket(newSocket);
-    return () => newSocket.close();
-  }, [setSocket]);
+    return () => {
+    newSocket.close();}
+  }, [setSocket, userId]);
 
   //EMITTING SOCKET EVENTS
   useEffect(() => {
@@ -65,6 +70,7 @@ function App() {
         console.log("ONLINE USERS SOCKETS: ", socketIds.mobileSockets);
       });
     }
+    // return ()=> socket ? socket.emit('disconnect') : null
   }, [socket, token, userId]);
 
   //PROPS OBJECT
@@ -84,7 +90,7 @@ function App() {
       {token ? (
         <MainLayout mainLayoutProps={mainLayoutProps} />
       ) : (
-        <Auth setUsersInfo={setUsersInfo} updateToken={updateToken} usersInfo={usersInfo}/>
+        <Auth setUsersInfo={setUsersInfo} updateToken={updateToken} usersInfo={usersInfo} socket={socket}/>
       )}
     </div>
   );

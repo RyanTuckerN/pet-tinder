@@ -31,7 +31,7 @@ const MatchList = (props) => {
           </Tooltip>}
         </IconButton>
       </ListItemIcon>
-      {usersInfo.matches
+      {usersInfo?.matches
         ? usersInfo.matches.map((match) => (
            
             <Tooltip key={match.id} title={`Bark at ${match.name}!`}>
@@ -50,7 +50,7 @@ const MatchList = (props) => {
                 <ListItemAvatar>
                   <Avatar src={match.photo_url} />
                 </ListItemAvatar>
-                <OnlineStatus onlineUsers={onlineUsers} match={match} />
+                <OnlineStatus onlineUsers={onlineUsers} match={match} socket={socket} />
                 <ListItemText primary={match.name} />
               </ListItem>
             </Tooltip>

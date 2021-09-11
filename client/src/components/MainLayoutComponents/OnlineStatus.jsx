@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react'
 
 const OnlineStatus = (props) => {
-  const { match, onlineUsers } = props;
-  // const { mobileSockets } = props.onlineUsers;
+  const { match, onlineUsers, socket } = props;
   const [socketsListExists, setSocketsListExists] = useState(false);
   useEffect(() => {
     setSocketsListExists(onlineUsers ? true : false);
   }, [onlineUsers]);
 
-  // if (socketsListExists) {
-  //   console.log("MATCHLIST ONLINE STATUS TEST: ", Object.keys(mobileSockets));
-  // }
+  // useEffect(()=>{
+  //   const onlineStatusCheck = setInterval(()=>{
+  //     socket.emit('socketUpdate')
+  //   },5000)
+  //   return ()=> clearInterval(onlineStatusCheck)
+  // })
 
   const statusStyle = {
     minHeight: 10,

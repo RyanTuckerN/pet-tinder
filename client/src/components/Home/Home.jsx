@@ -1,6 +1,6 @@
 const Home = (props) => {
   return ( 
-    <div>Hello from Home!</div>
+    <div>Hello from Home! This is the landing Page!</div>
    );
 }
  

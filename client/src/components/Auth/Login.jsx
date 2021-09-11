@@ -11,7 +11,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 
 const Login = (props) => {
-  const { classes, updateToken, toggleView, setUsersInfo, usersInfo } = props;
+  const { classes, updateToken, toggleView, setUsersInfo, usersInfo, socket } = props;
   const [profile_name, setProfile_name] = useState("");
   const [password, setPassword] = useState("");
 
@@ -29,14 +29,24 @@ const Login = (props) => {
         }),
       });
       const json = await fetchResults.json();
-      console.log("json response", json);
+      console.log("User Info from login: ", json);
       if(!json.user || !json.sessionToken)return
-      setUsersInfo({...usersInfo, user: json.user });
+      const matchesFetch = await fetch("http://localhost:3333/like/matches", {
+        method: 'GET',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          Authorization: json.sessionToken
+        })
+      })
+      const matchesJson = await matchesFetch.json()
+      console.log('Match List from login: ', matchesJson)
+      setUsersInfo({...usersInfo, user: json.user, matches:matchesJson.matches, matchesCount: matchesJson.count });
       updateToken(json.sessionToken);
     } catch (err) {
       console.error(err)
     }
   };
+  
   return (
     <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
       <div className={classes.paper}>
