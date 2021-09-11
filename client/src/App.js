@@ -56,7 +56,7 @@ function App() {
     if (token && userId && socket) {
       socket.emit("newLogin", userId);
       socket.on("userCreated", (obj) => {
-        setUsersInfo(obj);
+        setUsersInfo({...usersInfo, matches: obj.matches, user: obj.user });
         console.log("💎 USER/MATCHES: ", obj);
         console.log("🔧 SOCKET ID: ", socket.id);
       });
@@ -84,7 +84,7 @@ function App() {
       {token ? (
         <MainLayout mainLayoutProps={mainLayoutProps} />
       ) : (
-        <Auth setUsersInfo={setUsersInfo} updateToken={updateToken} />
+        <Auth setUsersInfo={setUsersInfo} updateToken={updateToken} usersInfo={usersInfo}/>
       )}
     </div>
   );

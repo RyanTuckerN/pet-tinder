@@ -41,6 +41,7 @@ import dogPic from "./MainLayoutComponents/assets/dog.png";
 import useWindowDimensions from "./customHooks/useWindowDimension";
 import PotentialMatches from "./PotentialMatches/PotentialMatches";
 import Profile from "./Profile/Profile";
+import Home from "./Home/Home";
 
 const drawerWidth = 220;
 
@@ -138,12 +139,17 @@ export default function MainLayout(props) {
   const handleDropdownClose = () => setAnchorEl(null);
 
   //LOADING USER AVATAR ON LOGIN IF USER HAS A PROFILE
+  // useEffect(() => {
+  //   if (usersInfo.user) {
+  //     if (usersInfo.user.dog) {
+  //       setAvatarPhoto(usersInfo.user.dog.photo_url);
+  //     }
+  //   }
+  // }, [usersInfo]);
   useEffect(() => {
-    if (usersInfo.user) {
-      if (usersInfo.user.dog) {
-        setAvatarPhoto(usersInfo.user.dog.photo_url);
-      }
-    }
+    usersInfo?.user?.dog
+      ? setAvatarPhoto(usersInfo.user.dog.photo_url)
+      : setAvatarPhoto(dogPic);
   }, [usersInfo]);
 
   //PROP OBJECTS
@@ -203,9 +209,11 @@ export default function MainLayout(props) {
               <Menu />
             </IconButton>
             {width > 500 && !open ? (
-              <Typography variant="h6" noWrap className={classes.title}>
-                Pet Tinder
-              </Typography>
+              <Link to="/">
+                <Typography variant="h6" noWrap className={classes.title} style={{color: 'white'}}>
+                  Pet Tinder
+                </Typography>
+              </Link>
             ) : null}
             <div style={{ marginLeft: "auto" }}>
               <IconButton>
@@ -283,17 +291,18 @@ export default function MainLayout(props) {
             id="body-container" //OUR COMPONENTS WILL BE RENDERED HERE FROM REACT-ROUTER-DOM
           >
             <Switch>
+              <Route exact path="/">
+                <Home />
+              </Route>
               <Route exact path="/create-profile">
                 <CreateProfile token={token} />
               </Route>
               <Route exact path="/profile">
-                {
-                usersInfo.user ? (
+                {usersInfo.user ? (
                   <Profile profileProps={profileProps} />
                 ) : (
                   <CreateProfile />
-                )
-                }
+                )}
               </Route>
               <Route exact path="/potentialmatches">
                 <PotentialMatches />
@@ -313,5 +322,5 @@ export default function MainLayout(props) {
         </main>
       </div>
     </Router>
-  )
+  );
 }

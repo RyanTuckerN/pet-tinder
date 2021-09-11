@@ -11,7 +11,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 
 const Login = (props) => {
-  const { classes, updateToken, toggleView, setUsersInfo } = props;
+  const { classes, updateToken, toggleView, setUsersInfo, usersInfo } = props;
   const [profile_name, setProfile_name] = useState("");
   const [password, setPassword] = useState("");
 
@@ -31,7 +31,7 @@ const Login = (props) => {
       const json = await fetchResults.json();
       console.log("json response", json);
       if(!json.user || !json.sessionToken)return
-      setUsersInfo({ user: json.user });
+      setUsersInfo({...usersInfo, user: json.user });
       updateToken(json.sessionToken);
     } catch (err) {
       console.error(err)

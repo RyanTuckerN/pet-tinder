@@ -30,7 +30,7 @@ export default function PaymentForm(props) {
   }
   const handleTemperament = e => {
     e.preventDefault()
-    setTemperament(temperament => [...temperament, temporaryTemperament])
+    setTemperament(temperament => [...temperament, temporaryTemperament[0].toUpperCase()+temporaryTemperament.substring(1).toLowerCase()])
     setTemporaryTemperament('')
   }
 
