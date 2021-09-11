@@ -287,11 +287,13 @@ export default function MainLayout(props) {
                 <CreateProfile token={token} />
               </Route>
               <Route exact path="/profile">
-                {usersInfo.user ? (
+                {
+                usersInfo.user ? (
                   <Profile profileProps={profileProps} />
                 ) : (
-                  <div>Not Connected</div>
-                )}
+                  <CreateProfile />
+                )
+                }
               </Route>
               <Route exact path="/potentialmatches">
                 <PotentialMatches />
@@ -311,5 +313,5 @@ export default function MainLayout(props) {
         </main>
       </div>
     </Router>
-  );
+  )
 }

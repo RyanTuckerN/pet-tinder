@@ -101,16 +101,19 @@ export default function CreateProfile(props) {
   const handleNext = () => setActiveStep(activeStep + 1);
   const handleBack = () => setActiveStep(activeStep - 1);
   const handleSubmit = async() => {
-    const fetchResults = await fetch('http://localhost:3333/dog/', {
+    try{const fetchResults = await fetch('http://localhost:3333/dog/', {
       method: 'POST',
       headers: new Headers({
         "Content-Type": "application/json",
-        Authorization: token
+        Authorization: localStorage.getItem('token')
       }),
       body: JSON.stringify(stepperProps.three)
     })
     const json = await fetchResults.json()
-    console.log("response@!!->>", json)
+    handleNext()
+    console.log("response@!!->>", json)}catch(err){
+      alert(err)
+    }
   }
 
   return (

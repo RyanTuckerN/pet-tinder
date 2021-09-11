@@ -103,7 +103,7 @@ const Profile = (props) => {
             <Paper className={classes.paper}>
               <div style={{padding: 20, display: 'flex', flexDirection: 'column', alignItems:'center'}}>
                 <Avatar src={avatarPhoto} style={{height:180, width:180}}/>
-                <Divider />
+                <hr />
                 <BasicInfo zeroProps={updateProps.zero} />
                 <AdDesc oneProps={updateProps.one} />
                 <ImageUpload  twoProps={updateProps.two} />
