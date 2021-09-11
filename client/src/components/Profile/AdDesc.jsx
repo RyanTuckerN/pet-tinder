@@ -14,10 +14,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PaymentForm(props) {
-  const { ad_description, temperament, setTemperament, setAdDescription } = props.oneProps;
+  const { ad_description, temperament, setTemperament, setAdDescription, length, setLength } = props.oneProps;
   const classes = useStyles();
   const [temporaryTemperament, setTemporaryTemperament] = useState('');
-  const [length, setLength] = useState(0);
 
   const handleAdChange = (e) => {
     setLength(e.target.value.length);

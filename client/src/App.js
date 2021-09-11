@@ -69,6 +69,7 @@ function App() {
   //PROPS OBJECT
   const mainLayoutProps = {
     socket,
+    token,
     usersInfo,
     onlineUsers,
     setUsersInfo,

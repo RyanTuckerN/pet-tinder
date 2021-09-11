@@ -4,7 +4,7 @@ THERE IS A LOT OF STUFF IN HERE, BUT MOST OF IT IS MATERIAL UI COMPONENTS.
 */
 
 import React, { useState, useEffect } from "react";
-import { Route, Link, Switch, BrowserRouter as Router, } from "react-router-dom";
+import { Route, Link, Switch, BrowserRouter as Router } from "react-router-dom";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import {
@@ -32,7 +32,7 @@ import {
 } from "@material-ui/core";
 
 import ChatIndex from "./Chat/ChatIndex";
-import Profile from "./Profile/Profile";
+import CreateProfile from "./Profile/CreateProfile";
 import MatchList from "./MainLayoutComponents/MatchList";
 import Dropdown from "./MainLayoutComponents/Dropdown";
 import Matches from "./Matches/Matches";
@@ -40,7 +40,7 @@ import Matches from "./Matches/Matches";
 import dogPic from "./MainLayoutComponents/assets/dog.png";
 import useWindowDimensions from "./customHooks/useWindowDimension";
 import PotentialMatches from "./PotentialMatches/PotentialMatches";
-
+import Profile from "./Profile/Profile";
 
 const drawerWidth = 220;
 
@@ -114,28 +114,29 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MainLayout(props) {
   //DESTRUCTURING PROPS
-  const { socket, usersInfo, onlineUsers, clearToken } = props.mainLayoutProps;
-  
+  const { socket, usersInfo, onlineUsers, clearToken, token } =
+    props.mainLayoutProps;
+
   //HOOKS
   const classes = useStyles();
   const theme = useTheme();
   const { width } = useWindowDimensions();
-  
+
   //STATE
   const [open, setOpen] = useState(false);
   const [chatTarget, setChatTarget] = useState(null);
   const [avatarPhoto, setAvatarPhoto] = useState(dogPic);
-  const [anchorEl, setAnchorEl] = useState(null)
-  
+  const [anchorEl, setAnchorEl] = useState(null);
+
   //FUNCTIONS FOR DRAWER OPEN/CLOSE
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
   const handleDrawerToggle = () => setOpen(!open);
-  
+
   //FUNCTION FOR USER DROPDOWN
-  const handleAvatarClick = (e) => setAnchorEl(e.currentTarget)
-  const handleDropdownClose = () => setAnchorEl(null)
-  
+  const handleAvatarClick = (e) => setAnchorEl(e.currentTarget);
+  const handleDropdownClose = () => setAnchorEl(null);
+
   //LOADING USER AVATAR ON LOGIN IF USER HAS A PROFILE
   useEffect(() => {
     if (usersInfo.user) {
@@ -144,8 +145,10 @@ export default function MainLayout(props) {
       }
     }
   }, [usersInfo]);
-  
-  //PROP COMPONENTS
+
+  //PROP OBJECTS
+  const profileProps = { token, avatarPhoto, usersInfo };
+
   const chatProps = {
     chatTarget,
     usersInfo,
@@ -153,7 +156,7 @@ export default function MainLayout(props) {
     open,
     setChatTarget,
   };
-  
+
   const matchListProps = {
     usersInfo,
     onlineUsers,
@@ -162,10 +165,10 @@ export default function MainLayout(props) {
     setChatTarget,
     handleDrawerToggle,
   };
-  
-  const dropdownProps = {anchorEl, clearToken, handleDropdownClose}
-  
-  //JSX 
+
+  const dropdownProps = { anchorEl, clearToken, handleDropdownClose };
+
+  //JSX
   return (
     <Router>
       <div className={classes.root}>
@@ -208,7 +211,11 @@ export default function MainLayout(props) {
               <IconButton>
                 <Notifications color="inherit" />
               </IconButton>
-              <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleAvatarClick}>
+              <IconButton
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={handleAvatarClick}
+              >
                 <Avatar alt="Profile Avatar" src={avatarPhoto} />
               </IconButton>
               <Dropdown dropdownProps={dropdownProps} />
@@ -235,7 +242,7 @@ export default function MainLayout(props) {
           </div>
           <Divider />
           <Tooltip title="View or edit your profile">
-            <Link to='/profile' >
+            <Link to="/profile">
               <ListItem button>
                 <ListItemIcon>
                   <AccountBox />
@@ -245,7 +252,7 @@ export default function MainLayout(props) {
             </Link>
           </Tooltip>
           <Tooltip title="See potential matches">
-            <Link to='/potentialmatches'>
+            <Link to="/potentialmatches">
               <ListItem button>
                 <ListItemIcon>
                   <Pets />
@@ -255,7 +262,7 @@ export default function MainLayout(props) {
             </Link>
           </Tooltip>
           <Tooltip title="See your matches">
-            <Link to='/matches'>
+            <Link to="/matches">
               <ListItem button>
                 <ListItemIcon>
                   <Favorite />
@@ -265,11 +272,10 @@ export default function MainLayout(props) {
             </Link>
           </Tooltip>
           <Divider />
-          <Link to='/chat'>
+          <Link to="/chat">
             <MatchList matchListProps={matchListProps} />
           </Link>
         </Drawer>
-      
         {/* ***THIS IS THE MAIN BODY DIV, EVERYTHING DYNAMIC WILL SHOW HERE!*** */}
         <main className={classes.content}>
           <div className={classes.toolbar} />
@@ -277,11 +283,22 @@ export default function MainLayout(props) {
             id="body-container" //OUR COMPONENTS WILL BE RENDERED HERE FROM REACT-ROUTER-DOM
           >
             <Switch>
-              <Route exact path="/profile">
-                <Profile />
+              <Route exact path="/create-profile">
+                <CreateProfile token={token} />
               </Route>
-              <Route exact path='/potentialmatches'><PotentialMatches/></Route>
-              <Route exact path="/matches"><Matches/></Route>
+              <Route exact path="/profile">
+                {usersInfo.user ? (
+                  <Profile profileProps={profileProps} />
+                ) : (
+                  <div>Not Connected</div>
+                )}
+              </Route>
+              <Route exact path="/potentialmatches">
+                <PotentialMatches />
+              </Route>
+              <Route exact path="/matches">
+                <Matches />
+              </Route>
               <Route exact path="/chat">
                 {socket ? (
                   <ChatIndex chatProps={chatProps} />

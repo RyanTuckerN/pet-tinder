@@ -24,7 +24,7 @@ const Signup = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const fetchResults = await fetch("http://localhost:3333/user/signup", {
+    try{const fetchResults = await fetch("http://localhost:3333/user/signup", {
       method: "POST",
       body: JSON.stringify({ profile_name, name, password, email }),
       headers: new Headers({
@@ -33,7 +33,9 @@ const Signup = (props) => {
     });
     const json = await fetchResults.json();
     console.log("json response", json);
-    updateToken(json.sessionToken);
+    updateToken(json.sessionToken);}catch(err){
+      console.error(err)
+    }
   };
 
   return (

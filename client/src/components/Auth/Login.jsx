@@ -20,17 +20,22 @@ const Login = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const fetchResults = await fetch("http://localhost:3333/user/login", {
-      method: "POST",
-      body: JSON.stringify({ profile_name, password }),
-      headers: new Headers({
-        "Content-Type": "application/json",
-      }),
-    });
-    const json = await fetchResults.json();
-    console.log("json response", json);
-    setUsersInfo({user: json.user})
-    updateToken(json.sessionToken);
+    try {
+      const fetchResults = await fetch("http://localhost:3333/user/login", {
+        method: "POST",
+        body: JSON.stringify({ profile_name, password }),
+        headers: new Headers({
+          "Content-Type": "application/json",
+        }),
+      });
+      const json = await fetchResults.json();
+      console.log("json response", json);
+      if(!json.user || !json.sessionToken)return
+      setUsersInfo({ user: json.user });
+      updateToken(json.sessionToken);
+    } catch (err) {
+      console.error(err)
+    }
   };
   return (
     <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>

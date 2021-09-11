@@ -10,7 +10,7 @@ import FormLabel from "@material-ui/core/FormLabel";
 import { Autocomplete } from '@material-ui/lab'
 import breeds from './assets/breedlist'
 
-export default function AddressForm(props) {
+export default function BasicInfo(props) {
   // console.log(breeds)
   const { name, breed, age, weight, is_female, location, setName, setBreed, setAge, setWeight, setIsFemale, setLocation } = props.zeroProps
   const handleName = e => setName(e.target.value)
