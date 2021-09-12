@@ -30,7 +30,10 @@ const Login = (props) => {
       });
       const json = await fetchResults.json();
       console.log("User Info from login: ", json);
-      if(!json.user || !json.sessionToken)return
+      if(!json.user || !json.sessionToken){
+        alert(json.message)
+        return
+      }
       const matchesFetch = await fetch("http://localhost:3333/like/matches", {
         method: 'GET',
         headers: new Headers({

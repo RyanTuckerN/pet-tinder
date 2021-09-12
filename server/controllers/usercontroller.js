@@ -41,12 +41,12 @@ router.post("/login", (req,res) => {
                 sessionToken: token
               })
             } else {
-              res.status(502).send({message: 'Incorrect Password', err})
+              res.status(502).send({message: '🛑 Incorrect Password 🛑', err})  
             }
           }
         )
       } else {
-        res.status(500).json({message: 'User does not exist 🤷 '})  
+        res.status(500).json({message: '🤷 User does not exist 🤷 '})  
       }
     })
     .catch(err=>res.status(500).json({message: 'Something went wrong', err}))

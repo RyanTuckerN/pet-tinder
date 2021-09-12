@@ -4,6 +4,7 @@ import io from "socket.io-client";
 import Auth from "./components/Auth/Auth";
 import MainLayout from "./components/MainLayout";
 import CreateProfile from "./components/Profile/CreateProfile";
+import NotConnected from './components/MainLayoutComponents/NotConnected'
 import jwt_decode from "jwt-decode";
 
 function App() {
