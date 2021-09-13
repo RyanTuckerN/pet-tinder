@@ -1,18 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 
 const OnlineStatus = (props) => {
-  const { match, onlineUsers, socket } = props;
+  const { match, onlineUsers } = props;
   const [socketsListExists, setSocketsListExists] = useState(false);
   useEffect(() => {
     setSocketsListExists(onlineUsers ? true : false);
   }, [onlineUsers]);
-
-  // useEffect(()=>{
-  //   const onlineStatusCheck = setInterval(()=>{
-  //     socket.emit('socketUpdate')
-  //   },5000)
-  //   return ()=> clearInterval(onlineStatusCheck)
-  // })
 
   const statusStyle = {
     minHeight: 10,
@@ -21,14 +14,21 @@ const OnlineStatus = (props) => {
     borderRadius: "50%",
     position: "relative",
     right: 24,
-    top: 15,
-    backgroundColor: socketsListExists
-      ? Object.keys(onlineUsers.mobileSockets).includes(match.id.toString())
-        ? "#2ec72c"
-        : "white"
-      : null,
+    top: 15
   };
-  return <div style={socketsListExists ? statusStyle : {}}></div>;
+  return (
+    <div
+      id="online-status"
+      style={socketsListExists ? statusStyle : {}}
+      className={
+        socketsListExists
+          ? Object.keys(onlineUsers.mobileSockets).includes(match.id.toString())
+            ? "online-status-on"
+            : null
+          : null
+      }
+    ></div>
+  );
 };
 
-export default OnlineStatus
+export default OnlineStatus;

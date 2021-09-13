@@ -77,8 +77,8 @@ const ChatIndex = (props) => {
           <div className="chat-target-banner">
             <Avatar src={chatTarget.photo_url} id="chat-target-avatar" />
             <div>
-              <Typography variant="h5">{chatTarget.name}</Typography>
-              <Typography variant="caption">{`${chatTarget.breed}, ${chatTarget.age} years old.`}</Typography>
+              <Typography className='chat-target-text' variant="h6">{chatTarget.name}</Typography>
+              <Typography className='chat-target-text' variant="caption">{`${chatTarget.breed}, ${chatTarget.age} years old.`}</Typography>
             </div>
           </div>
         ) : (

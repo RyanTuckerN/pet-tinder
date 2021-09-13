@@ -6,7 +6,6 @@ import {
   Avatar,
   Backdrop,
   CircularProgress,
-  Divider,
   makeStyles,
 } from "@material-ui/core";
 import BasicInfo from './BasicInfo'
@@ -92,6 +91,7 @@ const Profile = (props) => {
     })
     const json = await fetchResults.json()
     console.log("response@!!->>", json)
+    alert(json.message)
   }
 
   if (user) {
@@ -102,11 +102,15 @@ const Profile = (props) => {
           <section className={classes.layout}>
             <Paper className={classes.paper}>
               <div style={{padding: 20, display: 'flex', flexDirection: 'column', alignItems:'center'}}>
-                <Avatar src={avatarPhoto} style={{height:180, width:180}}/>
+                <div id='profile-photo-wrapper'>
+                  <Avatar src={avatarPhoto} style={{height:180, width:180}}/>
+                </div>
                 <hr />
-                <BasicInfo zeroProps={updateProps.zero} />
-                <AdDesc oneProps={updateProps.one} />
-                <ImageUpload  twoProps={updateProps.two} />
+                <div className="profile-section">
+                  <BasicInfo className='profile-section' zeroProps={updateProps.zero} />
+                  <AdDesc className='profile-section' oneProps={updateProps.one} />
+                  <ImageUpload className='profile-section' twoProps={updateProps.two} />
+                </div>
               </div>
               <React.Fragment>
                 <div className={classes.buttons}>
@@ -116,8 +120,9 @@ const Profile = (props) => {
                     className={classes.button}
                     onClick={handleSubmit}
                   >
-                    "Save changes"
+                    Save changes
                   </Button>
+                  
                 </div>
               </React.Fragment>
             </Paper>

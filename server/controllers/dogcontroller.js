@@ -41,7 +41,7 @@ router.put("/:id", validateSession, (req, res) => {
           });
         } else {
           res.status(200).json({
-            message: `Dog ${req.params.id} has been updated!`,
+            message: `${updateDog.name}'s profile has been updated!`,
             updateCount: dog,
           });
         }

@@ -1,4 +1,5 @@
 import OnlineStatus from "./OnlineStatus";
+import './layout.css'
 
 import {
   List,
@@ -17,6 +18,7 @@ const MatchList = (props) => {
     usersInfo,
     setChatTarget,
     socket,
+    chatTarget,
     handleDrawerToggle,
     onlineUsers,
     open,
@@ -48,9 +50,15 @@ const MatchList = (props) => {
                 }}
               >
                 <ListItemAvatar>
-                  <Avatar src={match.photo_url} />
+                  <div className="avatar-wrapper">
+                    <Avatar 
+                      src={match.photo_url} 
+                      id='matchlist-avatar'
+                      className={chatTarget?.id==match.id ? 'current-target' : null}
+                      />
+                  </div>
                 </ListItemAvatar>
-                <OnlineStatus onlineUsers={onlineUsers} match={match} socket={socket} />
+                <OnlineStatus onlineUsers={onlineUsers} match={match} />
                 <ListItemText primary={match.name} />
               </ListItem>
             </Tooltip>

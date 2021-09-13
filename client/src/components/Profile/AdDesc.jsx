@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Typography, Grid, TextField, Chip, Button} from "@material-ui/core";
+import './Profile.css'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -84,19 +85,22 @@ export default function PaymentForm(props) {
         </Grid>
       </Grid>
       <div style={{ height: 40 }} />
-      <ul className={classes.root}>
-        {temperament.map((temp, i) => {
-          return (
-            <li key={i}>
-              <Chip
-                label={temp}
-                onDelete={handleDelete(temp)}
-                className={classes.chip}
-              />
-            </li>
-          );
-        })}
-      </ul>
+      <div id="chips-wrapper">
+        <ul className={classes.root} >
+          {temperament.map((temp, i) => {
+            return (
+              <li key={i} className='chip'>
+                <Chip
+                  label={temp}
+                  onDelete={handleDelete(temp)}
+                  className={classes.chip}
+        
+                />
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </React.Fragment>
   );
 }

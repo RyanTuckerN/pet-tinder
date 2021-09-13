@@ -168,6 +168,7 @@ export default function MainLayout(props) {
     onlineUsers,
     socket,
     open,
+    chatTarget,
     setChatTarget,
     handleDrawerToggle,
   };
