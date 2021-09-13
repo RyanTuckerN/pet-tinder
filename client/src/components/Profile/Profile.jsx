@@ -8,46 +8,46 @@ import {
   CircularProgress,
   makeStyles,
 } from "@material-ui/core";
-import BasicInfo from './BasicInfo'
-import AdDesc from './AdDesc'
-import ImageUpload from './ImageUpload'
-import './Profile.css'
+import BasicInfo from "./BasicInfo";
+import AdDesc from "./AdDesc";
+import ImageUpload from "./ImageUpload";
+import "./Profile.css";
 
 const useStyles = makeStyles((theme) => ({
-    layout: {
-      width: "auto",
-      marginLeft: theme.spacing(2),
-      marginRight: theme.spacing(2),
-      [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
-        width: 600,
-        marginLeft: "auto",
-        marginRight: "auto",
-      },
+  layout: {
+    width: "auto",
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
+      width: 600,
+      marginLeft: "auto",
+      marginRight: "auto",
     },
-    paper: {
-      marginTop: theme.spacing(3),
-      marginBottom: theme.spacing(3),
-      padding: theme.spacing(2),
-      [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
-        marginTop: theme.spacing(6),
-        marginBottom: theme.spacing(6),
-        padding: theme.spacing(3),
-      },
+  },
+  paper: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+    padding: theme.spacing(2),
+    [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
+      marginTop: theme.spacing(6),
+      marginBottom: theme.spacing(6),
+      padding: theme.spacing(3),
     },
-    buttons: {
-      display: "flex",
-      justifyContent: "flex-end",
-    },
-    button: {
-      marginTop: theme.spacing(3),
-      marginLeft: theme.spacing(1),
-    },
-  }));
+  },
+  buttons: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  button: {
+    marginTop: theme.spacing(3),
+    marginLeft: theme.spacing(1),
+  },
+}));
 
 const Profile = (props) => {
-  const { token, avatarPhoto, usersInfo } = props.profileProps;
+  const { token, avatarPhoto, usersInfo, socket } = props.profileProps;
   const { user } = usersInfo;
-  const { dog } = user
+  const { dog } = user;
   const classes = useStyles();
   const [name, setName] = useState(dog.name);
   const [photo_url, setPhoto_url] = useState(dog.photo_url);
@@ -61,11 +61,34 @@ const Profile = (props) => {
   const [location, setLocation] = useState(dog.location);
   const [open, setOpen] = useState(false);
 
-  const handleClose = () => setOpen(false)
-  
+  const creatingProfile = false;
+
+  const handleClose = () => setOpen(false);
+
   const updateProps = {
-    zero: { name, breed, age, weight, is_female, location, setName, setBreed, setAge, setWeight, setIsFemale, setLocation },
-    one: { temperament, ad_description,length, setLength, setTemperament, setAdDescription },
+    zero: {
+      name,
+      breed,
+      age,
+      weight,
+      is_female,
+      location,
+      creatingProfile,
+      setName,
+      setBreed,
+      setAge,
+      setWeight,
+      setIsFemale,
+      setLocation,
+    },
+    one: {
+      temperament,
+      ad_description,
+      length,
+      setLength,
+      setTemperament,
+      setAdDescription,
+    },
     two: { setPhoto_url, photo_url },
     three: {
       name,
@@ -79,65 +102,86 @@ const Profile = (props) => {
       location,
     },
   };
-  
-  const handleSubmit = async() => {
-    const fetchResults = await fetch(`http://localhost:3333/dog/${user.id}`, {
-      method: 'PUT',
-      headers: new Headers({
-        "Content-Type": "application/json",
-        Authorization: token
-      }),
-      body: JSON.stringify(updateProps.three)
-    })
-    const json = await fetchResults.json()
-    console.log("response@!!->>", json)
-    alert(json.message)
-  }
 
-  if (user) {
-    if (user.dog) {
-      return (
-        <>
-          <CssBaseline />
-          <section className={classes.layout}>
-            <Paper className={classes.paper}>
-              <div style={{padding: 20, display: 'flex', flexDirection: 'column', alignItems:'center'}}>
-                <div id='profile-photo-wrapper'>
-                  <Avatar src={avatarPhoto} style={{height:180, width:180}}/>
-                </div>
-                <hr />
-                <div className="profile-section">
-                  <BasicInfo className='profile-section' zeroProps={updateProps.zero} />
-                  <AdDesc className='profile-section' oneProps={updateProps.one} />
-                  <ImageUpload className='profile-section' twoProps={updateProps.two} />
-                </div>
-              </div>
-              <React.Fragment>
-                <div className={classes.buttons}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    onClick={handleSubmit}
-                  >
-                    Save changes
-                  </Button>
-                  
-                </div>
-              </React.Fragment>
-            </Paper>
-          </section>
-        </>
-      );
+  const handleSubmit = async () => {
+    try {
+      const fetchResults = await fetch(`http://localhost:3333/dog/${user.id}`, {
+        method: "PUT",
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: token,
+        }),
+        body: JSON.stringify(updateProps.three),
+      });
+      const json = await fetchResults.json();
+      alert(json.message);
+      socket.emit("newLogin", usersInfo.user.id);
+    } catch (err) {
+      alert(err);
     }
-  } else {
-    return (
-      <Backdrop className={classes.backdrop} open={open} onClick={handleClose}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
-    );
-  }
+  };
+
+  // if (user) {
+  //   if (user.dog) {
+  return user?.dog ? (
+    <>
+      <CssBaseline />
+      <section className={classes.layout}>
+        <Paper className={classes.paper}>
+          <div
+            style={{
+              padding: 20,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <div id="profile-photo-wrapper">
+              <Avatar src={avatarPhoto} style={{ height: 180, width: 180 }} />
+            </div>
+            <hr />
+            <div className="profile-section">
+              <BasicInfo
+                className="profile-section"
+                zeroProps={updateProps.zero}
+              />
+              <AdDesc className="profile-section" oneProps={updateProps.one} />
+              <ImageUpload
+                className="profile-section"
+                twoProps={updateProps.two}
+              />
+            </div>
+          </div>
+          <React.Fragment>
+            <div className={classes.buttons}>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                onClick={handleSubmit}
+              >
+                Save changes
+              </Button>
+            </div>
+          </React.Fragment>
+        </Paper>
+      </section>
+    </>
+  ) : (
+    <Backdrop className={classes.backdrop} open={open} onClick={handleClose}>
+      // <CircularProgress color="inherit" />
+      //{" "}
+    </Backdrop>
+  );
 };
+//   } else {
+//     return (
+//       <Backdrop className={classes.backdrop} open={open} onClick={handleClose}>
+//         <CircularProgress color="inherit" />
+//       </Backdrop>
+//     );
+//   }
+// };
 
 export default Profile;
 

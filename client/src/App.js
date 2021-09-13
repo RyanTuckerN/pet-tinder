@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { Link } from 'react-router-dom'
 import "./App.css";
 import io from "socket.io-client";
 import Auth from "./components/Auth/Auth";
 import MainLayout from "./components/MainLayout";
-import CreateProfile from "./components/Profile/CreateProfile";
-import NotConnected from './components/MainLayoutComponents/NotConnected'
+// import CreateProfile from "./components/Profile/CreateProfile";
+// import NotConnected from './components/MainLayoutComponents/NotConnected'
 import jwt_decode from "jwt-decode";
 
 function App() {
@@ -20,10 +21,6 @@ function App() {
     localStorage.setItem("token", t);
     setToken(t);
   };
-  //LOGGING OUT OF SOCKET
-  // const disconnectSocket = () => {
-  //   socket.broadcast.emit('disconnect', )
-  // }
 
   //LOGGING OUT
   const clearToken = () => {

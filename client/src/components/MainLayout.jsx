@@ -115,7 +115,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MainLayout(props) {
   //DESTRUCTURING PROPS
-  const { socket, usersInfo, onlineUsers, clearToken, token } =
+  const { socket, usersInfo, onlineUsers, clearToken, token, setUsersInfo } =
     props.mainLayoutProps;
 
   //HOOKS
@@ -153,7 +153,7 @@ export default function MainLayout(props) {
   }, [usersInfo]);
 
   //PROP OBJECTS
-  const profileProps = { token, avatarPhoto, usersInfo };
+  const profileProps = { token, avatarPhoto, usersInfo, socket };
 
   const chatProps = {
     chatTarget,
@@ -251,7 +251,7 @@ export default function MainLayout(props) {
           </div>
           <Divider />
           <Tooltip title="View or edit your profile">
-            <Link to="/profile">
+            <Link to={usersInfo?.user?.dog ? "/profile" : "/create-profile"}>
               <ListItem button>
                 <ListItemIcon>
                   <AccountBox />
@@ -299,7 +299,7 @@ export default function MainLayout(props) {
                 <CreateProfile token={token} />
               </Route>
               <Route exact path="/profile">
-                {usersInfo.user ? (
+                {usersInfo.user?.dog ? (
                   <Profile profileProps={profileProps} />
                 ) : (
                   <CreateProfile />

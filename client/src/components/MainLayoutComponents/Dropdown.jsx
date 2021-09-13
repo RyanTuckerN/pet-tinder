@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 // import { Route, Link, Switch } from 'react-router-dom'
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -20,7 +21,9 @@ export default function Dropdown(props) {
       >
         <MenuItem onClick={handleDropdownClose}>Profile</MenuItem>
         <MenuItem onClick={handleDropdownClose}>My account</MenuItem>
-        <MenuItem onClick={clearToken}>Logout</MenuItem>
+        <Link to='/'>
+          <MenuItem onClick={clearToken}>Logout</MenuItem>
+        </Link>
       </Menu>
     </div>
   );
