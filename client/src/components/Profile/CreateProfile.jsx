@@ -107,7 +107,7 @@ export default function CreateProfile(props) {
       method: 'POST',
       headers: new Headers({
         "Content-Type": "application/json",
-        Authorization: localStorage.getItem('token')
+        Authorization: localStorage.getItem('token') 
       }),
       body: JSON.stringify(stepperProps.three)
     })
