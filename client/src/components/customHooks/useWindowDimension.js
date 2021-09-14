@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
+//THIS CUSTOM HOOK ADDS EVENT LISTENER TO WINDOW, RETURNS ACTIVELY UPDATING [WIDTH, HEIGHT]
 const getWindowDimensions = () => {
   const { innerWidth: width, innerHeight: height } = window;
   return {

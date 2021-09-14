@@ -68,7 +68,6 @@ function getStepContent(step, props) {
 }
 
 export default function CreateProfile(props) {
-  const {token} = props
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const [name, setName] = useState("Rufus");
@@ -81,8 +80,10 @@ export default function CreateProfile(props) {
   const [temperament, setTemperament] = useState(['Playful', 'Energetic', 'Loyal']);
   const [is_female, setIsFemale] = useState(false);
   const [location, setLocation] = useState({zip: 46220});
+
+  const creatingProfile = true
   const stepperProps = {
-    zero: { name, breed, age, weight, is_female, location, setName, setBreed, setAge, setWeight, setIsFemale, setLocation },
+    zero: { name, breed, age, weight, is_female, location, creatingProfile, setName, setBreed, setAge, setWeight, setIsFemale, setLocation, setTemperament },
     one: { temperament, ad_description, length, setLength, setTemperament, setAdDescription },
     two: { setPhoto_url, photo_url },
     three: {
@@ -105,7 +106,7 @@ export default function CreateProfile(props) {
       method: 'POST',
       headers: new Headers({
         "Content-Type": "application/json",
-        Authorization: localStorage.getItem('token')
+        Authorization: localStorage.getItem('token') 
       }),
       body: JSON.stringify(stepperProps.three)
     })
@@ -117,7 +118,7 @@ export default function CreateProfile(props) {
   }
 
   return (
-    <React.Fragment>  
+    <>  
       <CssBaseline />
       <section className={classes.layout}>
         <Paper className={classes.paper}>
@@ -131,9 +132,9 @@ export default function CreateProfile(props) {
               </Step>
             ))}
           </Stepper>
-          <React.Fragment>
+          <>
             {activeStep === steps.length ? (
-              <React.Fragment>
+              <>
                 <Typography variant="h5" gutterBottom>
                  Thank you for creating a profile! 
                 </Typography>
@@ -145,9 +146,9 @@ export default function CreateProfile(props) {
                 Follow links in the sidebar to explore the app
 
                 </Typography>
-              </React.Fragment>
+              </>
             ) : (
-              <React.Fragment>
+              <>
                 {getStepContent(activeStep, stepperProps)}
                 <div className={classes.buttons}>
                   {activeStep !== 0 && (
@@ -164,11 +165,11 @@ export default function CreateProfile(props) {
                     {activeStep === steps.length - 1 ? "No, submit!" : "Next"}
                   </Button>
                 </div>
-              </React.Fragment>
+              </>
             )}
-          </React.Fragment>
+          </>
         </Paper>
       </section>
-    </React.Fragment>
+    </>
   );
 }

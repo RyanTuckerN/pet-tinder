@@ -1,4 +1,4 @@
-import { Typography } from "@material-ui/core";
+import { Typography, Tooltip } from "@material-ui/core";
 
 const ChatMessage = (props) => {
   const { message, usersInfo } = props;
@@ -20,20 +20,22 @@ const ChatMessage = (props) => {
   };
 
   return (
-    <div className='chat-message' style={{ color: "white", padding: "2px", display: "inline-block" }}>
-      <div
-        key={message.id}
-        style={
-          message.user.name === usersInfo.user.profile_name
-            ? userStyle
-            : targetStyle
-        }
-      >
-        {/* <Typography variant="caption">{`${month}/${date}/${year}`}</Typography> */}
-        <Typography variant="caption">{time}</Typography>
-        <Typography variant="h6" style={{ paddingLeft: 8, paddingRight: 8}}>{message.text}</Typography>
+    <Tooltip title={`Sent on: ${month}/${date}/${year}, ${time}`} placement='top'>
+      <div className='chat-message' style={{ color: "white", padding: "2px", display: "inline-block" }}>
+        <div
+          key={message.id}
+          style={
+            message.user.name === usersInfo.user.profile_name
+              ? userStyle
+              : targetStyle
+          }
+        >
+          {/* <Typography variant="caption">{`${month}/${date}/${year}`}</Typography> */}
+          {/* <Typography variant="caption">{time}</Typography> */}
+          <Typography variant="caption" style={{ paddingLeft: 8, paddingRight: 8}}>{message.text}</Typography>
+        </div>
       </div>
-    </div>
+    </Tooltip>
   );
 };
 

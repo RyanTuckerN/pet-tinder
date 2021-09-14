@@ -101,14 +101,14 @@ const useStyles = makeStyles((theme) => ({
   toolbar: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "flex-end",
+    justifyContent: "center",
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
   },
   content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
+    // flexGrow: 1,
+    // padding: theme.spacing(3),
     // height: '100vh',
   },
 }));
@@ -139,13 +139,6 @@ export default function MainLayout(props) {
   const handleDropdownClose = () => setAnchorEl(null);
 
   //LOADING USER AVATAR ON LOGIN IF USER HAS A PROFILE
-  // useEffect(() => {
-  //   if (usersInfo.user) {
-  //     if (usersInfo.user.dog) {
-  //       setAvatarPhoto(usersInfo.user.dog.photo_url);
-  //     }
-  //   }
-  // }, [usersInfo]);
   useEffect(() => {
     usersInfo?.user?.dog
       ? setAvatarPhoto(usersInfo.user.dog.photo_url)
@@ -153,7 +146,7 @@ export default function MainLayout(props) {
   }, [usersInfo]);
 
   //PROP OBJECTS
-  const profileProps = { token, avatarPhoto, usersInfo };
+  const profileProps = { token, avatarPhoto, usersInfo, socket };
 
   const chatProps = {
     chatTarget,
@@ -168,6 +161,7 @@ export default function MainLayout(props) {
     onlineUsers,
     socket,
     open,
+    chatTarget,
     setChatTarget,
     handleDrawerToggle,
   };
@@ -210,7 +204,12 @@ export default function MainLayout(props) {
             </IconButton>
             {width > 500 && !open ? (
               <Link to="/">
-                <Typography variant="h6" noWrap className={classes.title} style={{color: 'white'}}>
+                <Typography
+                  variant="h6"
+                  noWrap
+                  className={classes.title}
+                  style={{ color: "white" }}
+                >
                   Pet Tinder
                 </Typography>
               </Link>
@@ -250,7 +249,7 @@ export default function MainLayout(props) {
           </div>
           <Divider />
           <Tooltip title="View or edit your profile">
-            <Link to="/profile">
+            <Link to={usersInfo?.user?.dog ? "/profile" : "/create-profile"}>
               <ListItem button>
                 <ListItemIcon>
                   <AccountBox />
@@ -285,11 +284,13 @@ export default function MainLayout(props) {
           </Link>
         </Drawer>
         {/* ***THIS IS THE MAIN BODY DIV, EVERYTHING DYNAMIC WILL SHOW HERE!*** */}
-        <main className={classes.content}>
+        <main 
+        className={classes.content}
+        >
           <div className={classes.toolbar} />
-          <div
-            id="body-container" //OUR COMPONENTS WILL BE RENDERED HERE FROM REACT-ROUTER-DOM
-          >
+          
+          {/* <div id="body-container"> */}
+       
             <Switch>
               <Route exact path="/">
                 <Home />
@@ -298,16 +299,18 @@ export default function MainLayout(props) {
                 <CreateProfile token={token} />
               </Route>
               <Route exact path="/profile">
-                {usersInfo.user ? (
+                {usersInfo.user?.dog ? (
                   <Profile profileProps={profileProps} />
                 ) : (
                   <CreateProfile />
                 )}
               </Route>
-
-              <Route exact path='/potentialmatches'><PotentialMatches/></Route>
-              <Route exact path="/matches"><Matches usersInfo={usersInfo}/></Route>
-
+              <Route exact path="/potentialmatches">
+                <PotentialMatches usersInfo={usersInfo} socket={socket} />
+              </Route>
+              <Route exact path="/matches">
+                <Matches usersInfo={usersInfo} socket={socket} />
+              </Route>
               <Route exact path="/chat">
                 {socket ? (
                   <ChatIndex chatProps={chatProps} />
@@ -316,8 +319,10 @@ export default function MainLayout(props) {
                 )}
               </Route>
             </Switch>
-          </div>
-        </main>
+       
+          {/* </div> */}
+      
+      </main>
       </div>
     </Router>
   );

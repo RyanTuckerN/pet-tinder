@@ -51,7 +51,7 @@ router.post("/:liked_id", validateSession, (req, res) => {
 //UNLIKE A DOG
 router.delete("/:liked_id", validateSession, (req, res) => {
   Like.destroy({
-    where: { liked_dog_id: req.params.liked_id, owner_id: req.user.id },
+    where: { liked_dog_id: req.params.liked_id, userId: req.user.id },
   }).then((like) => {
     res.status(200).json(
       like > 0
@@ -177,32 +177,5 @@ router.get("/matches", validateSession, (req, res) => {
       res.status(501).json({ err });
     });
 });
-
-// const match = {
-//   id: 2,
-//   name: "Bessie",
-//   photo_url:
-//     "https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c2lsbHklMjBkb2d8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-//   breed: "Grand Griffon Vendéen",
-//   weight: 31,
-//   age: 7,
-//   ad_description:
-//     "Pit bull lap dog puppies chihuahua, german shephard peanut butter growl milk bone pomeranian sit. Squirrel stand english mastiff release dog bone growl dog bone, jump milk bone lab greyhound take it heel. Tennis ball stay jump beagle sit pretty german shephard pomsky. Dog milk bone bulldog german shephard dachshund, puppy speak shih tzu stand husky bark doberman pinscher dog stay. Bell bulldog release Morkie great dance paw tennis ball leash bulldog, dog come yorkshire terrier german shephard.",
-//   temperament: ["Curious", "Playful"],
-//   is_female: true,
-//   createdAt: "2021-09-06T02:37:48.206Z",
-//   user: {
-//     id: 2,
-//     profile_name: "user2",
-//     name: "Bessie's breeder",
-//     email: "test2@test.com",
-//     likes: [
-//       {
-//         liked_dog_id: 10,
-//         superlike: true,
-//       },
-//     ],
-//   },
-// };
 
 module.exports = router;

@@ -2,16 +2,24 @@ const express = require('express')
 const { Dog } = require('../models')
 const router = express.Router()
 const validateSession = require('../middleware/validateSession');
-
+const { Op } = require('sequelize')
 // ALL OUR CONTROLLERS FOR DOG GO HERE 
 
-router.get("/:id",validateSession, (req, res) => {
+//GET MY DOG
+router.get("/",validateSession, (req, res) => {
     const query = {where:{id: req.user.id}};
-    Dog.findAll(query)
+    Dog.findOne(query)
     .then((dog) => res.status(200).json(dog))
     .catch((err) => res.status(500).json({error:err}))
 });
 
+// GET DOG BY ID
+router.get("/id/:id",validateSession, (req, res) => {
+  const query = {where:{id: req.params.id}};
+  Dog.findOne(query)
+  .then((dog) => res.status(200).json(dog))
+  .catch((err) => res.status(500).json({error:err}))
+});
 
 // DELETE DOG BY ID
 router.delete("/",validateSession, (req, res) => {
@@ -41,7 +49,7 @@ router.put("/:id", validateSession, (req, res) => {
           });
         } else {
           res.status(200).json({
-            message: `Dog ${req.params.id} has been updated!`,
+            message: `${updateDog.name}'s profile has been updated!`,
             updateCount: dog,
           });
         }
@@ -65,7 +73,7 @@ router.post('/', validateSession, (req, res) => {
 });
 
 router.get('/all', validateSession, (req, res) => {
-    Dog.findAll()
+    Dog.findAll({where: {id: {[Op.not]: req.user.id}}})
         .then(dogs => res.status(200).json({dogs}))
         .catch(err => res.status(500).json({ error: err }))
 });

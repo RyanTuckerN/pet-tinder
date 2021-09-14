@@ -8,9 +8,13 @@ a{
 }
 
 main{
+  position: relative;
+  right: 100;
   min-height: 100vh;
-  background-color: gainsboro;
-  -left: 100px;
+  width: 100%;
+  /* background-color: rgb(136, 136, 136); */
+  /* display: flex;
+  justify-content: space-around; */
 }
 
 .top-icons {

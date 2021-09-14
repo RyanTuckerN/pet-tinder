@@ -16,7 +16,6 @@ const Home = (props) => {
         @import url('https://fonts.googleapis.com/css2?family=Rampart+One&display=swap');
       </style>
     </div>
-    
    );
 }
  

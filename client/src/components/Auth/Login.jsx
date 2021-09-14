@@ -29,14 +29,27 @@ const Login = (props) => {
         }),
       });
       const json = await fetchResults.json();
-      console.log("json response", json);
-      if(!json.user || !json.sessionToken)return
-      setUsersInfo({...usersInfo, user: json.user });
+      console.log("User Info from login: ", json);
+      if(!json.user || !json.sessionToken){
+        alert(json.message)
+        return
+      }
+      const matchesFetch = await fetch("http://localhost:3333/like/matches", {
+        method: 'GET',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          Authorization: json.sessionToken
+        })
+      })
+      const matchesJson = await matchesFetch.json()
+      console.log('Match List from login: ', matchesJson)
+      setUsersInfo({...usersInfo, user: json.user, matches:matchesJson.matches, matchesCount: matchesJson.count });
       updateToken(json.sessionToken);
     } catch (err) {
       console.error(err)
     }
   };
+  
   return (
     <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
       <div className={classes.paper}>

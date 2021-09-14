@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
-import { Typography, Grid, TextField, Chip, Button} from "@material-ui/core";
+import { Typography, Grid, TextField, Chip } from "@material-ui/core";
+import "./Profile.css";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,9 +15,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PaymentForm(props) {
-  const { ad_description, temperament, setTemperament, setAdDescription, length, setLength } = props.oneProps;
+  const {
+    ad_description,
+    temperament,
+    setTemperament,
+    setAdDescription,
+    length,
+    setLength,
+  } = props.oneProps;
   const classes = useStyles();
-  const [temporaryTemperament, setTemporaryTemperament] = useState('');
+  const [temporaryTemperament, setTemporaryTemperament] = useState("");
 
   const handleAdChange = (e) => {
     setLength(e.target.value.length);
@@ -25,14 +33,18 @@ export default function PaymentForm(props) {
   const handleDelete = (chipToDelete) => () => {
     setTemperament((chips) => chips.filter((chip) => chip != chipToDelete));
   };
-  const handleTempTemp = e => {
-    setTemporaryTemperament(e.target.value)
-  }
-  const handleTemperament = e => {
-    e.preventDefault()
-    setTemperament(temperament => [...temperament, temporaryTemperament[0].toUpperCase()+temporaryTemperament.substring(1).toLowerCase()])
-    setTemporaryTemperament('')
-  }
+  const handleTempTemp = (e) => {
+    setTemporaryTemperament(e.target.value);
+  };
+  const handleTemperament = (e) => {
+    e.preventDefault();
+    setTemperament((temperament) => [
+      ...temperament,
+      temporaryTemperament[0].toUpperCase() +
+        temporaryTemperament.substring(1).toLowerCase(),
+    ]);
+    setTemporaryTemperament("");
+  };
 
   return (
     <React.Fragment>
@@ -68,9 +80,17 @@ export default function PaymentForm(props) {
         Add some descriptive keywords that describe your dog's temperament
       </Typography>
       <div style={{ height: 20 }} />
-      <Grid container spacing={3} style={{display: 'flex', justifyContent: 'center'}}>
+      <Grid
+        container
+        spacing={3}
+        style={{ display: "flex", justifyContent: "center" }}
+      >
         <Grid xs={6}>
-          <form action="submit" style={{display:'flex'}} onSubmit={handleTemperament}>
+          <form
+            action="submit"
+            style={{ display: "flex" }}
+            onSubmit={handleTemperament}
+          >
             <TextField
               variant="outlined"
               required
@@ -84,19 +104,21 @@ export default function PaymentForm(props) {
         </Grid>
       </Grid>
       <div style={{ height: 40 }} />
-      <ul className={classes.root}>
-        {temperament.map((temp, i) => {
-          return (
-            <li key={i}>
-              <Chip
-                label={temp}
-                onDelete={handleDelete(temp)}
-                className={classes.chip}
-              />
-            </li>
-          );
-        })}
-      </ul>
+      <div id="chips-wrapper">
+        <ul className={classes.root}>
+          {temperament.map((temp, i) => {
+            return (
+              <li key={i} className="chip">
+                <Chip
+                  label={temp}
+                  onDelete={handleDelete(temp)}
+                  className={classes.chip}
+                />
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </React.Fragment>
   );
 }
