@@ -2,7 +2,7 @@ const express = require('express')
 const { Dog } = require('../models')
 const router = express.Router()
 const validateSession = require('../middleware/validateSession');
-
+const { Op } = require('sequelize')
 // ALL OUR CONTROLLERS FOR DOG GO HERE 
 
 //GET MY DOG
@@ -73,7 +73,7 @@ router.post('/', validateSession, (req, res) => {
 });
 
 router.get('/all', validateSession, (req, res) => {
-    Dog.findAll()
+    Dog.findAll({where: {id: {[Op.not]: req.user.id}}})
         .then(dogs => res.status(200).json({dogs}))
         .catch(err => res.status(500).json({ error: err }))
 });

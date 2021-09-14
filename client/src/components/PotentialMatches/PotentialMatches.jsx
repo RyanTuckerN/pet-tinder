@@ -1,66 +1,117 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import DogDisplay from "../Profile/DogDisplay";
-import '../Profile/Profile.css'
-const dog = {
-  id: 4,
-  name: "Lassie",
-  photo_url:
-    "https://images.unsplash.com/photo-1588344862058-0072276d3542?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y2FuZSUyMGNvcnNvfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-  breed: "Irish Setter",
-  weight: 27,
-  age: 3,
-  ad_description:
-    "Pit bull lap dog puppies chihuahua, german shephard peanut butter growl milk bone pomeranian sit. Squirrel stand english mastiff release dog bone growl dog bone, jump milk bone lab greyhound take it heel. Tennis ball stay jump beagle sit pretty german shephard pomsky. Dog milk bone bulldog german shephard dachshund, puppy speak shih tzu stand husky bark doberman pinscher dog stay. Bell bulldog release Morkie great dance paw tennis ball leash bulldog, dog come yorkshire terrier german shephard.",
-  temperament: ["Loving", "Protective"],
-  is_female: true,
-  location: { zip: 46202, lat: 39.0431477052854, lon: -88.23562207044014 },
-  createdAt: "2021-09-08T05:12:00.606Z",
-  updatedAt: "2021-09-08T05:12:00.606Z",
-  userId: 4,
-};
+import TinderCard from "react-tinder-card";
+import "../Profile/Profile.css";
+import "./PotentialMatches.css";
+
+const alreadyRemoved = [];
+let dogsState, originalArray;
 
 const PotentialMatches = (props) => {
-  const { usersInfo } = props;
   const [potentialMatches, setPotentialMatches] = useState([]);
+  const [lastDirection, setLastDirection] = useState();
+
+  const childRefs = useMemo(
+    () =>
+      Array(potentialMatches.length)
+        .fill(0)
+        .map((i) => React.createRef()),
+    []
+  );
 
   const fetchPotentialMatches = async () => {
-    const allDogs = await fetch("http://localhost:3333/dog/all/", {
+    const allLikes = await fetch("http://localhost:3333/like/mine", {
       method: "GET",
       headers: new Headers({
         "Content-Type": "application/json",
         Authorization: localStorage.getItem("token"),
       }),
     });
+    const allDogs = await fetch("http://localhost:3333/dog/all", {
+      method: "GET",
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      }),
+    });
+    const likesJson = await allLikes.json();
     const dogsJson = await allDogs.json();
-    if (usersInfo?.user) {
-      //COMPARING ALL DOGS TO THE ARRAY OF MATCHES, REMOVING MATCHES!
-      setPotentialMatches(
-        dogsJson.dogs.filter(
-          (dog) => !usersInfo.matches.map((d) => d.id).includes(dog.id)
-        )
+    {
+      const likedIds = likesJson.length? likesJson.map((el) => el.dog.id) : [] 
+      const likesRemoved = dogsJson.dogs.filter(
+        (dog) => !likedIds.includes(dog.id)
       );
+      originalArray = likesRemoved;
+      dogsState = likesRemoved;
+      setPotentialMatches(likesRemoved);
     }
   };
-  useEffect(fetchPotentialMatches, [usersInfo]);
+  useEffect(fetchPotentialMatches, []);
 
-  // return (
-  //   <div>
-  //     Hello from PotentialMatches!
-  //     <ul>
-  //       {potentialMatches.length ? (
-  //         potentialMatches.map((dog) => <li key={dog.id}>{dog.name}</li>)
-  //       ) : (
-  //         <>...Connecting</>
-  //       )}
-  //     </ul>
-  //   </div>
-  // );
+  const handleLike = async(dir, id) => {
+    const likeFetch = await fetch(`http://localhost:3333/like/${id}`, {
+      method: 'POST',
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem('token') 
+      }),
+      body: JSON.stringify({superlike: dir==='up'?true : false})
+    })
+    const json = await likeFetch.json()
+    console.log(json)
+  
+  }
+
+  const swiped = (dir, idToDelete) => {
+    console.log("removing :", idToDelete);
+    setLastDirection(dir);
+    alreadyRemoved.push(idToDelete);
+    if(dir==='left' || dir==='down')return
+    handleLike(dir, idToDelete)
+  };
+
+  const outOfFrame = (id) => {
+    console.log(id + " left the screen!");
+    dogsState = dogsState.filter((dog) => dog.id !== id);
+    setPotentialMatches(dogsState);
+  };
+
+  const swipe = (dir) => {
+    const cardsLeft = potentialMatches.filter(
+      (dog) => !alreadyRemoved.includes(dog.id)
+    );
+    if (cardsLeft.length) {
+      const toBeRemoved = cardsLeft[cardsLeft.length - 1].id; // Find the card object to be removed
+      const index = originalArray.map((dog) => dog.id).indexOf(toBeRemoved); // Find the index of which to make the reference to
+      alreadyRemoved.push(toBeRemoved); // Make sure the next card gets removed next time if this card do not have time to exit the screen
+      childRefs[index].current.swipe(dir); // Swipe the card!
+    }
+  };
 
   return (
-    <div id='tinder-wrapper'>
-      <DogDisplay dog={dog} />
-    </div>
-  )
+    <>
+      <div className="tinderCards__cardContainer">
+        {/* BELOW: This loops through the array (loops through - outputs info, loops through again - outputs info, etc. )  */}
+        {potentialMatches.map((dog, index) => (
+          <TinderCard
+            // onCardLeftScreen={() => onCardLeftScreen(dog.id)}
+            // className="swipe"
+            // onSwipe={onSwipe}
+            // key={dog.id} //ALWAYS give keys in REACT (even if you don't see the benefit immediately) because it allows React to efficiently re-render a List which makes your app super fast.
+            preventSwipe={["down"]}
+            ref={childRefs[index]}
+            className="swipe"
+            key={dog.id}
+            onSwipe={(dir) => swiped(dir, dog.id)}
+            onCardLeftScreen={() => outOfFrame(dog.id)}
+          >
+            <DogDisplay dog={dog} className="card" />
+          </TinderCard>
+        ))}
+      </div>
+      {lastDirection ? <h2 key={lastDirection} className='infoText'>You swiped {lastDirection}</h2> : <h2 className='infoText'>Swipe a card or press a button to get started!</h2>}
+    </>
+  );
 };
 
 export default PotentialMatches;

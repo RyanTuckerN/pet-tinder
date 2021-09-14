@@ -3,17 +3,18 @@ import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import { Chip } from "@material-ui/core";
-import CardActions from "@material-ui/core/CardActions";
+// import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
-import Button from "@material-ui/core/Button";
+// import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles({
   root: {
     width: 345,
     maxWidth: 345,
-    background: 'linear-gradient(194deg, rgba(244,244,244,1) 0%, rgba(223,180,148,0.742734593837535) 68%, rgba(245,172,238,1) 100%)'
+    minHeight: 600,
+    // background: 'linear-gradient(194deg, rgba(244,244,244,1) 0%, rgba(223,180,148,1) 68%, rgba(245,172,238,1) 100%)'
   },
   media: {
     height: 280,
@@ -27,13 +28,13 @@ export default function DogDisplay(props) {
   const toggleMore = () => setShowMore(!showMore);
 
   return (
-    <Card key={dog.id} className={classes.root}>
+    <Card key={dog.id} className={classes.root} >
       <CardMedia
         className={classes.media}
         image={dog.photo_url}
         title={dog.name}
       />
-      <CardContent>
+      <CardContent style={{overflow: 'auto', maxHeight: 320}}>
         <span id="title">{`${dog.name}, `}</span>
         <span id="subtitle">{dog.is_female ? "female" : "male"}</span>
         <Typography variant="caption" color="textSecondary" component="p">
@@ -49,8 +50,11 @@ export default function DogDisplay(props) {
             );
           })}
         </ul>
+        <Typography variant="caption" color="textSecondary" component="p">
+          {dog.ad_description}
+        </Typography>
       </CardContent>
-      <div id="button-container">
+      {/* <div id="button-container">
         <CardActions>
           <Button size="small" color="primary">
             Share
@@ -59,7 +63,7 @@ export default function DogDisplay(props) {
             {showMore ? "Show Less" : "Learn More"}
           </Button>
         </CardActions>
-      </div>
+      </div> */}
     </Card>
   );
 }

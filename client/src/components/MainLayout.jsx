@@ -309,7 +309,7 @@ export default function MainLayout(props) {
                 <PotentialMatches usersInfo={usersInfo} />
               </Route>
               <Route exact path="/matches">
-                <Matches />
+                <Matches usersInfo={usersInfo}/>
               </Route>
               <Route exact path="/chat">
                 {socket ? (
