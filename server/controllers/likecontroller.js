@@ -51,7 +51,7 @@ router.post("/:liked_id", validateSession, (req, res) => {
 //UNLIKE A DOG
 router.delete("/:liked_id", validateSession, (req, res) => {
   Like.destroy({
-    where: { liked_dog_id: req.params.liked_id, owner_id: req.user.id },
+    where: { liked_dog_id: req.params.liked_id, userId: req.user.id },
   }).then((like) => {
     res.status(200).json(
       like > 0

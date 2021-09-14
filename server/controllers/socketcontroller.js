@@ -26,6 +26,7 @@ module.exports = (socket) => {
           user,
           matches,
         });
+        socket.broadcast.emit('matchUpdate', {message: 'update your matches'})
         socket.emit("newUser", { mobileSockets });
         socket.broadcast.emit("newUser", { mobileSockets });
 

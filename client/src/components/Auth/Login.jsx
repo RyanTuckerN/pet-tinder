@@ -11,7 +11,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 
 const Login = (props) => {
-  const { classes, updateToken, toggleView, setUsersInfo, usersInfo, socket } = props;
+  const { classes, updateToken, toggleView, setUsersInfo, usersInfo } = props;
   const [profile_name, setProfile_name] = useState("");
   const [password, setPassword] = useState("");
 

@@ -67,6 +67,10 @@ function App() {
         setOnlineUsers(socketIds);
         console.log("ONLINE USERS SOCKETS: ", socketIds.mobileSockets);
       });
+      socket.on('matchUpdate', obj=>{
+        console.log(obj.message)
+        socket.emit('newLogin', userId)
+      })
     }
     // return ()=> socket ? socket.emit('disconnect') : null
   }, [socket, token, userId]);

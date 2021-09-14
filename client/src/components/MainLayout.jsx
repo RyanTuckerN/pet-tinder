@@ -19,6 +19,7 @@ import {
 import {
   AppBar,
   Avatar,
+  Container,
   CssBaseline,
   Divider,
   Drawer,
@@ -101,14 +102,14 @@ const useStyles = makeStyles((theme) => ({
   toolbar: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "flex-end",
+    justifyContent: "center",
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
   },
   content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
+    // flexGrow: 1,
+    // padding: theme.spacing(3),
     // height: '100vh',
   },
 }));
@@ -139,13 +140,6 @@ export default function MainLayout(props) {
   const handleDropdownClose = () => setAnchorEl(null);
 
   //LOADING USER AVATAR ON LOGIN IF USER HAS A PROFILE
-  // useEffect(() => {
-  //   if (usersInfo.user) {
-  //     if (usersInfo.user.dog) {
-  //       setAvatarPhoto(usersInfo.user.dog.photo_url);
-  //     }
-  //   }
-  // }, [usersInfo]);
   useEffect(() => {
     usersInfo?.user?.dog
       ? setAvatarPhoto(usersInfo.user.dog.photo_url)
@@ -211,7 +205,12 @@ export default function MainLayout(props) {
             </IconButton>
             {width > 500 && !open ? (
               <Link to="/">
-                <Typography variant="h6" noWrap className={classes.title} style={{color: 'white'}}>
+                <Typography
+                  variant="h6"
+                  noWrap
+                  className={classes.title}
+                  style={{ color: "white" }}
+                >
                   Pet Tinder
                 </Typography>
               </Link>
@@ -286,11 +285,13 @@ export default function MainLayout(props) {
           </Link>
         </Drawer>
         {/* ***THIS IS THE MAIN BODY DIV, EVERYTHING DYNAMIC WILL SHOW HERE!*** */}
-        <main className={classes.content}>
+        <main 
+        className={classes.content}
+        >
           <div className={classes.toolbar} />
-          <div
-            id="body-container" //OUR COMPONENTS WILL BE RENDERED HERE FROM REACT-ROUTER-DOM
-          >
+          
+          {/* <div id="body-container"> */}
+       
             <Switch>
               <Route exact path="/">
                 <Home />
@@ -306,10 +307,10 @@ export default function MainLayout(props) {
                 )}
               </Route>
               <Route exact path="/potentialmatches">
-                <PotentialMatches usersInfo={usersInfo} />
+                <PotentialMatches usersInfo={usersInfo} socket={socket} />
               </Route>
               <Route exact path="/matches">
-                <Matches usersInfo={usersInfo}/>
+                <Matches usersInfo={usersInfo} socket={socket} />
               </Route>
               <Route exact path="/chat">
                 {socket ? (
@@ -319,8 +320,10 @@ export default function MainLayout(props) {
                 )}
               </Route>
             </Switch>
-          </div>
-        </main>
+       
+          {/* </div> */}
+      
+      </main>
       </div>
     </Router>
   );

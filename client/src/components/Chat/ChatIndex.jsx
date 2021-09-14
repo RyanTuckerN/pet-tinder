@@ -3,42 +3,26 @@ import "./Chat.css";
 import React, { useState, useEffect, useRef } from "react";
 import ChatMessage from "./ChatMessage";
 import StickyFooter from "./StickyFooter";
-/*
-I NEED TO DO A FEW THINGS, BUT I KNOW THE SOCKET IS OPEN AND WORKING!!! WOOHOO!!
 
-1. ~~ ORGANIZE MY DATA FLOW ~~
-2. ~~ SET UP BASIC CLIENT FRONT END FOR ACTUAL USE TESTING ~~
-3. ~~ ENSURE I AM SENDING LOGIC EXPECTED ON THE BACKEND ~~
-4. ~~ CELEBRATE ~~ 
-5. SET UP CONTEXT PERHAPS? INSTEAD OF PROP DRILLING? MAYBE FOR LOGGED IN USER
-6. ~~ STILL NEED TO SORT OUT LOGIC FOR MATCHES ~~
-*/
+
 const ChatIndex = (props) => {
-  const { socket, usersInfo, chatTarget, setChatTarget, open } =
-    props.chatProps;
+  const { socket, usersInfo, chatTarget, setChatTarget, open } = props.chatProps;
   const [chatMessage, setChatMessage] = useState("");
   const [messages, setMessages] = useState([]);
-
-  useEffect(() => {
-    if (socket) {
-
-      socket.on("priorMessages", (conversation) => {
-        console.log("CONVERSATION: ", conversation);
-        setMessages(conversation.messages);
-      });
-      socket.on("incomingMessage", ({ message, conversation }) => {
-        console.log("INCOMING MESSAGE: ", message);
-        console.log("CONVERSATION: ", conversation);
-        setMessages(conversation.messages);
-      });
-    }
-    return handleExitChat;
-  }, [socket]);
-
+  
+  const messagesEndRef = useRef(null);
+  const scrollToBottom = () => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  const handleAlign = (m, i) => m.user._id == i.user.id ? "flex-end" : "flex-start";
+  const handleChange = (e) => setChatMessage(e.target.value)
+  const handleExitChat = () => {
+    setChatTarget(null);
+    setMessages([]);
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!chatTarget) {
       console.log("no chat target");
+      alert('Please select a dog to bark at!')
       return;
     } else {
       if (chatMessage.length >= 255) {
@@ -54,25 +38,17 @@ const ChatIndex = (props) => {
     }
     setChatMessage("");
   };
-  const handleChange = (e) => {
-    setChatMessage(e.target.value)
-  };
-  const handleExitChat = () => {
-    setChatTarget(null);
-    setMessages([]);
-  };
 
-  const handleAlign = (m, i) =>
-    m.user._id == i.user.id ? "flex-end" : "flex-start";
-
-  const messagesEndRef = useRef(null);
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-  console.log(chatTarget);
+    if (socket) {
+      socket.on("priorMessages", (conversation) => setMessages(conversation.messages))
+      socket.on("incomingMessage", ({ message, conversation }) => setMessages(conversation.messages));
+    }
+    return handleExitChat;
+  }, [socket]);
+
+  useEffect(scrollToBottom, [messages]);
+  
   return (
     <>
       <section id="chat">

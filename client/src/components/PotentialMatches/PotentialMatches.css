@@ -21,7 +21,6 @@
   display: flex;
   justify-content: center;
   margin-top: 5vh;
-  /* z-index: 12; */
 }
 
 .infoText{
@@ -29,17 +28,6 @@
   bottom: 60px;
 }
 
-#button-group{
-  position: relative;
-  top: 600px;
-  padding: 10px;
-  z-index: 0;
-}
-
-.MuiButton-root{
-  margin: 20px;
-}
 .swipe {
   position: absolute; /* This absolute position will take them from the default position and will stack them on top of each other*/
-  /* height: 550px; */
 }

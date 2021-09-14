@@ -1,15 +1,18 @@
-import DogDisplay from "../Profile/DogDisplay";
+// import DogDisplay from "../Profile/DogDisplay";
+import { Grid } from "@material-ui/core";
+import MatchDisplay from "./MatchDisplay";
 
 const Matches = (props) => {
-  const { usersInfo } = props
-  console.log(usersInfo)
+  const { usersInfo, socket } = props;
+  console.log(usersInfo);
 
-  return ( 
-    <div style={{display: 'flex', flexFlow: 'row-wrap', width: '80vw'}}>
-      Hello from Matches!
-      {usersInfo?.matches?.map(match=><DogDisplay dog={match} key={match.id} />)}
-    </div>
-   );
-}
- 
+  return (
+    <Grid container justifyContent='center'>
+      {usersInfo?.matches?.map((match) => (
+        <MatchDisplay dog={match} socket={socket} usersInfo={usersInfo} key={match.id} />
+      ))}
+    </Grid>
+  );
+};
+
 export default Matches;
