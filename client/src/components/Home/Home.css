@@ -1,4 +1,4 @@
-h1 {
+#home1 {
     font-family: 'Rampart One', cursive;
     color: #B05B3B;
     position: relative;
@@ -6,7 +6,7 @@ h1 {
     font-size: 40px;
 }
 
-h2 {
+#home2 {
     font-family: 'Rampart One', cursive;
     color: #B05B3B;
     position: absolute;
@@ -14,14 +14,14 @@ h2 {
     right: 450px;
 }
 
-h3 {
+#home3 {
     position: relative;
     bottom: -250px;
     font-family: 'Azeret Mono', monospace;
     color: rgb(82, 70, 49);
 }
 
-h4 {
+#home4 {
     position: relative;
     bottom: -260px;
     font-family: 'Azeret Mono', monospace;
@@ -31,14 +31,15 @@ h4 {
 #doglogo {
     position: relative;
     width: 5%;
-    top: -200px;
-    right: -520px;
+    top: -150px;
+    right: -180px;
+    z-index: 1;
 } 
 
 #chat {
     color: #B05B3B;
    font-size: 100px;
    position: relative;
-   right: -710px;
-   top: -232px;
+   right: -732px;
+   top: -235px;
 }
