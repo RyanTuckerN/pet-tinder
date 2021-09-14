@@ -31,7 +31,7 @@ router.put("/:id", validateSession, (req, res) => {
         userId: req.user.id,
 
     };
-    const query = {where: {id:req.params.id, owner_id:req.user.id}}
+    const query = {where: {id:req.params.id, userId:req.user.id}}
 
     Dog.update(updateDog, query)
     .then((dog) => {

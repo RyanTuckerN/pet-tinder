@@ -3,6 +3,7 @@ import "./App.css";
 import io from "socket.io-client";
 import Auth from "./components/Auth/Auth";
 import MainLayout from "./components/MainLayout";
+import CreateProfile from "./components/Profile/CreateProfile";
 import jwt_decode from "jwt-decode";
 
 function App() {
@@ -55,7 +56,7 @@ function App() {
     if (token && userId && socket) {
       socket.emit("newLogin", userId);
       socket.on("userCreated", (obj) => {
-        setUsersInfo(obj);
+        setUsersInfo({...usersInfo, matches: obj.matches, user: obj.user });
         console.log("💎 USER/MATCHES: ", obj);
         console.log("🔧 SOCKET ID: ", socket.id);
       });
@@ -69,6 +70,7 @@ function App() {
   //PROPS OBJECT
   const mainLayoutProps = {
     socket,
+    token,
     usersInfo,
     onlineUsers,
     setUsersInfo,
@@ -76,12 +78,13 @@ function App() {
     clearToken,
   };
 
+
   return (
     <div className="App">
       {token ? (
         <MainLayout mainLayoutProps={mainLayoutProps} />
       ) : (
-        <Auth setUsersInfo={setUsersInfo} updateToken={updateToken} />
+        <Auth setUsersInfo={setUsersInfo} updateToken={updateToken} usersInfo={usersInfo}/>
       )}
     </div>
   );

@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Auth(props) {
-  const { updateToken, setUsersInfo } = props;
+  const { updateToken, setUsersInfo, usersInfo } = props;
   const [loginShowing, setLoginShowing] = useState(true);
   const classes = useStyles();
 

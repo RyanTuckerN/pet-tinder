@@ -1,5 +1,5 @@
 const express = require("express");
-const { User } = require("../models");
+const { User, Dog } = require("../models");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcryptjs');
@@ -26,7 +26,7 @@ router.post("/signup", function (req, res) {
 
 router.post("/login", (req,res) => {
   const { profile_name, password } = req.body
-  User.findOne({where: { profile_name: profile_name }})
+  User.findOne({where: { profile_name: profile_name }, include: {model: Dog}})
     .then(user=>{
       if(user){
         bcrypt.compare(
