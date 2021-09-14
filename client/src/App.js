@@ -72,7 +72,6 @@ function App() {
         socket.emit('newLogin', userId)
       })
     }
-    // return ()=> socket ? socket.emit('disconnect') : null
   }, [socket, token, userId]);
 
   //PROPS OBJECT

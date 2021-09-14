@@ -31,7 +31,7 @@ const useStyles = makeStyles({
 
 export default function MatchDisplay(props) {
   const { dog, socket, usersInfo } = props;
-  const [showMore, setShowMore] = useState(false);
+  // const [showMore, setShowMore] = useState(false);
   const classes = useStyles();
 
   const handleUnlike = async (id) => {
@@ -74,7 +74,7 @@ export default function MatchDisplay(props) {
           <Typography variant="caption" color="textSecondary" component="p">
             {dog.breed} | Age: {dog.age} | Weight: {dog.weight} lbs
           </Typography>
-          <p>{showMore ? dog.ad_description : null}</p>
+          {/* <p>{showMore ? dog.ad_description : null}</p> */}
           <ul className="chips-list">
             {dog.temperament.map((temp, i) => {
               return (

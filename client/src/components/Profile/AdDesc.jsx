@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
-import { Typography, Grid, TextField, Chip, Button } from "@material-ui/core";
+import { Typography, Grid, TextField, Chip } from "@material-ui/core";
 import "./Profile.css";
 
 const useStyles = makeStyles((theme) => ({

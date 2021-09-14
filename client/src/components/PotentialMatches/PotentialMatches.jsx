@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import DogDisplay from "../Profile/DogDisplay";
 import { Grid } from "@material-ui/core";
 import TinderCard from "react-tinder-card";

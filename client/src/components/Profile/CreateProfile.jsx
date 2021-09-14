@@ -68,7 +68,6 @@ function getStepContent(step, props) {
 }
 
 export default function CreateProfile(props) {
-  const {token} = props
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const [name, setName] = useState("Rufus");

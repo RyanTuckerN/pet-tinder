@@ -19,7 +19,6 @@ import {
 import {
   AppBar,
   Avatar,
-  Container,
   CssBaseline,
   Divider,
   Drawer,
@@ -116,7 +115,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MainLayout(props) {
   //DESTRUCTURING PROPS
-  const { socket, usersInfo, onlineUsers, clearToken, token, setUsersInfo } =
+  const { socket, usersInfo, onlineUsers, clearToken, token } =
     props.mainLayoutProps;
 
   //HOOKS
