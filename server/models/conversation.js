@@ -21,9 +21,7 @@ Conversation.findOrCreateConversation = function(user1Id, user2Id) {
     order: [[ sequelize.models.message, 'createdAt', 'ASC' ]]
   })
     .then(conversation => {
-      if(conversation) {
-        // console.log(conversation.messages.map(m=>m.dataValues))
-        // console.log('📑 sent the coversation', conversation.messages.map(m=>m.id))  
+      if(conversation) {  
         return conversation;
       } else {
          console.log('✏✏✏📑 creating new conversation!')  

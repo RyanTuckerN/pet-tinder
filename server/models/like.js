@@ -27,7 +27,7 @@ const Like = sequelize.define(
     return Like.findAll({ where: { liked_dog_id: user_id } })
     .then((data) => {
        
-      // console.log('🔥🔥',data.map(e=>e.userId)) 
+      console.log('🔥🔥',data.map(e=>e.userId)) 
       
       const dogsThatLikeYou = data;
       return Like.findAll({ where: { userId: user_id } }).then((data) => {

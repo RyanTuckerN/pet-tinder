@@ -1,32 +1,58 @@
-import React from 'react';
-import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+/*
+THIS IS THE MAIN HUB FOR OUR APP, SIMILAR TO THE SIDEBAR FROM REACT-MODULES. 
+THERE IS A LOT OF STUFF IN HERE, BUT MOST OF IT IS MATERIAL UI COMPONENTS.
+*/
 
-const drawerWidth = 240;
+import React, { useState, useEffect } from "react";
+import { Route, Link, Switch, BrowserRouter as Router, } from "react-router-dom";
+import clsx from "clsx";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import {
+  Notifications,
+  AccountBox,
+  Favorite,
+  Pets,
+  ChevronLeft,
+  ChevronRight,
+  Menu,
+} from "@material-ui/icons";
+import {
+  AppBar,
+  Avatar,
+  CssBaseline,
+  Divider,
+  Drawer,
+  IconButton,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Toolbar,
+  Tooltip,
+  Typography,
+} from "@material-ui/core";
+
+import ChatIndex from "./Chat/ChatIndex";
+import Profile from "./Profile/Profile";
+import MatchList from "./MainLayoutComponents/MatchList";
+import Dropdown from "./MainLayoutComponents/Dropdown";
+import Matches from "./Matches/Matches";
+
+import dogPic from "./MainLayoutComponents/assets/dog.png";
+import useWindowDimensions from "./customHooks/useWindowDimension";
+import PotentialMatches from "./PotentialMatches/PotentialMatches";
+
+
+const drawerWidth = 220;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
+    display: "flex",
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
+    display: "flex",
+    justifyContent: "space-around",
+    transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
@@ -34,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   appBarShift: {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
+    transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -43,35 +69,38 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 36,
   },
   hide: {
-    display: 'none',
+    display: "none",
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    whiteSpace: 'nowrap',
+    whiteSpace: "nowrap",
   },
   drawerOpen: {
     width: drawerWidth,
-    transition: theme.transitions.create('width', {
+    transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
   drawerClose: {
-    transition: theme.transitions.create('width', {
+    transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    overflowX: 'hidden',
-    width: theme.spacing(7) + 1,
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9) + 1,
+    overflowX: "hidden",
+    width: theme.spacing(7) + 18,
+    [theme.breakpoints.up("sm")]: {
+      width: theme.spacing(9) + 2,
     },
   },
+  title: {
+    flexGrow: 1,
+  },
   toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
@@ -79,89 +108,191 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
+    // height: '100vh',
   },
 }));
 
 export default function MainLayout(props) {
+  //DESTRUCTURING PROPS
+  const { socket, usersInfo, onlineUsers, clearToken } = props.mainLayoutProps;
+  
+  //HOOKS
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
+  const { width } = useWindowDimensions();
+  
+  //STATE
+  const [open, setOpen] = useState(false);
+  const [chatTarget, setChatTarget] = useState(null);
+  const [avatarPhoto, setAvatarPhoto] = useState(dogPic);
+  const [anchorEl, setAnchorEl] = useState(null)
+  
+  //FUNCTIONS FOR DRAWER OPEN/CLOSE
+  const handleDrawerOpen = () => setOpen(true);
+  const handleDrawerClose = () => setOpen(false);
+  const handleDrawerToggle = () => setOpen(!open);
+  
+  //FUNCTION FOR USER DROPDOWN
+  const handleAvatarClick = (e) => setAnchorEl(e.currentTarget)
+  const handleDropdownClose = () => setAnchorEl(null)
+  
+  //LOADING USER AVATAR ON LOGIN IF USER HAS A PROFILE
+  useEffect(() => {
+    if (usersInfo.user) {
+      if (usersInfo.user.dog) {
+        setAvatarPhoto(usersInfo.user.dog.photo_url);
+      }
+    }
+  }, [usersInfo]);
+  
+  //PROP COMPONENTS
+  const chatProps = {
+    chatTarget,
+    usersInfo,
+    socket,
+    open,
+    setChatTarget,
   };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
+  
+  const matchListProps = {
+    usersInfo,
+    onlineUsers,
+    socket,
+    open,
+    setChatTarget,
+    handleDrawerToggle,
   };
-
+  
+  const dropdownProps = {anchorEl, clearToken, handleDropdownClose}
+  
+  //JSX 
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, {
-              [classes.hide]: open,
-            })}
+    <Router>
+      <div className={classes.root}>
+        <CssBaseline /> {/* This is from MUI*/}
+        <AppBar // THIS IS TOP NAVBAR
+          position="fixed"
+          className={clsx(classes.appBar, {
+            [classes.appBarShift]: open,
+          })}
+          style={{
+            background:
+              "radial-gradient(circle, rgba(180,155,79,1) 1%, rgba(195,85,19,1) 35%, rgba(186,23,97,1) 100%)",
+          }}
+        >
+          <Toolbar
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap>
-            Mini variant drawer
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant="permanent"
-        className={clsx(classes.drawer, {
-          [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open,
-        })}
-        classes={{
-          paper: clsx({
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              className={clsx(classes.menuButton, {
+                [classes.hide]: open,
+              })}
+              style={{ marginRight: "auto" }}
+            >
+              <Menu />
+            </IconButton>
+            {width > 500 && !open ? (
+              <Typography variant="h6" noWrap className={classes.title}>
+                Pet Tinder
+              </Typography>
+            ) : null}
+            <div style={{ marginLeft: "auto" }}>
+              <IconButton>
+                <Notifications color="inherit" />
+              </IconButton>
+              <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleAvatarClick}>
+                <Avatar alt="Profile Avatar" src={avatarPhoto} />
+              </IconButton>
+              <Dropdown dropdownProps={dropdownProps} />
+            </div>
+          </Toolbar>
+        </AppBar>
+        <Drawer // THIS IS SIDE NAVBAR
+          variant="permanent"
+          className={clsx(classes.drawer, {
             [classes.drawerOpen]: open,
             [classes.drawerClose]: !open,
-          }),
-        }}
-      >
-        <div className={classes.toolbar}>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
-        </div>
-        <Divider />
-        <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        {/* Mount your component here */}
-      </main>
-    </div>
+          })}
+          classes={{
+            paper: clsx({
+              [classes.drawerOpen]: open,
+              [classes.drawerClose]: !open,
+            }),
+          }}
+        >
+          <div className={classes.toolbar}>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === "rtl" ? <ChevronRight /> : <ChevronLeft />}
+            </IconButton>
+          </div>
+          <Divider />
+          <Tooltip title="View or edit your profile">
+            <Link to='/profile' >
+              <ListItem button>
+                <ListItemIcon>
+                  <AccountBox />
+                </ListItemIcon>
+                <ListItemText primary="Profile" />
+              </ListItem>
+            </Link>
+          </Tooltip>
+          <Tooltip title="See potential matches">
+            <Link to='/potentialmatches'>
+              <ListItem button>
+                <ListItemIcon>
+                  <Pets />
+                </ListItemIcon>
+                <ListItemText primary="Dogs" />
+              </ListItem>
+            </Link>
+          </Tooltip>
+          <Tooltip title="See your matches">
+            <Link to='/matches'>
+              <ListItem button>
+                <ListItemIcon>
+                  <Favorite />
+                </ListItemIcon>
+                <ListItemText primary="Matches" />
+              </ListItem>
+            </Link>
+          </Tooltip>
+          <Divider />
+          <Link to='/chat'>
+            <MatchList matchListProps={matchListProps} />
+          </Link>
+        </Drawer>
+      
+        {/* ***THIS IS THE MAIN BODY DIV, EVERYTHING DYNAMIC WILL SHOW HERE!*** */}
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          <div
+            id="body-container" //OUR COMPONENTS WILL BE RENDERED HERE FROM REACT-ROUTER-DOM
+          >
+            <Switch>
+              <Route exact path="/profile">
+                <Profile />
+              </Route>
+              <Route exact path='/potentialmatches'><PotentialMatches/></Route>
+              <Route exact path="/matches"><Matches usersInfo={usersInfo}/></Route>
+              <Route exact path="/chat">
+                {socket ? (
+                  <ChatIndex chatProps={chatProps} />
+                ) : (
+                  <div>Not Connected</div>
+                )}
+              </Route>
+            </Switch>
+          </div>
+        </main>
+      </div>
+    </Router>
   );
 }
