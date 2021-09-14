@@ -281,7 +281,7 @@ export default function MainLayout(props) {
                 <Profile />
               </Route>
               <Route exact path='/potentialmatches'><PotentialMatches/></Route>
-              <Route exact path="/matches"><Matches/></Route>
+              <Route exact path="/matches"><Matches usersInfo={usersInfo}/></Route>
               <Route exact path="/chat">
                 {socket ? (
                   <ChatIndex chatProps={chatProps} />
