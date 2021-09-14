@@ -203,7 +203,7 @@ export default function MainLayout(props) {
               <Menu />
             </IconButton>
             {width > 500 && !open ? (
-              <Link to="/">
+              <Link to="/Home">
                 <Typography
                   variant="h6"
                   noWrap
@@ -292,7 +292,7 @@ export default function MainLayout(props) {
           {/* <div id="body-container"> */}
        
             <Switch>
-              <Route exact path="/">
+              <Route exact path="/Home">
                 <Home />
               </Route>
               <Route exact path="/create-profile">
