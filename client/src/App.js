@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from 'react-router-dom'
 import "./App.css";
 import io from "socket.io-client";
 import Auth from "./components/Auth/Auth";
@@ -51,7 +50,8 @@ function App() {
     const newSocket = io(`http://${window.location.hostname}:3333`);
     setSocket(newSocket);
     return () => {
-    newSocket.close();}
+      newSocket.close();
+    };
   }, [setSocket, userId]);
 
   //EMITTING SOCKET EVENTS
@@ -59,7 +59,7 @@ function App() {
     if (token && userId && socket) {
       socket.emit("newLogin", userId);
       socket.on("userCreated", (obj) => {
-        setUsersInfo({...usersInfo, matches: obj.matches, user: obj.user });
+        setUsersInfo({ ...usersInfo, matches: obj.matches, user: obj.user });
         console.log("💎 USER/MATCHES: ", obj);
         console.log("🔧 SOCKET ID: ", socket.id);
       });
@@ -82,13 +82,17 @@ function App() {
     clearToken,
   };
 
-
   return (
     <div className="App">
       {token ? (
         <MainLayout mainLayoutProps={mainLayoutProps} />
       ) : (
-        <Auth setUsersInfo={setUsersInfo} updateToken={updateToken} usersInfo={usersInfo} socket={socket}/>
+        <Auth
+          setUsersInfo={setUsersInfo}
+          updateToken={updateToken}
+          usersInfo={usersInfo}
+          socket={socket}
+        />
       )}
     </div>
   );

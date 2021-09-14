@@ -43,6 +43,7 @@ const ChatIndex = (props) => {
     } else {
       if (chatMessage.length >= 255) {
         console.log("message too long!");
+        alert('Your message is too long! Keep it under 255 characters.')
       } else {
         socket.emit("message", {
           text: chatMessage,
@@ -53,7 +54,9 @@ const ChatIndex = (props) => {
     }
     setChatMessage("");
   };
-  const handleChange = (e) => setChatMessage(e.target.value);
+  const handleChange = (e) => {
+    setChatMessage(e.target.value)
+  };
   const handleExitChat = () => {
     setChatTarget(null);
     setMessages([]);
@@ -111,6 +114,7 @@ const ChatIndex = (props) => {
         handleChange={handleChange}
         chatMessage={chatMessage}
         handleSubmit={handleSubmit}
+        value={chatMessage}
         open={open}
       />
     </>

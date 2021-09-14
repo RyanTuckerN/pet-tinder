@@ -9,7 +9,7 @@ a{
 
 main{
   min-height: 100vh;
-  background-color: gainsboro;
+  background-color: rgb(255, 240, 240);
   -left: 100px;
 }
 

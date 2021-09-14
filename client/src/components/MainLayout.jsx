@@ -306,7 +306,7 @@ export default function MainLayout(props) {
                 )}
               </Route>
               <Route exact path="/potentialmatches">
-                <PotentialMatches />
+                <PotentialMatches usersInfo={usersInfo} />
               </Route>
               <Route exact path="/matches">
                 <Matches />

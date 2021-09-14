@@ -5,13 +5,21 @@ const validateSession = require('../middleware/validateSession');
 
 // ALL OUR CONTROLLERS FOR DOG GO HERE 
 
-router.get("/:id",validateSession, (req, res) => {
+//GET MY DOG
+router.get("/",validateSession, (req, res) => {
     const query = {where:{id: req.user.id}};
-    Dog.findAll(query)
+    Dog.findOne(query)
     .then((dog) => res.status(200).json(dog))
     .catch((err) => res.status(500).json({error:err}))
 });
 
+// GET DOG BY ID
+router.get("/id/:id",validateSession, (req, res) => {
+  const query = {where:{id: req.params.id}};
+  Dog.findOne(query)
+  .then((dog) => res.status(200).json(dog))
+  .catch((err) => res.status(500).json({error:err}))
+});
 
 // DELETE DOG BY ID
 router.delete("/",validateSession, (req, res) => {
