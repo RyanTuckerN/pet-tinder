@@ -96,44 +96,11 @@ router.get("/mine", validateSession, (req, res) => {
     .catch((err) => res.status(501).json({ err }));
 });
 
-//RETURNS ARRAY OF DOGS THAT THE USER SUPERLIKES *** REDUNDANT, because all likes includes superlike t/f? ^^
-router.get("/mine/superlikes", validateSession, async (req, res) => {
-  try {
-    const result = await Like.findAll({
-      where: { userId: req.user.id, superlike: true },
-    });
-    if (!result.length) {
-      res.status(200).json({ message: "you have no superlikes!" });
-    } else {
-      const arr = result.map((l) => l.liked_dog_id);
-      const dogs = await Dog.findAll({
-        where: { id: { [Op.in]: arr } },
-        //attributes allows us to exclude certain columns from the response, among other things
-        attributes: { exclude: ["createdAt", "updatedAt", "id"] },
-        include: {
-          model: User,
-          include: {
-            model: Like,
-            where: { liked_dog_id: req.user.id },
-            attributes: { exclude: ["id", "updatedAt", "createdAt", "userId"] },
-          },
-          attributes: {
-            exclude: ["createdAt", "updatedAt", "passwordhash", "location"],
-          },
-        },
-        // attributes: { include: ["name"] },
-      });
-      res.status(200).json(dogs);
-    }
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
 
 //GET ALL MATCHES : Returns an object with 'matches' arr and 'count' of results
 router.get("/matches", validateSession, (req, res) => {
   Like.findAll({ where: { liked_dog_id: req.user.id } })
-    .then((data) => {
+  .then((data) => {
       const dogsThatLikeYou = data;
       Like.findAll({ where: { userId: req.user.id } }).then((data) => {
         const dogsYouLike = data;
@@ -176,6 +143,40 @@ router.get("/matches", validateSession, (req, res) => {
     .catch((err) => {
       res.status(501).json({ err });
     });
-});
-
-module.exports = router;
+  });
+  
+  module.exports = router;
+  
+  //RETURNS ARRAY OF DOGS THAT THE USER SUPERLIKES *** REDUNDANT, because all likes includes superlike t/f? ^^
+  // router.get("/mine/superlikes", validateSession, async (req, res) => {
+  //   try {
+  //     const result = await Like.findAll({
+  //       where: { userId: req.user.id, superlike: true },
+  //     });
+  //     if (!result.length) {
+  //       res.status(200).json({ message: "you have no superlikes!" });
+  //     } else {
+  //       const arr = result.map((l) => l.liked_dog_id);
+  //       const dogs = await Dog.findAll({
+  //         where: { id: { [Op.in]: arr } },
+  //         //attributes allows us to exclude certain columns from the response, among other things
+  //         attributes: { exclude: ["createdAt", "updatedAt", "id"] },
+  //         include: {
+  //           model: User,
+  //           include: {
+  //             model: Like,
+  //             where: { liked_dog_id: req.user.id },
+  //             attributes: { exclude: ["id", "updatedAt", "createdAt", "userId"] },
+  //           },
+  //           attributes: {
+  //             exclude: ["createdAt", "updatedAt", "passwordhash", "location"],
+  //           },
+  //         },
+  //         // attributes: { include: ["name"] },
+  //       });
+  //       res.status(200).json(dogs);
+  //     }
+  //   } catch (err) {
+  //     res.status(500).json(err);
+  //   }
+  // });

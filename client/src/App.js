@@ -13,6 +13,7 @@ function App() {
   const [userId, setUserId] = useState(null);
   const [usersInfo, setUsersInfo] = useState({});
   const [onlineUsers, setOnlineUsers] = useState(null);
+  const [notifications, setNotifications] = useState(null);
   const [token, setToken] = useState("");
 
   //LOGGING IN AND SIGNING UP
@@ -77,12 +78,31 @@ function App() {
     }
   }, [socket, token, userId]);
 
+  //FETCHING NOTIFICATIONS
+  useEffect(() => {
+    const notificationsFetch = async () => {
+      const response = await fetch(`http://localhost:3333/note/`, {
+        method: "GET",
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        }),
+      });
+      const notificationsJson = await response.json();
+      console.log(notificationsJson.notifications);
+      setNotifications(notificationsJson.notifications)
+    };
+    notificationsFetch();
+  }, [usersInfo?.matches]);
+
   //PROPS OBJECT
   const mainLayoutProps = {
     socket,
     token,
     usersInfo,
     onlineUsers,
+    notifications,
+    setNotifications,
     setUsersInfo,
     setOnlineUsers,
     clearToken,
