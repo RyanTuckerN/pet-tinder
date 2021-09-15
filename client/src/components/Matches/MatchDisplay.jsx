@@ -8,13 +8,10 @@ import StarBorderIcon from "@material-ui/icons/StarBorder";
 
 const useStyles = makeStyles({
   root: {
-    // width: 345,
     minWidth: 345,
     maxWidth: 345,
-    // minHeight: 600,
     maxHeight: 600,
     borderRadius: 20,
-    // margin: 25,
     textAlign: "left",
     background:
       "linear-gradient(194deg, rgba(244,244,244,1) 0%, rgba(223,180,148,1) 68%, rgba(245,172,238,1) 100%)",
@@ -41,10 +38,14 @@ export default function MatchDisplay(props) {
         "Content-Type": "application/json",
         Authorization: localStorage.getItem("token"),
       }),
+     
     });
+    
     const unlikeJson = await unlikeFetch.json();
     console.log(unlikeJson);
-    socket.emit("newLogin", usersInfo?.user?.id);
+    console.log('USER ID 👿👿: ')
+    
+    socket.emit("matchRequest", usersInfo?.user?.id);
     alert(unlikeJson.message);
   };
 
@@ -66,7 +67,7 @@ export default function MatchDisplay(props) {
         <CardMedia
           className={classes.media}
           image={dog.photo_url}
-          title={dog.name}
+          title={dog.ad_description}
         />
         <CardContent style={{ maxHeight: 320 }}>
           <span id="title">{`${dog.name}, `}</span>

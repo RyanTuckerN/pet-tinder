@@ -54,7 +54,7 @@ function App() {
     };
   }, [setSocket, userId]);
 
-  //EMITTING SOCKET EVENTS
+  //EMITTING AND CAPTURING SOCKET EVENTS
   useEffect(() => {
     if (token && userId && socket) {
       socket.emit("newLogin", userId);
@@ -68,8 +68,11 @@ function App() {
         console.log("ONLINE USERS SOCKETS: ", socketIds.mobileSockets);
       });
       socket.on('matchUpdate', obj=>{
-        console.log(obj.message)
+        console.log('COMMAND YOU TO ->', obj.message)
         socket.emit('newLogin', userId)
+      })
+      socket.on('matchResponse', matches=>{
+        console.log('matchRESPONSE!', matches)
       })
     }
   }, [socket, token, userId]);

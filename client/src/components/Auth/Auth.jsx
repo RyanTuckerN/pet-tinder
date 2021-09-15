@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Auth(props) {
-  const { updateToken, setUsersInfo, socket } = props;
+  const { updateToken, setUsersInfo } = props;
   const [loginShowing, setLoginShowing] = useState(true);
   const classes = useStyles();
 
@@ -70,7 +70,7 @@ export default function Auth(props) {
           classes={classes}
           updateToken={updateToken}
           setUsersInfo={setUsersInfo}
-          socket={socket}
+          // socket={socket}
           toggleView={toggleView}
         />
       ) : (
@@ -78,7 +78,7 @@ export default function Auth(props) {
           classes={classes}
           updateToken={updateToken}
           setUsersInfo={setUsersInfo}
-          socket={socket}
+          // socket={socket}
           toggleView={toggleView}
         />
       )}

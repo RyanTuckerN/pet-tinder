@@ -54,9 +54,7 @@ const PotentialMatches = (props) => {
     })
     const json = await likeFetch.json()
     console.log(json)
-    socket.emit("newLogin", usersInfo.user.id);
-
-  
+    socket.emit("matchRequest", usersInfo?.user?.id);
   }
 
   const swiped = (dir, idToDelete) => {
@@ -76,10 +74,9 @@ const PotentialMatches = (props) => {
   return (
     <>
       <div className="tinderCards__cardContainer">
-        {potentialMatches.map((dog, index) => (
+        {potentialMatches.map((dog) => (
           <TinderCard
             preventSwipe={["down"]}
-            // ref={childRefs[index]}
             className="swipe"
             key={dog.id}
             onSwipe={(dir) => swiped(dir, dog.id)}

@@ -12,23 +12,14 @@ module.exports = (socket) => {
       sequelize.models.like.getMatches(id),
     ])
       .then(([user, matches]) => {
-        console.log(
-          "USER: ",
-          user.dataValues,
-          "Matches: ",
-          matches.map((m) => {
-            return { name: m.dataValues.name, id: m.dataValues.id };
-          })
-        );
         mobileSockets[user.id] = socket.id;
-        console.log("A user connected! 🤸🤸🤸", id);
         socket.emit("userCreated", {
           user,
           matches,
         });
-        socket.broadcast.emit('matchUpdate', {message: 'update your matches'})
         socket.emit("newUser", { mobileSockets });
         socket.broadcast.emit("newUser", { mobileSockets });
+        
 
         console.log("SOCKET USERS ONLINE: ", mobileSockets);
       })
@@ -49,7 +40,28 @@ module.exports = (socket) => {
     });
   });
 
-  // socket.on("newMessage", (res) => console.log(res));
+  socket.on("matchRequest", (id) => {
+    console.log("ON MATCH REQUEST: ", mobileSockets);
+    console.log("🛂 CREDENTIALS: ", id);
+    Promise.all([
+      User.findOne({ where: { id }, include: { model: Dog } }),
+      sequelize.models.like.getMatches(id),
+    ])
+      .then(([user, matches]) => {
+        mobileSockets[user.id] = socket.id;
+        socket.emit("userCreated", {
+          user,
+          matches,
+        });
+        socket.emit("newUser", { mobileSockets });
+        socket.broadcast.emit("newUser", { mobileSockets });
+        socket.broadcast.emit('matchUpdate', {message: 'update your matches'})
+
+        console.log("SOCKET USERS ONLINE: ", mobileSockets);
+      })
+      .catch((err) => console.log(err));
+  });
+
   //***MESSAGE EVENT***//
   socket.on("message", ({ text, sender, receiver }) => {
     Message.createMessage(text, sender, receiver).then((message) => {
