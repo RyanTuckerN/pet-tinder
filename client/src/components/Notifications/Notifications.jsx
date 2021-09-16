@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -12,10 +13,12 @@ import { Button } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    maxWidth: 752,
+    // maxWidth: 752,
   },
   demo: {
-    backgroundColor: theme.palette.background.paper,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   title: {
     margin: theme.spacing(4, 0, 2),
@@ -23,7 +26,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function NotificationsPage(props) {
-  const { usersInfo, notifications, setNotifications } = props.noteProps;
+  const { usersInfo, notifications, setNotifications, socket, setChatTarget } =
+    props.noteProps;
   const [matchImages, setMatchImages] = useState(null);
   const classes = useStyles();
 
@@ -36,19 +40,28 @@ export default function NotificationsPage(props) {
     setMatchImages(picDictionary);
   }, [usersInfo]);
 
-  const handleClear = async() => {
-    const fetchDelete = await fetch('http://localhost:3333/note/',
-    {
+  const handleClear = async () => {
+    const fetchDelete = await fetch("http://localhost:3333/note/", {
       method: "DELETE",
       headers: new Headers({
         "Content-Type": "application/json",
         Authorization: localStorage.getItem("token"),
-      })
-    })
-    const deletionsJson = await fetchDelete.json()
-    console.log(deletionsJson)
-    setNotifications(null)
-  }
+      }),
+    });
+    const deletionsJson = await fetchDelete.json();
+    console.log(deletionsJson);
+    setNotifications(null);
+  };
+  const handleChatTarget = (notification) => {
+    setChatTarget(
+      //finds match that corresponds to notification target
+      usersInfo?.matches?.filter((match) => match.id == notification.target)[0]
+    );
+    socket.emit("chat", {
+      sender: usersInfo?.user,
+      receiver: { id: notification.target },
+    });
+  };
 
   return (
     <div className={classes.root}>
@@ -58,23 +71,33 @@ export default function NotificationsPage(props) {
             Notifications
           </Typography>
           <div className={classes.demo}>
-            <List>
+            <List
+            // style={{display: 'flex', flexDirection: 'column', margin: 'auto'}}
+            >
               {notifications
-                ? notifications.map((n) => {
-                    return (
-                      <ListItem>
-                        <ListItemAvatar>
-                          <Avatar
-                            src={matchImages ? matchImages[n.target] : null}
-                          ></Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary={n.message} />
-                      </ListItem>
-                    );
-                  })
-                : null}
+                ? notifications.length
+                  ? notifications.map((n) => {
+                      return (
+                        <Link to="/chat">
+                          <ListItem onClick={() => handleChatTarget(n)}>
+                            <ListItemAvatar>
+                              <Avatar
+                                src={matchImages ? matchImages[n.target] : null}
+                              ></Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary={n.message} />
+                          </ListItem>
+                        </Link>
+                      );
+                    })
+                  : "No Notifications to display!"
+                : "No Notifications to display!"}
             </List>
-            <Button onClick={handleClear} variant="outlined">CLEAR NOTIFICATIONS</Button>
+            {notifications?.length ? (
+              <Button onClick={handleClear} variant="outlined">
+                CLEAR NOTIFICATIONS
+              </Button>
+            ) : null}
           </div>
         </Grid>
       </Grid>

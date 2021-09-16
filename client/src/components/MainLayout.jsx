@@ -177,7 +177,7 @@ export default function MainLayout(props) {
     handleDrawerToggle,
   };
 
-  const noteProps = { usersInfo, notifications, setNotifications };
+  const noteProps = { usersInfo, notifications, setNotifications, socket, setChatTarget };
 
   const dropdownProps = { anchorEl, clearToken, handleDropdownClose };
 
