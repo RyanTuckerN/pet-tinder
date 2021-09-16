@@ -96,6 +96,35 @@ router.get("/mine", validateSession, (req, res) => {
     .catch((err) => res.status(501).json({ err }));
 });
 
+router.get("/superlikes", validateSession, (req, res) => {
+  Like.findAndCountAll({ where: { userId: req.user.id } })
+    .then((data) => {
+      const { count, rows } = data;
+      if (!count) {
+        res.status(200).json({ message: "You haven't yet liked any dogs!" });
+      } else {
+        res.status(200).json(rows);
+        // Dog.findAll({
+        //   where: { id: { [Op.in]: rows.map((d) => d.liked_dog_id) } },
+        //   include: {
+        //     model: User,
+        //     attributes: {
+        //       exclude: ["createdAt", "updatedAt", "passwordhash", "location"],
+        //     },
+        //   },
+        //   attributes: { exclude: ["createdAt", "updatedAt"] },
+        // }).then((likedDogs) => {
+        //   let result = [];
+        //   for (let i = 0; i < likedDogs.length; i++) {
+        //     result.push({ dog: likedDogs[i], superlike: rows[i].superlike });
+        //   }
+        //   res.status(200).json(result);
+        // });
+      }
+    })
+    .catch((err) => res.status(501).json({ err }));
+});
+
 
 //GET ALL MATCHES : Returns an object with 'matches' arr and 'count' of results
 router.get("/matches", validateSession, (req, res) => {

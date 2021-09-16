@@ -62,7 +62,7 @@ const Profile = (props) => {
   const [open, setOpen] = useState(false);
 
   const creatingProfile = false;
-
+  const properizeNoun = str => str.split(' ').map(word=>word[0]?.toUpperCase()+word.slice(1).toLowerCase()).join(' ')
   const handleClose = () => setOpen(false);
 
   const updateProps = {
@@ -93,7 +93,7 @@ const Profile = (props) => {
     three: {
       name,
       photo_url,
-      breed,
+      breed: properizeNoun(breed),
       weight,
       age,
       ad_description,
@@ -120,7 +120,6 @@ const Profile = (props) => {
       alert(err);
     }
   };
-
 
   return user?.dog ? (
     <>

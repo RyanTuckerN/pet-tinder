@@ -63,6 +63,9 @@ export default function NotificationsPage(props) {
     });
   };
 
+  //clears notification on unmount
+  useEffect(()=> {return handleClear},[])
+
   return (
     <div className={classes.root}>
       <Grid container spacing={2}>
