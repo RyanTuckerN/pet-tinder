@@ -89,7 +89,7 @@ const PotentialMatches = (props) => {
     //if there is a new match...
     if (secondCount > firstCount) {
       const newMatch = secondMatches.filter(
-        (match) => !firstMatches.map(d=>d.id).includes(match.id)
+        (match) => !firstMatches.map((d) => d.id).includes(match.id)
       )[0];
       console.log("NEW FUCKING MATCH BABY: ", newMatch);
       const selfNote = await fetch(
@@ -121,6 +121,10 @@ const PotentialMatches = (props) => {
       const targetJson = await targetNote.json();
       const selfJson = await selfNote.json();
       console.log("NOTIFICATION RESPONSES: ", selfJson, targetJson);
+      socket.emit("notificationRequest", {
+        userId: usersInfo?.user?.id,
+        target: id
+      });
     }
   };
 

@@ -75,7 +75,11 @@ function App() {
       socket.on('matchResponse', matches=>{
         console.log('matchRESPONSE!', matches)
       })
-    }
+      socket.on('notificationResponse', notifications=>{
+        console.log('📓📓📓📓📓',notifications)
+        setNotifications(notifications)
+      })
+    } 
   }, [socket, token, userId]);
 
   //FETCHING NOTIFICATIONS
