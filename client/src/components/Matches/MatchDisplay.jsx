@@ -40,12 +40,23 @@ export default function MatchDisplay(props) {
       }),
      
     });
-    
+    const deleteNotificationFetch = await fetch(`http://localhost:3333/note/${id}`, {
+      method: "DELETE",
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      }),
+    })
+    const noteJson = await deleteNotificationFetch.json()
     const unlikeJson = await unlikeFetch.json();
     console.log(unlikeJson);
+    console.log(noteJson)
     console.log('USER ID 👿👿: ')
-    
     socket.emit("matchRequest", usersInfo?.user?.id);
+    socket.emit("notificationRequest", {
+      userId: usersInfo?.user?.id,
+      target: id
+    })
     // alert(unlikeJson.message);
   };
 

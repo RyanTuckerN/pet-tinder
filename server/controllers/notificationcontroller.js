@@ -43,4 +43,19 @@ router.delete("/", validateSession, async (req, res) => {
   }
 });
 
+//deletes notifications if a dog unlikes before they clear notification
+router.delete("/:id", validateSession, async (req, res) => {
+  try {
+    const deletionOne = await Notification.destroy({
+      where: { userId: req.user.id, target: req.params.id },
+    });
+    const deletionTwo = await Notification.destroy({
+      where: { userId: req.params.id, target: req.user.id },
+    })
+    res.status(200).json({ deletions: [deletionOne, deletionTwo] });
+  } catch (err) {
+    res.status(409).json({ err });
+  }
+});
+
 module.exports = router;
