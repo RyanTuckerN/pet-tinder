@@ -91,7 +91,7 @@ const PotentialMatches = (props) => {
       const newMatch = secondMatches.filter(
         (match) => !firstMatches.map((d) => d.id).includes(match.id)
       )[0];
-      console.log("NEW FUCKING MATCH BABY: ", newMatch);
+      console.log("NEW MATCH: ", newMatch);
       const selfNote = await fetch(
         `http://localhost:3333/note/${usersInfo?.user?.id}`,
         {
