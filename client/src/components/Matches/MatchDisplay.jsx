@@ -1,6 +1,13 @@
-import React, { useState } from "react";
+// import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Button, ButtonGroup, Chip, Grid, Card, Tooltip } from "@material-ui/core";
+import {
+  Button,
+  ButtonGroup,
+  Chip,
+  Grid,
+  Card,
+  Tooltip,
+} from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
@@ -9,13 +16,10 @@ import "./Matches.css"
 
 const useStyles = makeStyles({
   root: {
-    // width: 345,
     minWidth: 345,
     maxWidth: 345,
-    // minHeight: 600,
     maxHeight: 600,
     borderRadius: 20,
-    // margin: 25,
     textAlign: "left",
     background:
       "linear-gradient(194deg, rgba(244,244,244,1) 0%, rgba(223,180,148,1) 68%, rgba(245,172,238,1) 100%)",
@@ -24,15 +28,18 @@ const useStyles = makeStyles({
     height: 280,
   },
   superlike: {
-    position: 'absolute',
-    color: 'rgba(223,180,148,1)',
-    fontSize: 40
-  }
+    position: "absolute",
+    margin: 5,
+    color: "#fa91dc",
+    fontSize: 40,
+    borderRadius: 20,
+    backgroundColor: "#78436c",
+    // textAlign: "right"
+  },
 });
 
 export default function MatchDisplay(props) {
-  const { dog, socket, usersInfo } = props;
-  // const [showMore, setShowMore] = useState(false);
+  const { dog, socket, usersInfo, superlikeRef } = props;
   const classes = useStyles();
 
   const handleUnlike = async (id) => {
@@ -43,10 +50,26 @@ export default function MatchDisplay(props) {
         Authorization: localStorage.getItem("token"),
       }),
     });
+    const deleteNotificationFetch = await fetch(
+      `http://localhost:3333/note/${id}`,
+      {
+        method: "DELETE",
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        }),
+      }
+    );
+    const noteJson = await deleteNotificationFetch.json();
     const unlikeJson = await unlikeFetch.json();
     console.log(unlikeJson);
-    socket.emit("newLogin", usersInfo?.user?.id);
-    alert(unlikeJson.message);
+    console.log(noteJson);
+    socket.emit("matchRequest", usersInfo?.user?.id);
+    socket.emit("notificationRequest", {
+      userId: usersInfo?.user?.id,
+      target: id,
+    });
+    // alert(unlikeJson.message);
   };
 
   return (
@@ -56,19 +79,20 @@ export default function MatchDisplay(props) {
       xs={12}
       md={6}
       lg={4}
+      xl={3}
       style={{ display: "flex", justifyContent: "space-around", padding: 18 }}
     >
           
       <Card key={dog.id} className={classes.root}>
-        {dog.user.likes[0].superlike ? (
-          <Tooltip title={`${dog.name} superlikes you!!!`}>
+        {dog.user.likes[0].superlike && superlikeRef[dog.id] ? (
+          <Tooltip title='SUPERMATCH!'>
             <StarBorderIcon id="superlike-star" className={classes.superlike} />
           </Tooltip>
         ) : null}
         <CardMedia
           className={classes.media}
           image={dog.photo_url}
-          title={dog.name}
+          title={dog.ad_description}
         />
         <CardContent style={{ maxHeight: 320 }}>
           <span id="title">{`${dog.name}, `}</span>

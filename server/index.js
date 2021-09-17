@@ -26,12 +26,14 @@ db.sync(
   { logging: false }
 );
 // db.drop()
+
 app.use(require("./middleware/headers"));
 app.use(express.json());
 
 const controllers = require("./controllers");
 //USER ENDPOINT
 app.use("/user", controllers.usercontroller);
+app.use('/note', controllers.notificationcontroller)
 //PROTECTED ENDPOINTS
 // app.use(require("./middleware/validateSession"));
 app.use("/dog", controllers.dogcontroller);

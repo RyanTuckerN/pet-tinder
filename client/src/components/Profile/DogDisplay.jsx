@@ -12,7 +12,7 @@ const useStyles = makeStyles({
     minWidth: 345,
     maxWidth: 345,
     minHeight: 600,
-    maxHeight:600,
+    maxHeight: 600,
     borderRadius: 20,
     // margin: 25,
     textAlign: 'left',
@@ -31,7 +31,7 @@ export default function DogDisplay(props) {
 
   return (
     // <div >
-      <Grid contatiner item xs={12} md={6} lg={4} style={{display: 'flex', justifyContent:'space-around'}} >
+      <Grid container item xs={12} md={6} lg={4} style={{display: 'flex', justifyContent:'space-around'}} >
         <Card key={dog.id} className={classes.root} >
           <CardMedia
             className={classes.media}
