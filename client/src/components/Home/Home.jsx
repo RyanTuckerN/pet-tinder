@@ -17,10 +17,14 @@ const Home = (props) => {
       <h2 id="home2">Where Puppy Love Begins</h2>
       <h3 id="home3">Matching with breeders made easy!</h3>
       <h4 id="home4">Checkout the sidebar to start matching!</h4>
+
       </div>
      
   
 
+
+      <img id="doglogo" src={PetTinderLogo} />
+      <ChatBubbleIcon id="home-chat" />
       <style>
         @import
         url('https://fonts.googleapis.com/css2?family=Rampart+One&display=swap');

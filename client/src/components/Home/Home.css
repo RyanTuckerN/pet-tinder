@@ -66,6 +66,7 @@ right: 430px;
 z-index: 1;
 } 
 
+
 @media (max-width: 768px) {
     #doglogo {
     position: absolute;
@@ -87,6 +88,7 @@ z-index: 1;
 }  */
 
 #chat {
+
     color: #B05B3B;
    font-size: 100px;
    position: absolute;

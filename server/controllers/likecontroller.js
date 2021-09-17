@@ -96,44 +96,40 @@ router.get("/mine", validateSession, (req, res) => {
     .catch((err) => res.status(501).json({ err }));
 });
 
-//RETURNS ARRAY OF DOGS THAT THE USER SUPERLIKES *** REDUNDANT, because all likes includes superlike t/f? ^^
-router.get("/mine/superlikes", validateSession, async (req, res) => {
-  try {
-    const result = await Like.findAll({
-      where: { userId: req.user.id, superlike: true },
-    });
-    if (!result.length) {
-      res.status(200).json({ message: "you have no superlikes!" });
-    } else {
-      const arr = result.map((l) => l.liked_dog_id);
-      const dogs = await Dog.findAll({
-        where: { id: { [Op.in]: arr } },
-        //attributes allows us to exclude certain columns from the response, among other things
-        attributes: { exclude: ["createdAt", "updatedAt", "id"] },
-        include: {
-          model: User,
-          include: {
-            model: Like,
-            where: { liked_dog_id: req.user.id },
-            attributes: { exclude: ["id", "updatedAt", "createdAt", "userId"] },
-          },
-          attributes: {
-            exclude: ["createdAt", "updatedAt", "passwordhash", "location"],
-          },
-        },
-        // attributes: { include: ["name"] },
-      });
-      res.status(200).json(dogs);
-    }
-  } catch (err) {
-    res.status(500).json(err);
-  }
+router.get("/superlikes", validateSession, (req, res) => {
+  Like.findAndCountAll({ where: { userId: req.user.id } })
+    .then((data) => {
+      const { count, rows } = data;
+      if (!count) {
+        res.status(200).json({ message: "You haven't yet liked any dogs!" });
+      } else {
+        res.status(200).json(rows);
+        // Dog.findAll({
+        //   where: { id: { [Op.in]: rows.map((d) => d.liked_dog_id) } },
+        //   include: {
+        //     model: User,
+        //     attributes: {
+        //       exclude: ["createdAt", "updatedAt", "passwordhash", "location"],
+        //     },
+        //   },
+        //   attributes: { exclude: ["createdAt", "updatedAt"] },
+        // }).then((likedDogs) => {
+        //   let result = [];
+        //   for (let i = 0; i < likedDogs.length; i++) {
+        //     result.push({ dog: likedDogs[i], superlike: rows[i].superlike });
+        //   }
+        //   res.status(200).json(result);
+        // });
+      }
+    })
+    .catch((err) => res.status(501).json({ err }));
 });
+
 
 //GET ALL MATCHES : Returns an object with 'matches' arr and 'count' of results
 router.get("/matches", validateSession, (req, res) => {
   Like.findAll({ where: { liked_dog_id: req.user.id } })
-    .then((data) => {
+  .then((data) => {
       const dogsThatLikeYou = data;
       Like.findAll({ where: { userId: req.user.id } }).then((data) => {
         const dogsYouLike = data;
@@ -176,6 +172,40 @@ router.get("/matches", validateSession, (req, res) => {
     .catch((err) => {
       res.status(501).json({ err });
     });
-});
-
-module.exports = router;
+  });
+  
+  module.exports = router;
+  
+  //RETURNS ARRAY OF DOGS THAT THE USER SUPERLIKES *** REDUNDANT, because all likes includes superlike t/f? ^^
+  // router.get("/mine/superlikes", validateSession, async (req, res) => {
+  //   try {
+  //     const result = await Like.findAll({
+  //       where: { userId: req.user.id, superlike: true },
+  //     });
+  //     if (!result.length) {
+  //       res.status(200).json({ message: "you have no superlikes!" });
+  //     } else {
+  //       const arr = result.map((l) => l.liked_dog_id);
+  //       const dogs = await Dog.findAll({
+  //         where: { id: { [Op.in]: arr } },
+  //         //attributes allows us to exclude certain columns from the response, among other things
+  //         attributes: { exclude: ["createdAt", "updatedAt", "id"] },
+  //         include: {
+  //           model: User,
+  //           include: {
+  //             model: Like,
+  //             where: { liked_dog_id: req.user.id },
+  //             attributes: { exclude: ["id", "updatedAt", "createdAt", "userId"] },
+  //           },
+  //           attributes: {
+  //             exclude: ["createdAt", "updatedAt", "passwordhash", "location"],
+  //           },
+  //         },
+  //         // attributes: { include: ["name"] },
+  //       });
+  //       res.status(200).json(dogs);
+  //     }
+  //   } catch (err) {
+  //     res.status(500).json(err);
+  //   }
+  // });

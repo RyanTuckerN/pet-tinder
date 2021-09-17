@@ -2,6 +2,7 @@ const User = require("./user");
 const Dog = require("./dog");
 const Like = require("./like");
 const Message = require("./message");
+const Notification = require('./notification')
 const Conversation = require("./conversation");
 
 //USER & DOG
@@ -18,10 +19,15 @@ Conversation.belongsTo(User, { as: "user2" });
 Message.belongsTo(Conversation);
 Conversation.hasMany(Message);
 
+//NOTIFICATIONS 
+Notification.belongsTo(User)
+User.hasMany(Notification)
+
 module.exports = {
   User,
   Dog,
   Like,
   Message,
+  Notification,
   Conversation
 };
