@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Pets from "@material-ui/icons/Pets";
 import Typography from "@material-ui/core/Typography";
 
 const Login = (props) => {
@@ -20,6 +18,7 @@ const Login = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     try {
       const fetchResults = await fetch("http://localhost:3333/user/login", {
         method: "POST",
@@ -30,31 +29,36 @@ const Login = (props) => {
       });
       const json = await fetchResults.json();
       console.log("User Info from login: ", json);
-      if(!json.user || !json.sessionToken){
-        alert(json.message)
-        return
+      if (!json.user || !json.sessionToken) {
+        alert(json.message);
+        return;
       }
       const matchesFetch = await fetch("http://localhost:3333/like/matches", {
-        method: 'GET',
+        method: "GET",
         headers: new Headers({
-          'Content-Type': 'application/json',
-          Authorization: json.sessionToken
-        })
-      })
-      const matchesJson = await matchesFetch.json()
-      console.log('Match List from login: ', matchesJson)
-      setUsersInfo({...usersInfo, user: json.user, matches:matchesJson.matches, matchesCount: matchesJson.count });
+          "Content-Type": "application/json",
+          Authorization: json.sessionToken,
+        }),
+      });
+      const matchesJson = await matchesFetch.json();
+      console.log("Match List from login: ", matchesJson);
+      setUsersInfo({
+        ...usersInfo,
+        user: json.user,
+        matches: matchesJson.matches,
+        matchesCount: matchesJson.count,
+      });
       updateToken(json.sessionToken);
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
   };
-  
+
   return (
     <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
+          <Pets />
         </Avatar>
         <Typography component="h1" variant="h5">
           Sign in
@@ -72,6 +76,7 @@ const Login = (props) => {
             value={profile_name}
             onChange={handleProfileName}
           />
+
           <TextField
             variant="outlined"
             margin="normal"
@@ -85,10 +90,10 @@ const Login = (props) => {
             value={password}
             onChange={handlePassword}
           />
-          <FormControlLabel
+          {/* <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
-          />
+          /> */}
           <Button
             type="submit"
             fullWidth
@@ -99,11 +104,11 @@ const Login = (props) => {
             Sign In
           </Button>
           <Grid container>
-            <Grid item xs>
+            {/* <Grid item xs>
               <Link href="#" variant="body2">
                 Forgot password?
               </Link>
-            </Grid>
+            </Grid> */}
             <Grid item>
               <Link onClick={toggleView} variant="body2">
                 {"Don't have an account? Sign Up"}

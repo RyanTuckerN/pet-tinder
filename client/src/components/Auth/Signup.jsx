@@ -1,40 +1,104 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Pets from "@material-ui/icons/Pets";
 import Typography from "@material-ui/core/Typography";
+import useWindowDimensions from "../customHooks/useWindowDimension";
 
 const Signup = (props) => {
   const { classes, updateToken, toggleView } = props;
   const [name, setName] = useState("");
   const [profile_name, setProfile_name] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("@");
+  const [password1, setPassword1] = useState("");
+  const [password2, setPassword2] = useState("");
+  const [email, setEmail] = useState("");
+  const [passwordsMatch, setPasswordsMatch] = useState(null);
+  const [usernameAvailable, setUsernameAvailable] = useState(null);
+  const { width } = useWindowDimensions()
 
   const handleName = (e) => setName(e.target.value);
   const handleProfileName = (e) => setProfile_name(e.target.value);
-  const handlePassword = (e) => setPassword(e.target.value);
+  const handlePassword1 = (e) => setPassword1(e.target.value);
+  const handlePassword2 = (e) => {
+    setPassword2(e.target.value);
+  };
   const handleEmail = (e) => setEmail(e.target.value);
+  const handleUsernameAvailable = async () => {
+    if (validateUsername(profile_name)) {
+      const usernameResults = await fetch(
+        `http://localhost:3333/user/checkAvail/${profile_name}`
+      );
+      const usernameJson = await usernameResults.json();
+      setUsernameAvailable(usernameJson);
+    } else if (profile_name.length<6){
+      setUsernameAvailable(null)
+    }
+  };
+
+  const validateName = (fullName) => fullName.split(" ").length >= 2;
+  const validateUsername = (username) => username.length >= 6;
+  const validateEmail = (emailAddress) =>
+    emailAddress.split("").includes("@") && emailAddress.length >= 6;
+  const validatePasswordsMatch = (p1, p2) => p1 === p2;
+  const validatePasswordLength = (p1) => p1.length >= 8;
+
+  useEffect(() => {
+    setPasswordsMatch(validatePasswordsMatch(password1, password2));
+  }, [password1, password2]);
+
+  useEffect(handleUsernameAvailable, [profile_name]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{const fetchResults = await fetch("http://localhost:3333/user/signup", {
-      method: "POST",
-      body: JSON.stringify({ profile_name, name, password, email }),
-      headers: new Headers({
-        "Content-Type": "application/json",
-      }),
-    });
-    const json = await fetchResults.json();
-    console.log("json response", json);
-    updateToken(json.sessionToken);}catch(err){
-      console.error(err)
+    if (!validateName(name)) {
+      alert("Please fill out your full name.");
+      return;
+    }
+    if (!validateUsername(profile_name)) {
+      alert("Username must be at least 6 characters long.");
+      return;
+    }
+    if (!usernameAvailable) {
+      alert("That username is already taken.");
+    }
+    if (!validateEmail(email)) {
+      alert("Please use a valid email address.");
+      return;
+    }
+    if (!passwordsMatch) {
+      alert("Passwords must match.");
+      return;
+    }
+    if (!validatePasswordLength(password1)) {
+      alert("Password must be at least 8 characters long.");
+      return;
+    }
+
+    try {
+      const fetchResults = await fetch("http://localhost:3333/user/signup", {
+        method: "POST",
+        body: JSON.stringify({
+          profile_name,
+          name: name.split(' ').map(name=>name[0].toUpperCase()+name.slice(1)).join(' '),
+          password: password1,
+          email,
+        }),
+        headers: new Headers({
+          "Content-Type": "application/json",
+        }),
+      });
+      const json = await fetchResults.json();
+      // if(json?.error?.name === "SequelizeUniqueConstraintError"){
+      //   alert('User')
+      // }
+      console.log("json response", json);
+      updateToken(json.sessionToken);
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -42,7 +106,7 @@ const Signup = (props) => {
     <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
+          <Pets />
         </Avatar>
         <Typography component="h1" variant="h5">
           Sign Up
@@ -61,6 +125,7 @@ const Signup = (props) => {
             onChange={handleName}
           />
           <TextField
+            title="Username must be at least 6 characters!"
             variant="outlined"
             margin="normal"
             required
@@ -71,6 +136,15 @@ const Signup = (props) => {
             value={profile_name}
             onChange={handleProfileName}
           />
+          <Typography variant="caption" style={{
+            color: usernameAvailable ? 'green' : 'red'
+          }}>
+            {usernameAvailable === true
+              ? "Username available!"
+              : usernameAvailable === false
+              ? "That username is already taken"
+              : null}
+          </Typography>
           <TextField
             variant="outlined"
             margin="normal"
@@ -83,23 +157,48 @@ const Signup = (props) => {
             value={email}
             onChange={handleEmail}
           />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={handlePassword}
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
+          {/* <div style={{ display: "flex", justifyContent: "space-between" }}> */}
+            <TextField
+              title="Please choose a password"
+              variant="outlined"
+              margin="normal"
+              required
+              // {width > 550?
+              style={ width > 550 ? {width: "48%", marginRight:'2%' } : null}
+              fullWidth={width<=550 ? true : false} 
+              // className='signup-password'
+              // fullWidth
+              
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={password1}
+              onChange={handlePassword1}
+            />
+            <TextField
+              title="Passwords must match!"
+              variant="outlined"
+              color={!passwordsMatch ? "secondary" : null}
+              margin="normal"
+              required
+              // fullWidth
+              style={ width > 550 ? {width: "48%", marginLeft:'2%' } : null}
+              fullWidth={width<=550 ? true : false} 
+              // // className='signup-password'
+              // // style={{ width: "48%" }}
+              name="password"
+              label={
+                passwordsMatch ? "Re-enter password" : "Passwords must match"
+              }
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={password2}
+              onChange={handlePassword2}
+            />
+          {/* </div> */}
           <Button
             type="submit"
             fullWidth
@@ -107,16 +206,11 @@ const Signup = (props) => {
             color="primary"
             className={classes.submit}
           >
-            Sign In
+            Sign up
           </Button>
           <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
             <Grid item>
-              <Link onClick={toggleView} variant="body2" >
+              <Link onClick={toggleView} variant="body2">
                 {"Already have an account? Log in!"}
               </Link>
             </Grid>

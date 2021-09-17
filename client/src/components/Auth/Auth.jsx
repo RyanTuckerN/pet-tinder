@@ -1,32 +1,18 @@
 import CssBaseline from "@material-ui/core/CssBaseline";
 import React, {useState} from "react";
-import Link from "@material-ui/core/Link";
-import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Login from "./Login";
 import Signup from "./Signup";
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100vh",
   },
   image: {
-    backgroundImage: "url(https://source.unsplash.com/random)",
+    backgroundImage: "url(http://images.unsplash.com/photo-1630359563592-c685967f83d7?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max)",
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "light"
@@ -48,6 +34,9 @@ const useStyles = makeStyles((theme) => ({
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
+    // display: 'flex',
+    // flexFlow: 'column wrap',
+    // justifyContent: 'space-between'
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -70,7 +59,6 @@ export default function Auth(props) {
           classes={classes}
           updateToken={updateToken}
           setUsersInfo={setUsersInfo}
-          // socket={socket}
           toggleView={toggleView}
         />
       ) : (
@@ -78,13 +66,9 @@ export default function Auth(props) {
           classes={classes}
           updateToken={updateToken}
           setUsersInfo={setUsersInfo}
-          // socket={socket}
           toggleView={toggleView}
         />
       )}
-      <Box mt={5}>
-        <Copyright />
-      </Box>
     </Grid>
   );
 }

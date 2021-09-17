@@ -1,0 +1,8 @@
+.matches-card-body{
+  max-width: 345px;
+}
+@media screen and (min-width: 427px) {
+  .matches-card-body{
+    min-width: 345px;
+  }
+}

@@ -66,12 +66,12 @@ export default function PaymentForm(props) {
             fullWidth
             value={ad_description}
             onChange={handleAdChange}
-            inputProps={{ maxLength: 500 }}
+            inputProps={{ maxLength: 200 }}
           />
         </Grid>
       </Grid>
       <div style={{ height: 20 }} />
-      <Typography variant="caption">{`${length}/500`} </Typography>
+      <Typography variant="caption">{`${length}/200`} </Typography>
       <div style={{ height: 20 }} />
       <Typography variant="h6" gutterBottom>
         Temperament

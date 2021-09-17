@@ -7,19 +7,19 @@ import {
   Grid,
   Card,
   Tooltip,
+  useMediaQuery,
 } from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
-
-const useStyles = makeStyles({
+import './Matches.css'
+const useStyles = makeStyles(theme=>({
   root: {
-    minWidth: 345,
-    maxWidth: 345,
-    maxHeight: 600,
     borderRadius: 20,
     textAlign: "left",
+    flexGrow: 1,
+    flexShrink: 1,
     background:
       "linear-gradient(194deg, rgba(244,244,244,1) 0%, rgba(223,180,148,1) 68%, rgba(245,172,238,1) 100%)",
   },
@@ -35,11 +35,12 @@ const useStyles = makeStyles({
     backgroundColor: "#78436c",
     // textAlign: "right"
   },
-});
+}));
 
 export default function MatchDisplay(props) {
   const { dog, socket, usersInfo, superlikeRef } = props;
   const classes = useStyles();
+
 
   const handleUnlike = async (id) => {
     const unlikeFetch = await fetch(`http://localhost:3333/like/${id}`, {
@@ -81,7 +82,7 @@ export default function MatchDisplay(props) {
       xl={3}
       style={{ display: "flex", justifyContent: "space-around", padding: 18 }}
     >
-      <Card key={dog.id} className={classes.root}>
+      <Card key={dog.id} className={[classes.root, 'matches-card-body'].join(' ')}>
         {dog.user.likes[0].superlike && superlikeRef[dog.id] ? (
           <Tooltip title='SUPERMATCH!'>
             <StarBorderIcon id="superlike-star" className={classes.superlike} />

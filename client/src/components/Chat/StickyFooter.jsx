@@ -11,7 +11,6 @@ const StickyFooter = (props) => {
     paddingBottom: 20,
     paddingTop: 20,
     height: "100px",
-    // backgroundColor: 'rgb(255, 240, 240)', //MAKE SURE THIS MATCHES MAIN BACKGROUND!!
     paddingRight: '0 !important',
     paddingLeft: '0 !important',
     width: '100vw'

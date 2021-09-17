@@ -1,3 +1,7 @@
+*{
+  transition: ease-in-out .333s;
+}
+
 .App {
   text-align: center;
 }

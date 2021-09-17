@@ -37,7 +37,6 @@ import CreateProfile from "./Profile/CreateProfile";
 import MatchList from "./MainLayoutComponents/MatchList";
 import Dropdown from "./MainLayoutComponents/Dropdown";
 import Matches from "./Matches/Matches";
-
 import dogPic from "./MainLayoutComponents/assets/dog.png";
 import useWindowDimensions from "./customHooks/useWindowDimension";
 import PotentialMatches from "./PotentialMatches/PotentialMatches";
