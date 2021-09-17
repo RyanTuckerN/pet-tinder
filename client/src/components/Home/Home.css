@@ -1,45 +1,143 @@
+body .background {
+    height: 100%;
+    width: 100%;
+}
+
+.background {
+    background-color: rgb(241, 235, 223);
+  
+
+}
+
+
+@media (max-width: 767px) {
+    .background {
+        width: 100%;
+    }
+}
+
+ #spacer {
+    height: 100px;
+}
+
+
 #home1 {
-    font-family: 'Rampart One', cursive;
+    font-family: 'Rampart One';
     color: #B05B3B;
-    position: relative;
-    bottom: -70px;
+    float: center;
     font-size: 40px;
 }
 
+@media (max-width: 767px) {
+    #home1 {
+        font-size: 16px;
+    }
+}
+
+
 #home2 {
-    font-family: 'Rampart One', cursive;
+    font-family: 'Rampart One';
     color: #B05B3B;
-    position: absolute;
-    bottom: 200px;
-    right: 450px;
+    /* position: absolute; 
+    bottom: 250px;
+    right: 450px;   */
 }
 
 #home3 {
-    position: relative;
-    bottom: -250px;
+    /* position: relative; */
+    bottom: -205px;
     font-family: 'Azeret Mono', monospace;
     color: rgb(82, 70, 49);
+    padding-top: 10px;
 }
 
 #home4 {
-    position: relative;
+    /* position: relative; */
     bottom: -260px;
     font-family: 'Azeret Mono', monospace;
     color: rgb(82, 70, 49);
 }
 
 #doglogo {
-    position: relative;
-    width: 5%;
-    top: -150px;
-    right: -180px;
-    z-index: 1;
+position: absolute;
+height: 60px;
+top: -148px;
+right: 430px;
+z-index: 1;
 } 
 
-#home-chat {
+
+@media (max-width: 768px) {
+    #doglogo {
+    position: absolute;
+    height: 40px;
+    top: -115px;
+    right: 200px;
+    z-index: 1;
+    }
+}
+/* 
+ @media (min-width: 770px) {
+    #doglogo {
+    position: absolute;
+    height: 30px;
+    top: -200px;
+    right: -500px;
+    z-index: 1;
+    }
+}  */
+
+#chat {
+
     color: #B05B3B;
    font-size: 100px;
-   position: relative;
-   right: -732px;
-   top: -235px;
+   position: absolute;
+   align-items: center;
+   justify-content: center;
+   top: -165px;   
+   right: 410px;
+}
+
+@media (max-width: 768px) {
+    #chat {
+        color: #B05B3B;
+        font-size: 60px;
+        position: absolute;
+        align-items: center;
+        justify-content: center;
+        top: -125px;   
+        right: 190px;
+    }
+}
+
+
+ /* @media (min-width: 770px) {
+    #chat {
+        color: #B05B3B;
+        font-size: 30px;
+        position: absolute;
+        align-items: center;
+        justify-content: center;
+        top: -56px;   
+        right: 75px;
+    }
+}  */
+
+.logo-container {
+    position: relative;
+    width: 100vw;
+    height: 30vh;
+
+}
+
+.logo-merge {
+    position: absolute; 
+    top: 10;
+    right: 0;
+    width: 85vw;
+}
+
+.homepage {
+    position: relative;
+    top: -80px;
 }
