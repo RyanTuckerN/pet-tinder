@@ -12,7 +12,6 @@ const DisplayProfile = (props) => {
 
   console.log(currentDog ? currentDog : "undefined");
 
-  // return <div>{currentDog?.name}</div>;
   return currentDog ? (
     <Grid
       container
@@ -50,21 +49,19 @@ const DisplayProfile = (props) => {
           justifyContent="center"
           alignItems="flex-end"
         >
-          <Typography variant="h3" display="inline">
-            {currentDog.name}
-          </Typography>
-          <Typography
-            variant="subtitle1"
-            display="inline"
-            style={{ paddingBottom: 5, paddingLeft: 15 }}
-          >
-            {`${currentDog.breed} | ${currentDog.age} years old | ${currentDog.weight} pounds`}
-          </Typography>
-          <Typography variant="subtitle2">
-            {`Eligible ${
-              currentDog.is_female ? "bachelorette" : "bachelor"
-            } since ${new Date(currentDog.createdAt).toLocaleDateString()}`}
-          </Typography>
+          <div>
+            <Typography variant="h3" display="inline">
+              {currentDog.name}
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              style={{ paddingBottom: 5, paddingLeft: 15 }}
+            >
+              {`${currentDog.breed} | ${currentDog.age} years old | ${currentDog.weight} pounds`}
+            </Typography>
+            <hr />
+          </div>
+
           <div style={{ display: "flex", flexDirection: "column" }}>
             <Typography
               variant="h6"
@@ -91,6 +88,13 @@ const DisplayProfile = (props) => {
               style={{ paddingBottom: 5, paddingLeft: 15 }}
             >
               {currentDog.temperament.join(" | ")}
+            </Typography>
+          </div>
+          <div>
+            <Typography variant="subtitle2">
+              {`Eligible ${
+                currentDog.is_female ? "bachelorette" : "bachelor"
+              } since ${new Date(currentDog.createdAt).toLocaleDateString()}`}
             </Typography>
           </div>
         </Grid>
