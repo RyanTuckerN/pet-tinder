@@ -29,6 +29,7 @@ import {
   Toolbar,
   Tooltip,
   Typography,
+  Badge
 } from "@material-ui/core";
 
 import ChatIndex from "./Chat/ChatIndex";
@@ -42,6 +43,7 @@ import useWindowDimensions from "./customHooks/useWindowDimension";
 import PotentialMatches from "./PotentialMatches/PotentialMatches";
 import Profile from "./Profile/Profile";
 import Home from "./Home/Home";
+import NotificationsPage from "./Notifications/Notifications";
 
 const drawerWidth = 220;
 
@@ -115,8 +117,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MainLayout(props) {
   //DESTRUCTURING PROPS
-  const { socket, usersInfo, onlineUsers, clearToken, token } =
-    props.mainLayoutProps;
+  const {
+    socket,
+    usersInfo,
+    onlineUsers,
+    clearToken,
+    token,
+    notifications,
+    setNotifications,
+    setUsersInfo
+  } = props.mainLayoutProps;
 
   //HOOKS
   const classes = useStyles();
@@ -145,6 +155,7 @@ export default function MainLayout(props) {
       : setAvatarPhoto(dogPic);
   }, [usersInfo]);
 
+
   //PROP OBJECTS
   const profileProps = { token, avatarPhoto, usersInfo, socket };
 
@@ -165,6 +176,8 @@ export default function MainLayout(props) {
     setChatTarget,
     handleDrawerToggle,
   };
+
+  const noteProps = { usersInfo, notifications, setNotifications, socket, setChatTarget };
 
   const dropdownProps = { anchorEl, clearToken, handleDropdownClose };
 
@@ -215,9 +228,13 @@ export default function MainLayout(props) {
               </Link>
             ) : null}
             <div style={{ marginLeft: "auto" }}>
-              <IconButton>
-                <Notifications color="inherit" />
-              </IconButton>
+            <Badge badgeContent={notifications?.length} color="error"  >
+              <Link to="/notifications">
+                <IconButton>
+                  <Notifications color="inherit" />
+                </IconButton>
+              </Link>
+            </Badge>
               <IconButton
                 aria-controls="simple-menu"
                 aria-haspopup="true"
@@ -284,45 +301,45 @@ export default function MainLayout(props) {
           </Link>
         </Drawer>
         {/* ***THIS IS THE MAIN BODY DIV, EVERYTHING DYNAMIC WILL SHOW HERE!*** */}
-        <main 
-        className={classes.content}
-        >
+        <main className={classes.content}>
           <div className={classes.toolbar} />
-          
+
           {/* <div id="body-container"> */}
-       
-            <Switch>
-              <Route exact path="/Home">
-                <Home />
-              </Route>
-              <Route exact path="/create-profile">
-                <CreateProfile token={token} />
-              </Route>
-              <Route exact path="/profile">
-                {usersInfo.user?.dog ? (
-                  <Profile profileProps={profileProps} />
-                ) : (
-                  <CreateProfile />
-                )}
-              </Route>
-              <Route exact path="/potentialmatches">
-                <PotentialMatches usersInfo={usersInfo} socket={socket} />
-              </Route>
-              <Route exact path="/matches">
-                <Matches usersInfo={usersInfo} socket={socket} />
-              </Route>
-              <Route exact path="/chat">
-                {socket ? (
-                  <ChatIndex chatProps={chatProps} />
-                ) : (
-                  <div>Not Connected</div>
-                )}
-              </Route>
-            </Switch>
-       
+
+          <Switch>
+            <Route exact path="/Home">
+              <Home />
+            </Route>
+            <Route exact path="/create-profile">
+              <CreateProfile token={token} />
+            </Route>
+            <Route exact path="/profile">
+              {usersInfo.user?.dog ? (
+                <Profile profileProps={profileProps} />
+              ) : (
+                <CreateProfile />
+              )}
+            </Route>
+            <Route exact path="/potentialmatches">
+              <PotentialMatches usersInfo={usersInfo} socket={socket} setUsersInfo={setUsersInfo}/>
+            </Route>
+            <Route exact path="/matches">
+              <Matches usersInfo={usersInfo} socket={socket} />
+            </Route>
+            <Route exact path="/notifications">
+              <NotificationsPage noteProps={noteProps} />
+            </Route>
+            <Route exact path="/chat">
+              {socket ? (
+                <ChatIndex chatProps={chatProps} />
+              ) : (
+                <div>Not Connected</div>
+              )}
+            </Route>
+          </Switch>
+
           {/* </div> */}
-      
-      </main>
+        </main>
       </div>
     </Router>
   );
