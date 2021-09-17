@@ -15,8 +15,8 @@ export default function Dropdown(props) {
         open={Boolean(anchorEl)}
         onClose={handleDropdownClose}
       >
-        <Link to='/profile'>
-          <MenuItem onClick={handleDropdownClose}>Profile</MenuItem>
+        <Link to='/edit-profile'>
+          <MenuItem onClick={handleDropdownClose}>Edit Profile</MenuItem>
         </Link>
         <Link to='/user-profile'>
           <MenuItem onClick={handleDropdownClose}>My account</MenuItem>

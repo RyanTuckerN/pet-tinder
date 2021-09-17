@@ -1,4 +1,5 @@
 // import React, { useState, useEffect } from "react";
+import { Link } from 'react-router-dom'
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Button,
@@ -72,6 +73,8 @@ export default function MatchDisplay(props) {
     // alert(unlikeJson.message);
   };
 
+  const buttonStyle = {backgroundColor:'rgba(255, 0, 133, 0.34)', color: 'white', margin: 6, borderRadius: 5}
+
   return (
     <Grid
       container
@@ -100,7 +103,7 @@ export default function MatchDisplay(props) {
             {dog.breed} | Age: {dog.age} | Weight: {dog.weight} lbs
           </Typography>
           {/* <p>{showMore ? dog.ad_description : null}</p> */}
-          <ul className="chips-list">
+          {/* <ul className="chips-list">
             {dog.temperament.map((temp, i) => {
               return (
                 <li key={i} className="chip">
@@ -108,12 +111,17 @@ export default function MatchDisplay(props) {
                 </li>
               );
             })}
-          </ul>
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          </ul> */}
+          <div style={{ display: "flex", justifyContent: "center", paddingTop:18 }}>
             <ButtonGroup>
-              <Button onClick={() => handleUnlike(dog.id)}>
+              <Button onClick={() => handleUnlike(dog.id)} style={buttonStyle}>
                 Unlike this dog
               </Button>
+              <Link to={`/profile/${dog.id}`}>
+                <Button style={buttonStyle}>
+                  {`See ${dog.name}'s Profile'`}
+                </Button>
+              </Link>
             </ButtonGroup>
           </div>
         </CardContent>

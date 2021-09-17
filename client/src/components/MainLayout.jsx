@@ -40,9 +40,10 @@ import Matches from "./Matches/Matches";
 import dogPic from "./MainLayoutComponents/assets/dog.png";
 import useWindowDimensions from "./customHooks/useWindowDimension";
 import PotentialMatches from "./PotentialMatches/PotentialMatches";
-import Profile from "./Profile/Profile";
+import EditProfile from "./Profile/EditProfile";
 import Home from "./Home/Home";
 import NotificationsPage from "./Notifications/Notifications";
+import DisplayProfile from "./Profile/DisplayProfile";
 
 const drawerWidth = 220;
 
@@ -93,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
     overflowX: "hidden",
     width: theme.spacing(7) + 18,
     [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(9) + 2,
+      width: theme.spacing(10) + 2,
     },
   },
   title: {
@@ -202,47 +203,49 @@ export default function MainLayout(props) {
               justifyContent: "space-between",
             }}
           >
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              className={clsx(classes.menuButton, {
-                [classes.hide]: open,
-              })}
-              style={{ marginRight: "auto" }}
-            >
-              <Menu />
-            </IconButton>
-            {width > 500 && !open ? (
-              <Link to="/Home">
-                <Typography
-                  variant="h6"
-                  noWrap
-                  className={classes.title}
-                  style={{ color: "white" }}
-                >
-                  Pet Tinder
-                </Typography>
-              </Link>
-            ) : null}
-            <div style={{ marginLeft: "auto" }}>
-            <Badge badgeContent={notifications?.length} color="error"  >
-              <Link to="/notifications">
-                <IconButton>
-                  <Notifications color="inherit" />
-                </IconButton>
-              </Link>
-            </Badge>
+            {/* <div> */}
               <IconButton
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                onClick={handleAvatarClick}
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawerOpen}
+                edge="start"
+                className={clsx(classes.menuButton, {
+                  [classes.hide]: open,
+                })}
+                style={{ marginRight: "auto" }}
               >
-                <Avatar alt="Profile Avatar" src={avatarPhoto} />
+                <Menu />
               </IconButton>
-              <Dropdown dropdownProps={dropdownProps} />
-            </div>
+              {width > 500 ? (
+                <Link to="/Home">
+                  <Typography
+                    variant="h6"
+                    noWrap
+                    className={classes.title}
+                    style={{ color: "white" }}
+                  >
+                    Pet Tinder
+                  </Typography>
+                </Link>
+              ) : null}
+              <div style={{ marginLeft: "auto" }}>
+              <Badge badgeContent={notifications?.length} color="error"  >
+                <Link to="/notifications">
+                  <IconButton>
+                    <Notifications color="inherit" />
+                  </IconButton>
+                </Link>
+              </Badge>
+                <IconButton
+                  aria-controls="simple-menu"
+                  aria-haspopup="true"
+                  onClick={handleAvatarClick}
+                >
+                  <Avatar alt="Profile Avatar" src={avatarPhoto} />
+                </IconButton>
+                <Dropdown dropdownProps={dropdownProps} />
+              </div>
+            {/* </div> */}
           </Toolbar>
         </AppBar>
         <Drawer // THIS IS SIDE NAVBAR
@@ -264,8 +267,8 @@ export default function MainLayout(props) {
             </IconButton>
           </div>
           <Divider />
-          <Tooltip title="View or edit your profile">
-            <Link to={usersInfo?.user?.dog ? "/profile" : "/create-profile"}>
+          <Tooltip title="View your profile">
+            <Link to={usersInfo?.user?.dog ? `/profile/${usersInfo?.user?.id}` : "/create-profile"}>
               <ListItem button>
                 <ListItemIcon>
                   <AccountBox />
@@ -309,12 +312,15 @@ export default function MainLayout(props) {
             <Route exact path="/Home">
               <Home />
             </Route>
+            <Route path="/profile/:dogId">
+              <DisplayProfile dog={usersInfo?.user?.dog} usersInfo={usersInfo} />
+            </Route>
             <Route exact path="/create-profile">
               <CreateProfile token={token} />
             </Route>
-            <Route exact path="/profile">
+            <Route exact path="/edit-profile">
               {usersInfo.user?.dog ? (
-                <Profile profileProps={profileProps} />
+                <EditProfile profileProps={profileProps} />
               ) : (
                 <CreateProfile />
               )}
