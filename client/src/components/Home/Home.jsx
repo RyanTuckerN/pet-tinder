@@ -19,12 +19,6 @@ const Home = (props) => {
       <h4 id="home4">Checkout the sidebar to start matching!</h4>
 
       </div>
-     
-  
-
-
-      <img id="doglogo" src={PetTinderLogo} />
-      <ChatBubbleIcon id="home-chat" />
       <style>
         @import
         url('https://fonts.googleapis.com/css2?family=Rampart+One&display=swap');

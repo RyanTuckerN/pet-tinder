@@ -51,7 +51,7 @@ const ChatIndex = (props) => {
   
   return (
     <>
-      <section id="chat">
+      <section id="chat-window">
         {chatTarget ? (
           <div className="chat-target-banner">
             <Avatar src={chatTarget.photo_url} id="chat-target-avatar" />
