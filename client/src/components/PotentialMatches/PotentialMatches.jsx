@@ -9,7 +9,7 @@ const alreadyRemoved = [];
 let dogsState, originalArray;
 
 const PotentialMatches = (props) => {
-  const {socket, usersInfo} = props
+  const { socket, usersInfo } = props;
   const [potentialMatches, setPotentialMatches] = useState([]);
   const [lastDirection, setLastDirection] = useState();
 
@@ -32,7 +32,7 @@ const PotentialMatches = (props) => {
 
     const dogsJson = await allDogs.json();
     {
-      const likedIds = likesJson.length? likesJson.map((el) => el.dog.id) : [] 
+      const likedIds = likesJson.length ? likesJson.map((el) => el.dog.id) : [];
       const likesRemoved = dogsJson.dogs.filter(
         (dog) => !likedIds.includes(dog.id)
       );
@@ -43,28 +43,97 @@ const PotentialMatches = (props) => {
   };
   useEffect(fetchPotentialMatches, []);
 
-  const handleLike = async(dir, id) => {
+  const handleLike = async (dir, id) => {
+    //First fetch matches
+    const firstMatchesFetch = await fetch(
+      "http://localhost:3333/like/matches",
+      {
+        method: "GET",
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        }),
+      }
+    );
+    const firstRes = await firstMatchesFetch.json();
+    const firstCount = firstRes.count;
+    const firstMatches = firstRes.matches;
+    //Like the dog
     const likeFetch = await fetch(`http://localhost:3333/like/${id}`, {
-      method: 'POST',
+      method: "POST",
       headers: new Headers({
         "Content-Type": "application/json",
-        Authorization: localStorage.getItem('token') 
+        Authorization: localStorage.getItem("token"),
       }),
-      body: JSON.stringify({superlike: dir==='up'?true : false})
-    })
-    const json = await likeFetch.json()
-    console.log(json)
-    socket.emit("newLogin", usersInfo.user.id);
+      body: JSON.stringify({ superlike: dir === "up" ? true : false }),
+    });
+    const json = await likeFetch.json();
+    console.log(json);
+    //send socket request that online users update current matches, might need to move/remove?
+    socket.emit("matchRequest", usersInfo?.user?.id);
 
-  
-  }
+    //fetch matches again, see if there is a change
+    const secondMatchesFetch = await fetch(
+      "http://localhost:3333/like/matches",
+      {
+        method: "GET",
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        }),
+      }
+    );
+    const secondRes = await secondMatchesFetch.json();
+    const secondCount = secondRes.count;
+    const secondMatches = secondRes.matches;
+    //if there is a new match...
+    if (secondCount > firstCount) {
+      const newMatch = secondMatches.filter(
+        (match) => !firstMatches.map((d) => d.id).includes(match.id)
+      )[0];
+      console.log("NEW MATCH: ", newMatch);
+      const selfNote = await fetch(
+        `http://localhost:3333/note/${usersInfo?.user?.id}`,
+        {
+          method: "POST",
+          headers: new Headers({
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          }),
+          body: JSON.stringify({
+            message: `You have a new match! Send ${newMatch.name} a chat.`,
+            target: newMatch?.id,
+          }),
+        }
+      );
+      const targetNote = await fetch(`http://localhost:3333/note/${id}`, {
+        method: "POST",
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        }),
+        body: JSON.stringify({
+          message: `You have a new match! Send ${usersInfo?.user?.dog?.name} a chat.`,
+          target: usersInfo?.user?.id,
+        }),
+      });
+
+      const targetJson = await targetNote.json();
+      const selfJson = await selfNote.json();
+      console.log("NOTIFICATION RESPONSES: ", selfJson, targetJson);
+      socket.emit("notificationRequest", {
+        userId: usersInfo?.user?.id,
+        target: id
+      });
+    }
+  };
 
   const swiped = (dir, idToDelete) => {
     console.log("removing :", idToDelete);
     setLastDirection(dir);
     alreadyRemoved.push(idToDelete);
-    if(dir==='left' || dir==='down')return
-    handleLike(dir, idToDelete)
+    if (dir === "left" || dir === "down") return;
+    handleLike(dir, idToDelete);
   };
 
   const outOfFrame = (id) => {
@@ -76,22 +145,29 @@ const PotentialMatches = (props) => {
   return (
     <>
       <div className="tinderCards__cardContainer">
-        {potentialMatches.map((dog, index) => (
+        {potentialMatches.map((dog) => (
           <TinderCard
             preventSwipe={["down"]}
-            // ref={childRefs[index]}
             className="swipe"
             key={dog.id}
             onSwipe={(dir) => swiped(dir, dog.id)}
             onCardLeftScreen={() => outOfFrame(dog.id)}
           >
-            <Grid container justifyContent='center'>
-              <DogDisplay dog={dog} showingMatches='false' className="card" />
+            <Grid container justifyContent="center">
+              <DogDisplay dog={dog} showingMatches="false" className="card" />
             </Grid>
           </TinderCard>
         ))}
       </div>
-      {lastDirection ? <h2 key={lastDirection} className='infoText'>You swiped {lastDirection}</h2> : <h2 className='infoText'>Swipe left to REJECT, swipe right to LIKE, swipe up to SUPERLIKE</h2>}
+      {lastDirection ? (
+        <h2 key={lastDirection} className="infoText">
+          You swiped {lastDirection}
+        </h2>
+      ) : (
+        <h2 className="infoText">
+          Swipe left to REJECT, swipe right to LIKE, swipe up to SUPERLIKE
+        </h2>
+      )}
     </>
   );
 };
