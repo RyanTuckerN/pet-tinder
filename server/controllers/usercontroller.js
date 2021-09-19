@@ -3,6 +3,7 @@ const { User, Dog } = require("../models");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const validateSession = require("../middleware/validateSession");
 
 // ALL OUR CONTROLLERS FOR USER GO HERE
 router.post("/signup", function (req, res) {
@@ -69,6 +70,23 @@ router.get("/checkAvail/:profile_name", async (req, res) => {
     }
   } catch (err) {
     res.status(402).json({ err });
+  }
+});
+
+router.put("/", validateSession, async (req, res) => {
+  const { profile_name, name, email } = req.body;
+  const { id } = req.user;
+  const updateUser = { profile_name, name, email };
+  const query = { where: { id } };
+  try {
+    const result = await User.update(updateUser, query);
+    if (!result[0]) {
+      res.status(403).json({ message: "Account not found" });
+    } else {
+      res.status(200).json({ message: `${name}'s profile has been updated!'`});
+    }
+  } catch (err) {
+    res.status(500).json({ message: "Opps, something went wrong!",err });
   }
 });
 

@@ -18,7 +18,7 @@ export default function Dropdown(props) {
         <Link to='/edit-profile'>
           <MenuItem onClick={handleDropdownClose}>Edit Profile</MenuItem>
         </Link>
-        <Link to='/user-profile'>
+        <Link to='/account'>
           <MenuItem onClick={handleDropdownClose}>My account</MenuItem>
         </Link>
         <Link to='/'>

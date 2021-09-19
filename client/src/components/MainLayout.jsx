@@ -44,6 +44,7 @@ import EditProfile from "./Profile/EditProfile";
 import Home from "./Home/Home";
 import NotificationsPage from "./Notifications/Notifications";
 import DisplayProfile from "./Profile/DisplayProfile";
+import Account from './MainLayoutComponents/Account'
 
 const drawerWidth = 220;
 
@@ -204,30 +205,31 @@ export default function MainLayout(props) {
             }}
           >
             {/* <div> */}
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                onClick={handleDrawerOpen}
-                edge="start"
-                className={clsx(classes.menuButton, {
-                  [classes.hide]: open,
-                })}
-                style={{ marginRight: "auto" }}
-              >
-                <Menu />
-              </IconButton>
-              {width > 500 ? (
-                <Link to="/Home">
-                  <Typography
-                    variant="h6"
-                    noWrap
-                    className={classes.title}
-                    style={{ color: "white" }}
-                  >
-                    Pet Tinder
-                  </Typography>
-                </Link>
-              ) : null}
+              <div style={{ marginRight: "auto", display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                <IconButton
+                  color="inherit"
+                  aria-label="open drawer"
+                  onClick={handleDrawerOpen}
+                  edge="start"
+                  className={clsx(classes.menuButton, {
+                    [classes.hide]: open,
+                  })}
+                >
+                  <Menu />
+                </IconButton>
+                {width > 500 ? (
+                  <Link to="/Home">
+                    <Typography
+                      variant="h6"
+                      noWrap
+                      className={classes.title}
+                      style={{ color: "white" }}
+                    >
+                      Pet Tinder
+                    </Typography>
+                  </Link>
+                ) : null}
+              </div>
               <div style={{ marginLeft: "auto" }}>
               <Badge badgeContent={notifications?.length} color="error"  >
                 <Link to="/notifications">
@@ -311,6 +313,9 @@ export default function MainLayout(props) {
           <Switch>
             <Route exact path="/Home">
               <Home />
+            </Route>
+            <Route exact path="/account">
+              <Account usersInfo={usersInfo} socket={socket}/>
             </Route>
             <Route path="/profile/:dogId">
               <DisplayProfile dog={usersInfo?.user?.dog} usersInfo={usersInfo} />
