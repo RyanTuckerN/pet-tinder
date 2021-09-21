@@ -135,6 +135,7 @@ const Signup = (props) => {
             name="username"
             value={profile_name}
             onChange={handleProfileName}
+            autoComplete='false'
           />
           <Typography variant="caption" style={{
             color: usernameAvailable ? 'green' : 'red'
@@ -188,9 +189,10 @@ const Signup = (props) => {
               fullWidth={width<=550 ? true : false} 
               // // className='signup-password'
               // // style={{ width: "48%" }}
+               
               name="password"
               label={
-                passwordsMatch ? "Re-enter password" : "Passwords must match"
+                password2 ? passwordsMatch ? "Passwords match ✔" : "Passwords must match" : "Re-enter password"
               }
               type="password"
               id="password"

@@ -1,12 +1,7 @@
-/*
-THIS IS THE MAIN HUB FOR OUR APP, SIMILAR TO THE SIDEBAR FROM REACT-MODULES. 
-THERE IS A LOT OF STUFF IN HERE, BUT MOST OF IT IS MATERIAL UI COMPONENTS.
-*/
-
 import React, { useState, useEffect } from "react";
 import { Route, Link, Switch, BrowserRouter as Router } from "react-router-dom";
 import clsx from "clsx";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles, useTheme, styled } from "@material-ui/core/styles";
 import {
   Notifications,
   AccountBox,
@@ -28,8 +23,8 @@ import {
   ListItemText,
   Toolbar,
   Tooltip,
-  Typography,
-  Badge
+  Badge,
+  ClickAwayListener
 } from "@material-ui/core";
 
 import ChatIndex from "./Chat/ChatIndex";
@@ -44,16 +39,18 @@ import EditProfile from "./Profile/EditProfile";
 import Home from "./Home/Home";
 import NotificationsPage from "./Notifications/Notifications";
 import DisplayProfile from "./Profile/DisplayProfile";
-import Account from './MainLayoutComponents/Account'
+import Account from "./MainLayoutComponents/Account";
+import Logo from "./MainLayoutComponents/Logo";
 
-const drawerWidth = 220;
+let drawerWidth = 220;
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
   },
   appBar: {
-    zIndex: theme.zIndex.drawer + 1,
+    // zIndex: theme.zIndex.drawer - ,
+    height: 65,
     display: "flex",
     justifyContent: "space-around",
     transition: theme.transitions.create(["width", "margin"], {
@@ -94,9 +91,9 @@ const useStyles = makeStyles((theme) => ({
     }),
     overflowX: "hidden",
     width: theme.spacing(7) + 18,
-    [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(9) + 2,
-    },
+    // [theme.breakpoints.up("sm")]: {
+    //   width: theme.spacing(9) + 2,
+    // },
   },
   title: {
     flexGrow: 1,
@@ -108,12 +105,24 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
+    backgroundColor: '#514949',
   },
   content: {
-    // flexGrow: 1,
-    // padding: theme.spacing(3),
-    // height: '100vh',
+    backgroundColor: "#f3f0ee",
   },
+  darkBackgroud: {
+    color: '#f3f0ee',
+    backgroundColor: '#514949'
+  }
+}));
+
+const DrawerHeader = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+  justifyContent: 'center',
 }));
 
 export default function MainLayout(props) {
@@ -126,7 +135,7 @@ export default function MainLayout(props) {
     token,
     notifications,
     setNotifications,
-    setUsersInfo
+    setUsersInfo,
   } = props.mainLayoutProps;
 
   //HOOKS
@@ -156,7 +165,6 @@ export default function MainLayout(props) {
       : setAvatarPhoto(dogPic);
   }, [usersInfo]);
 
-
   //PROP OBJECTS
   const profileProps = { token, avatarPhoto, usersInfo, socket };
 
@@ -178,7 +186,13 @@ export default function MainLayout(props) {
     handleDrawerToggle,
   };
 
-  const noteProps = { usersInfo, notifications, setNotifications, socket, setChatTarget };
+  const noteProps = {
+    usersInfo,
+    notifications,
+    setNotifications,
+    socket,
+    setChatTarget,
+  };
 
   const dropdownProps = { anchorEl, clearToken, handleDropdownClose };
 
@@ -189,12 +203,14 @@ export default function MainLayout(props) {
         <CssBaseline /> {/* This is from MUI*/}
         <AppBar // THIS IS TOP NAVBAR
           position="fixed"
-          className={clsx(classes.appBar, {
-            [classes.appBarShift]: open,
-          })}
+          className={
+            clsx(classes.appBar, 
+              {[classes.appBarShift]: open,}
+              )}
           style={{
+            zIndex: width >= 600 ? theme.zIndex.drawer + 1 : 1,
             background:
-              "radial-gradient(circle, rgba(180,155,79,1) 1%, rgba(195,85,19,1) 35%, rgba(186,23,97,1) 100%)",
+              "radial-gradient(circle, #ff655b 1%, #ff5864 35%, #fd2974 100%)",
           }}
         >
           <Toolbar
@@ -204,73 +220,143 @@ export default function MainLayout(props) {
               justifyContent: "space-between",
             }}
           >
-            {/* <div> */}
-              <div style={{ marginRight: "auto", display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                <IconButton
-                  color="inherit"
-                  aria-label="open drawer"
-                  onClick={handleDrawerOpen}
-                  edge="start"
-                  className={clsx(classes.menuButton, {
-                    [classes.hide]: open,
-                  })}
-                >
-                  <Menu />
-                </IconButton>
-                {width > 500 ? (
-                  <Link to="/Home">
-                    <Typography
-                      variant="h6"
-                      noWrap
-                      className={classes.title}
-                      style={{ color: "white" }}
-                    >
-                      Pet Tinder
-                    </Typography>
-                  </Link>
-                ) : null}
-              </div>
-              <div style={{ marginLeft: "auto" }}>
-              <Badge badgeContent={notifications?.length} color="error"  >
+            <div
+              style={{
+                marginRight: "auto",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawerOpen}
+                edge="start"
+                className={clsx(classes.menuButton, {
+                  [classes.hide]: open,
+                })}
+              >
+                <Menu />
+              </IconButton>
+              <Link to="/">
+                <Logo />
+              </Link>
+            </div>
+            <div style={{ marginLeft: "auto" }}>
+              <Badge badgeContent={notifications?.length} color="error">
                 <Link to="/notifications">
                   <IconButton>
                     <Notifications color="inherit" />
                   </IconButton>
                 </Link>
               </Badge>
-                <IconButton
-                  aria-controls="simple-menu"
-                  aria-haspopup="true"
-                  onClick={handleAvatarClick}
-                >
-                  <Avatar alt="Profile Avatar" src={avatarPhoto} />
-                </IconButton>
-                <Dropdown dropdownProps={dropdownProps} />
-              </div>
-            {/* </div> */}
+              <IconButton
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={handleAvatarClick}
+              >
+                <Avatar alt="Profile Avatar" src={avatarPhoto} />
+              </IconButton>
+              <Dropdown dropdownProps={dropdownProps} />
+            </div>
           </Toolbar>
         </AppBar>
-        <Drawer // THIS IS SIDE NAVBAR
-          variant="permanent"
-          className={clsx(classes.drawer, {
-            [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open,
-          })}
-          classes={{
-            paper: clsx({
+        {width >= 600 ? (
+          
+          <Drawer // THIS IS SIDE NAVBAR
+            variant={"permanent"}
+            className={clsx(classes.drawer, {
               [classes.drawerOpen]: open,
               [classes.drawerClose]: !open,
-            }),
-          }}
-        >
-          <div className={classes.toolbar}>
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === "rtl" ? <ChevronRight /> : <ChevronLeft />}
-            </IconButton>
-          </div>
+            })}
+            classes={{
+              paper: clsx({
+                [classes.drawerOpen]: open,
+                [classes.drawerClose]: !open,
+              }),
+            }}
+            // style={{ bac }}
+          >
+            <div className={classes.toolbar}>
+              <IconButton onClick={handleDrawerClose} className={classes.darkBackgroud}>
+                {theme.direction === "rtl" ? <ChevronRight /> : <ChevronLeft />}
+              </IconButton>
+            </div>
+            <Divider />
+            <Tooltip title="View your profile">
+              <Link onClick={handleDrawerClose}
+                to={
+                  usersInfo?.user?.dog
+                    ? `/profile/${usersInfo?.user?.id}`
+                    : "/create-profile"
+                }
+              >
+                <ListItem button>
+                  <ListItemIcon>
+                    <AccountBox />
+                  </ListItemIcon>
+                  <ListItemText primary="Profile" />
+                </ListItem>
+              </Link>
+            </Tooltip>
+            <Tooltip title="See potential matches">
+              <Link onClick={handleDrawerClose} to="/potentialmatches">
+                <ListItem button>
+                  <ListItemIcon>
+                    <Pets />
+                  </ListItemIcon>
+                  <ListItemText primary="Dogs" />
+                </ListItem>
+              </Link>
+            </Tooltip>
+            <Tooltip title="See your matches">
+              <Link onClick={handleDrawerClose} to="/matches">
+                <ListItem button>
+                  <ListItemIcon>
+                    <Favorite />
+                  </ListItemIcon>
+                  <ListItemText primary="Matches" />
+                </ListItem>
+              </Link>
+            </Tooltip>
+            <Divider />
+            <Link to="/chat">
+              <MatchList matchListProps={matchListProps} handleDrawerClose={handleDrawerClose}/>
+            </Link>
+          </Drawer>
+        )
+        :
+        (<Drawer
+
+        sx={{
+          width: 500,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            // zIndex: 1400,
+            boxSizing: 'border-box',
+          },
+        }}
+        variant="persistent"
+        anchor="left"
+        
+        open={open}
+      >
+          <DrawerHeader>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'ltr' ? <ChevronLeft /> : <ChevronRight />}
+          </IconButton>
+        </DrawerHeader>
           <Divider />
           <Tooltip title="View your profile">
-            <Link to={usersInfo?.user?.dog ? `/profile/${usersInfo?.user?.id}` : "/create-profile"}>
+            <Link
+            onClick={handleDrawerClose}
+              to={
+                usersInfo?.user?.dog
+                  ? `/profile/${usersInfo?.user?.id}`
+                  : "/create-profile"
+              }
+            >
               <ListItem button>
                 <ListItemIcon>
                   <AccountBox />
@@ -280,7 +366,7 @@ export default function MainLayout(props) {
             </Link>
           </Tooltip>
           <Tooltip title="See potential matches">
-            <Link to="/potentialmatches">
+            <Link onClick={handleDrawerClose} to="/potentialmatches">
               <ListItem button>
                 <ListItemIcon>
                   <Pets />
@@ -290,7 +376,7 @@ export default function MainLayout(props) {
             </Link>
           </Tooltip>
           <Tooltip title="See your matches">
-            <Link to="/matches">
+            <Link onClick={handleDrawerClose} to="/matches">
               <ListItem button>
                 <ListItemIcon>
                   <Favorite />
@@ -301,9 +387,9 @@ export default function MainLayout(props) {
           </Tooltip>
           <Divider />
           <Link to="/chat">
-            <MatchList matchListProps={matchListProps} />
+            <MatchList matchListProps={matchListProps} handleDrawerClose={handleDrawerClose} />
           </Link>
-        </Drawer>
+        </Drawer>)}
         {/* ***THIS IS THE MAIN BODY DIV, EVERYTHING DYNAMIC WILL SHOW HERE!*** */}
         <main className={classes.content}>
           <div className={classes.toolbar} />
@@ -311,17 +397,20 @@ export default function MainLayout(props) {
           {/* <div id="body-container"> */}
 
           <Switch>
-            <Route exact path="/Home">
+            <Route exact path="/">
               <Home />
             </Route>
             <Route exact path="/account">
-              <Account usersInfo={usersInfo} socket={socket}/>
+              <Account usersInfo={usersInfo} socket={socket} />
             </Route>
             <Route path="/profile/:dogId">
-              <DisplayProfile dog={usersInfo?.user?.dog} usersInfo={usersInfo} />
+              <DisplayProfile
+                dog={usersInfo?.user?.dog}
+                usersInfo={usersInfo}
+              />
             </Route>
             <Route exact path="/create-profile">
-              <CreateProfile token={token} />
+              <CreateProfile usersInfo={usersInfo} socket={socket} />
             </Route>
             <Route exact path="/edit-profile">
               {usersInfo.user?.dog ? (
@@ -331,7 +420,11 @@ export default function MainLayout(props) {
               )}
             </Route>
             <Route exact path="/potentialmatches">
-              <PotentialMatches usersInfo={usersInfo} socket={socket} setUsersInfo={setUsersInfo}/>
+              <PotentialMatches
+                usersInfo={usersInfo}
+                socket={socket}
+                setUsersInfo={setUsersInfo}
+              />
             </Route>
             <Route exact path="/matches">
               <Matches usersInfo={usersInfo} socket={socket} />

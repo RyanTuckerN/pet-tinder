@@ -6,15 +6,18 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import "../Matches/Matches.css";
+import distanceBetCoor from "../../functions/distanceBetCoor";
 
 const useStyles = makeStyles({
   root: {
-    borderRadius: 20,
+    borderRadius: 2,
     // margin: 25,
-    height: 600,
+    height: 500,
     textAlign: "left",
+    color: '#F3F0EE',
     background:
-      "linear-gradient(194deg, rgba(244,244,244,1) 0%, rgba(223,180,148,1) 68%, rgba(245,172,238,1) 100%)",
+      // "linear-gradient(194deg, rgba(244,244,244,1) 0%, rgba(223,180,148,1) 68%, rgba(245,172,238,1) 100%)",
+      "#FF655B",
   },
   media: {
     height: 280,
@@ -22,12 +25,10 @@ const useStyles = makeStyles({
 });
 
 export default function DogDisplay(props) {
-  const { dog, showingMatches } = props;
-  const [showMore, setShowMore] = useState(false);
+  const { dog, usersInfo } = props;
   const classes = useStyles();
 
   return (
-    // <div >
     <Grid
       container
       item
@@ -43,13 +44,27 @@ export default function DogDisplay(props) {
           image={dog.photo_url}
           title={dog.name}
         />
+        <Typography variant='caption' style={{display: 'flex', justifyContent: 'flex-end'}}>
+          {dog.location.lat && usersInfo?.user?.dog?.location?.lat
+            ? distanceBetCoor.calcMiles([
+              dog.location.lat,
+              dog.location.lon,
+              usersInfo.user.dog.location.lat,
+              usersInfo.user.dog.location.lon,
+            ]) <5 ? 'Less than 5 miles away' : `About ${distanceBetCoor.calcMiles([
+              dog.location.lat,
+              dog.location.lon,
+              usersInfo.user.dog.location.lat,
+              usersInfo.user.dog.location.lon,
+            ])} miles away`
+            : null}
+        </Typography>
         <CardContent style={{ overflow: "auto", maxHeight: 320 }}>
           <span id="title">{`${dog.name}, `}</span>
           <span id="subtitle">{dog.is_female ? "female" : "male"}</span>
-          <Typography variant="caption" color="textSecondary" component="p">
+          <Typography variant="caption"  component="p">
             {dog.breed} | Age: {dog.age} | Weight: {dog.weight} lbs
           </Typography>
-          <p>{showMore ? dog.ad_description : null}</p>
           <ul className="chips-list">
             {dog.temperament.map((temp, i) => {
               return (
@@ -59,12 +74,11 @@ export default function DogDisplay(props) {
               );
             })}
           </ul>
-          <Typography variant="caption" color="textSecondary" component="p">
+          <Typography variant="caption"  component="p">
             {dog.ad_description}
           </Typography>
         </CardContent>
       </Card>
     </Grid>
-    // </div>
   );
 }

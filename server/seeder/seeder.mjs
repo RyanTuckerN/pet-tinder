@@ -1,6 +1,7 @@
 import fetch from "node-fetch";
 const port = process.env.PORT || 3333
 import dogOptions from "./dogOptions.js";
+import { lats, lons } from './randomCoords.js'
 
 const petTinderSeeder = async () => {
   for (let i = 1; i <= 20; i++) {
@@ -35,8 +36,9 @@ const petTinderSeeder = async () => {
         temperament: dogOptions.temp.slice(sliceNum, sliceNum + 2),
         location: {
           zip: 46200 + Math.floor(Math.random() * 30),
-          lat: 39 + Math.random(),
-          lon: -89 + Math.random(),
+          lat: lats[i],
+          lon: lons[i]
+
         },
 
       };

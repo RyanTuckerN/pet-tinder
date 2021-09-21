@@ -8,15 +8,19 @@ const ChatMessage = (props) => {
   const year = new Date(message.createdAt).getFullYear();
   const userStyle = {
     textAlign: "right",
-    backgroundColor: "orange",
+    backgroundColor: "#514949",
     padding: "8px",
     borderRadius: 12,
+    marginLeft: 15,
+    marginRight: 15
   };
   const targetStyle = {
     textAlign: "left",
-    backgroundColor: "red",
+    backgroundColor: "#fd2974",
     padding: "8px",
     borderRadius: 12,
+    marginLeft: 15,
+    marginRight: 15
   };
 
   return (

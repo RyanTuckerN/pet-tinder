@@ -7,7 +7,6 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
-// import { Autocomplete } from '@material-ui/lab'
 import breeds from "./assets/breedlist";
 
 export default function BasicInfo(props) {
@@ -18,7 +17,6 @@ export default function BasicInfo(props) {
     age,
     weight,
     is_female,
-    location,
     creatingProfile,
     setName,
     setBreed,
@@ -34,7 +32,9 @@ export default function BasicInfo(props) {
   const handleWeight = (e) => setWeight(e.target.value);
   const handleGender = (e) =>
     setIsFemale(e.target.value === "female" ? true : false);
-  const handleLocation = (e) => setLocation({ zip: e.target.value });
+  // const handleLocation = (e) => setLocation({ zip: e.target.value });
+
+  
 
   useEffect(() => {
     if (creatingProfile) {
@@ -65,7 +65,7 @@ export default function BasicInfo(props) {
         Basic Information
       </Typography>
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} sm={6}>
           <TextField
             required
             id="name"
@@ -76,7 +76,7 @@ export default function BasicInfo(props) {
             onChange={handleName}
           />
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} sm={6}>
           <TextField
             required
             id="breed"
@@ -87,7 +87,7 @@ export default function BasicInfo(props) {
             onChange={handleBreed}
           />
         </Grid>
-        <Grid item xs={12} sm={4}>
+        {/* <Grid item xs={12} sm={4}>
           <TextField
             required
             id="zip"
@@ -98,7 +98,7 @@ export default function BasicInfo(props) {
             autoComplete="shipping postal-code"
             onChange={handleLocation}
           />
-        </Grid>
+        </Grid> */}
         <Grid item xs={12} sm={6}>
           <TextField
             required

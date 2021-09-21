@@ -18,20 +18,20 @@ const Matches = (props) => {
       }),
     })
     const likesJson = await likesFetch.json()
-    const superlikeHash = likesJson.reduce((a,b)=>{
+    const superlikeHash = !likesJson.message ? likesJson.reduce((a,b)=>{
       a[b.liked_dog_id]=b.superlike
       return a
-    },{})
+    },{}) : {}
     setSuperlikeRef(superlikeHash)
-    // console.log('LIKES ARRAY::: *** ', likesJson)
+    // console.log('LIKES HASH: ', superlikeHash)
   };
 
   useEffect(fetchLikes,[setSuperlikeRef, usersInfo])
   return (
     <Grid container justifyContent='center'>
-      {usersInfo?.matches?.map((match) => (
+      {usersInfo?.matches?.length ? usersInfo?.matches?.map((match) => (
         <MatchDisplay dog={match} socket={socket} usersInfo={usersInfo} key={match.id} superlikeRef={superlikeRef}/>
-      ))}
+      )) : <h2>No matches yet!</h2>}
     </Grid>
   );
 };

@@ -54,9 +54,6 @@ const Account = (props) => {
   const [name, setName] = useState(null  );
   const [profile_name, setProfile_name] = useState(null);
   const [email, setEmail] = useState(null);
-  // const [name, setName] = useState(usersInfo?.user?.name  );
-  // const [profile_name, setProfile_name] = useState(usersInfo?.user?.profile_name);
-  // const [email, setEmail] = useState(usersInfo?.user?.email);
   const [editingName, setEditingName] = useState(false);
   const [editingEmail, setEditingEmail] = useState(false);
 

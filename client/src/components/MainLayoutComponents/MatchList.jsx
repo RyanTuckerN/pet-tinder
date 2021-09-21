@@ -14,6 +14,7 @@ import {
 import { Chat, ChevronLeft } from "@material-ui/icons";
 
 const MatchList = (props) => {
+  const {handleDrawerClose} = props
   const {
     usersInfo,
     setChatTarget,
@@ -42,6 +43,7 @@ const MatchList = (props) => {
                 
                 onClick={() => {
                   console.log("CHAT TARGET: ", match);
+                  handleDrawerClose()
                   setChatTarget(match);
                   socket.emit("chat", {
                     sender: usersInfo.user,

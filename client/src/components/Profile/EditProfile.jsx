@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
@@ -48,6 +49,7 @@ const Profile = (props) => {
   const { token, avatarPhoto, usersInfo, socket } = props.profileProps;
   const { user } = usersInfo;
   const { dog } = user;
+  const history = useHistory()
   const classes = useStyles();
   const [name, setName] = useState(dog.name);
   const [photo_url, setPhoto_url] = useState(dog.photo_url);
@@ -60,6 +62,27 @@ const Profile = (props) => {
   const [is_female, setIsFemale] = useState(dog.is_female);
   const [location, setLocation] = useState(dog.location);
   const [open, setOpen] = useState(false);
+
+  const getLocation = () => {
+    navigator.geolocation.getCurrentPosition(
+      // THIS JS METHOD ASKS CLIENT FOR PERMISSION TO USE POSITION
+      (position) => {
+        // TAKES A CALLBACK
+        console.log(position); // LOG POSITION SO WE CAN SEE WHAT WE ARE WORKING WITH
+        setLocation({
+          lat: position.coords.latitude,
+          lon: position.coords.longitude,
+        });
+        return {lat : position.coords.latitude, lon: position.coords.longitude}
+      }
+    );
+  };
+
+  useEffect(()=>{
+    if(!usersInfo?.user?.dog?.location.lat || !usersInfo?.user?.dog){
+      getLocation()
+    }
+  }, [])
 
   const creatingProfile = false;
   const properizeNoun = str => str.split(' ').map(word=>word[0]?.toUpperCase()+word.slice(1).toLowerCase()).join(' ')
@@ -116,6 +139,7 @@ const Profile = (props) => {
       const json = await fetchResults.json();
       alert(json.message);
       socket.emit("newLogin", usersInfo.user.id);
+      history.push('/')
     } catch (err) {
       alert(err);
     }

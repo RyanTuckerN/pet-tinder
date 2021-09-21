@@ -46,9 +46,7 @@
 }
 
 #profile-container {
-  /* background: #2cee32; */
-  background: -webkit-linear-gradient(bottom, #effff0, #d27ef1);
-  background: -moz-linear-gradient(bottom, #effff0, #d27ef1);
-  background: linear-gradient(to top, #effff0, #d27ef1);
+/* background-color: white; */
+
 }
 
