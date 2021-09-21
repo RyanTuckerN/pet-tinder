@@ -30,10 +30,11 @@ const DisplayProfile = (props) => {
     usersInfo?.matches?.filter((match) => match.id === parseInt(dogId))[0] ??
     usersInfo?.user?.dog;
 
-  useEffect(async () => {
+  useEffect( () => {
     if (!currentDog?.location?.lat || !currentDog?.location?.lon) return;
     const { lat, lon } = currentDog.location;
     try {
+      const localeFetch = async() => {
       const res = await fetch(
         `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`
       );
@@ -42,7 +43,8 @@ const DisplayProfile = (props) => {
       setLocale({
         locale: json.city ? json.city : json.locality,
         state: json.principalSubdivision,
-      });
+      })}
+      localeFetch()
     } catch (err) {
       console.error(err);
     }
