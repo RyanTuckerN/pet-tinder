@@ -244,7 +244,7 @@ export default function MainLayout(props) {
               </Link>
             </div>
             <div style={{ marginLeft: "auto" }}>
-              <Badge badgeContent={notifications?.length} color="error">
+              <Badge badgeContent={notifications?.length} color="primary">
                 <Link to="/notifications">
                   <IconButton>
                     <Notifications color="inherit" />
@@ -277,6 +277,7 @@ export default function MainLayout(props) {
               }),
             }}
             // style={{ bac }}
+            
           >
             <div className={classes.toolbar}>
               <IconButton onClick={handleDrawerClose} className={classes.darkBackgroud}>

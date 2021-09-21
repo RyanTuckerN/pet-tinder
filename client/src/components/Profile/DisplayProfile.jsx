@@ -1,21 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { Grid, Typography, Container, makeStyles, Avatar } from "@material-ui/core";
+import {
+  Grid,
+  Typography,
+  Container,
+  makeStyles,
+  Avatar,
+} from "@material-ui/core";
 import { LocationOn } from "@material-ui/icons";
 import NotConnected from "../MainLayoutComponents/NotConnected";
- 
+
 const useStyles = makeStyles({
   root: {
     borderRadius: 2,
     height: 600,
     // textAlign: "left",
-    color: '#514949',
+    color: "#514949",
     // backgroundColor:
-      // "#red",
-  }})
+    // "#red",
+  },
+});
 
 const DisplayProfile = (props) => {
-  const classes = useStyles()
+  const classes = useStyles();
   const { dogId } = useParams();
   const { usersInfo } = props;
   const [locale, setLocale] = useState(null);
@@ -23,20 +30,23 @@ const DisplayProfile = (props) => {
     usersInfo?.matches?.filter((match) => match.id === parseInt(dogId))[0] ??
     usersInfo?.user?.dog;
 
-  useEffect(async()=>{
-    if(!currentDog?.location?.lat || !currentDog?.location?.lon) return
-    const { lat, lon } = currentDog.location
+  useEffect(async () => {
+    if (!currentDog?.location?.lat || !currentDog?.location?.lon) return;
+    const { lat, lon } = currentDog.location;
     try {
       const res = await fetch(
         `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`
       );
       const json = await res.json();
       console.log("REVERSE GEO:", json);
-      setLocale({locale: json.city ? json.city : json.locality, state: json.principalSubdivision})
+      setLocale({
+        locale: json.city ? json.city : json.locality,
+        state: json.principalSubdivision,
+      });
     } catch (err) {
       console.error(err);
     }
-  }, [currentDog])
+  }, [currentDog]);
 
   return currentDog ? (
     <Container
@@ -46,7 +56,7 @@ const DisplayProfile = (props) => {
         minHeight: "calc(100% - 65px)",
         border: "solid #f6f6f6 2px",
         borderRadius: 2,
-        background: 'white'
+        background: "white",
       }}
       id="profile-container"
     >
@@ -68,10 +78,9 @@ const DisplayProfile = (props) => {
         >
           <Grid item xs={11}>
             <Avatar
-            
               src={currentDog.photo_url}
               alt={currentDog.name}
-              style={{ width: 200, height:200, borderRadius: '50%' }}
+              style={{ width: 200, height: 200, borderRadius: "2%" }}
             />
           </Grid>
           <Grid
@@ -85,33 +94,41 @@ const DisplayProfile = (props) => {
             justifyContent="center"
             alignItems="flex-start"
           >
-            <div style={{width: '100%'}}>
-              <div style={{display: 'flex', flexDirection:'row', justifyContent: 'space-between'}}>
-                <Typography variant="h3" display="inline" align="left">
+            <div style={{ width: "100%" }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                }}
+              >
+                <Typography variant="h4" style={{ padding: 10 }}>
                   {currentDog.name}
                 </Typography>
-                <div style={{display: 'flex', alignItems: 'flex-end'}}>
+                <Typography
+                  variant="body2"
+                  style={{ paddingBottom: 5, paddingLeft: 15 }}
+                >
+                  {currentDog.temperament.join(" | ")}
+                </Typography>
+                <Typography
+                  variant="subtitle1"
+                  style={{ paddingBottom: 5, paddingLeft: 15 }}
+                >
+                  {`${currentDog.breed} | ${currentDog.age} years old | ${currentDog.weight} pounds`}
+                </Typography>
+                {/* <h1>{currentDog.name}</h1>  */}
+                {/* <br /> */}
+                <div style={{ display: "flex", alignItems: "flex-end" }}>
                   {locale ? <LocationOn /> : null}
                   <Typography>
-                    {locale? `${locale.locale}, ${locale.state}` : null}
+                    {locale ? `${locale.locale}, ${locale.state}` : null}
                   </Typography>
                 </div>
               </div>
-              <Typography
-                variant="subtitle1"
-                style={{ paddingBottom: 5, paddingLeft: 15 }}
-              >
-                {`${currentDog.breed} | ${currentDog.age} years old | ${currentDog.weight} pounds`}
-              </Typography>
-              <Typography
-                variant="body2"
-                style={{ paddingBottom: 5, paddingLeft: 15 }}
-              >
-                {currentDog.temperament.join(" | ")}
-              </Typography>
               <hr />
             </div>
-            <div style={{display: 'flex', flexDirection: 'column'}}>
+            <div style={{ display: "flex", flexDirection: "column" }}>
               <div
                 style={{
                   display: "flex",
@@ -120,23 +137,19 @@ const DisplayProfile = (props) => {
                 }}
               >
                 <Typography
-                  variant="h6"
-                  style={{ paddingBottom: 5, paddingLeft: 15 }}
-                >
-                  {`${currentDog.name}'s owner says:`}
-                </Typography>
-                <Typography
                   variant="body2"
-                  style={{ paddingBottom: 5, paddingLeft: 15 }}
+                  style={{ padding: 20, fontStyle: "italic" }}
                 >
-                  {currentDog.ad_description}
+                  "{currentDog.ad_description}"
                 </Typography>
               </div>
               <div style={{ marginTop: 35 }}>
                 <Typography variant="subtitle2">
                   {`Eligible ${
                     currentDog.is_female ? "bachelorette" : "bachelor"
-                  } since ${new Date(currentDog.createdAt).toLocaleDateString()}`}
+                  } since ${new Date(
+                    currentDog.createdAt
+                  ).toLocaleDateString()}`}
                 </Typography>
               </div>
             </div>
