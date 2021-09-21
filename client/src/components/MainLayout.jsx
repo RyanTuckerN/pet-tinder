@@ -101,7 +101,9 @@ const useStyles = makeStyles((theme) => ({
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
   },
-  content: {},
+  content: {
+    // marginTop: 2
+  },
   darkBackgroud: {},
 }));
 
@@ -225,18 +227,22 @@ export default function MainLayout(props) {
               >
                 <Menu />
               </IconButton>
-              <Link to="/">
-                <Logo />
-              </Link>
+              {width >= 300 ? (
+                <Link to="/">
+                  <Logo />
+                </Link>
+              ) : null}
             </div>
             <div style={{ marginLeft: "auto" }}>
-              <Badge badgeContent={notifications?.length} color="primary">
-                <Link to="/notifications">
-                  <IconButton>
-                    <Notifications style={{ color: "#f3f0ee" }} />
-                  </IconButton>
-                </Link>
-              </Badge>
+              {width >= 300 ? (
+                <Badge badgeContent={notifications?.length} color="primary">
+                  <Link to="/notifications">
+                    <IconButton>
+                      <Notifications style={{ color: "#f3f0ee" }} />
+                    </IconButton>
+                  </Link>
+                </Badge>
+              ) : null}
               <IconButton
                 aria-controls="simple-menu"
                 aria-haspopup="true"
@@ -406,7 +412,7 @@ export default function MainLayout(props) {
               {usersInfo.user?.dog ? (
                 <EditProfile profileProps={profileProps} />
               ) : (
-                <CreateProfile />
+                <CreateProfile usersInfo={usersInfo} socket={socket} />
               )}
             </Route>
             <Route exact path="/potentialmatches">

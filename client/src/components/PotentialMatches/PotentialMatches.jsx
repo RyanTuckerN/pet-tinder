@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import DogDisplay from "../Profile/DogDisplay";
-import { Grid, Radio } from "@material-ui/core";
+import { Grid, Radio, Typography } from "@material-ui/core";
 import TinderCard from "react-tinder-card";
 import "../Profile/Profile.css";
 import "./PotentialMatches.css";
@@ -228,21 +228,21 @@ const PotentialMatches = (props) => {
   return usersInfo?.user?.dog ? (
     <>
       {lastDirection ? (
-        <h5
+        <Typography variant='h6'
           key={lastDirection}
           className="infoText"
-          style={{ color: "#574949" }}
+          style={{ color:'#574949', marginTop:15 }}
         >
           {lastDirection === "left"
             ? "REJECTED!"
             : lastDirection === "up"
             ? "SUPERLIKE!"
             : "LIKED!"}
-        </h5>
+        </Typography>
       ) : (
-        <h5 className="infoText">
+        <Typography variant='h6' className="infoText" style={{color:'#574949', marginTop:15}}>
           Swipe left to REJECT, swipe right to LIKE, swipe up to SUPERLIKE
-        </h5>
+        </Typography>
       )}
       <div className="tinderCards__cardContainer">
         {potentialMatches.map((dog) => (
@@ -311,10 +311,10 @@ const PotentialMatches = (props) => {
     </div> */}
     </>
   ) : (
-    <h2>
+    <Typography variant='h6'>
       You need to create a profile for your dog before you can see potential
       matches!
-    </h2>
+    </Typography>
   );
 };
 

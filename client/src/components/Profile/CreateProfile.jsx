@@ -168,9 +168,10 @@ export default function CreateProfile(props) {
         body: JSON.stringify(stepperProps.three),
       });
       const json = await fetchResults.json();
-      handleNext();
       console.log("response@!!->>", json);
+      alert('😈 Thank you for creating a profile! Enjoy Pet Tinder! 😈')
       socket.emit("newLogin", usersInfo?.user?.id);
+      handleNext();
     } catch (err) {
       console.error(err);
       alert("There was an error! Please try again.");

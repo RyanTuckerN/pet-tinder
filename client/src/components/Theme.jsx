@@ -17,23 +17,23 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: "Montserrat",
+    fontFamily: "Fira Sans",
     h1: {
       fontSize: "4rem",
       fontWeight: 400,
     },
     h2: {
-      fontFamily: "Montserrat",
+      fontFamily: "Fira Sans",
       fontSize: "3.4rem",
     },
     h5: {
-      fontFamily: "Montserrat",
+      fontFamily: "Fira Sans",
     },
     h4: {
-      fontFamily: "Montserrat",
+      fontFamily: "Fira Sans",
     },
     h6: {
-      fontFamily: "Montserrat",
+      fontFamily: "Fira Sans",
     },
     subtitle1: {
       fontFamily: "Ubuntu",

@@ -63,7 +63,7 @@ const Account = (props) => {
     setName(usersInfo?.user?.name);
     setProfile_name(usersInfo?.user?.profile_name);
     setEmail(usersInfo?.user?.email);
-  }, [usersInfo]);
+  },[usersInfo?.user]);
 
   const handleName = (e) => setName(e.target.value);
   const handleProfileName = (e) => setProfile_name(e.target.value);
@@ -102,7 +102,7 @@ const Account = (props) => {
       });
       const json = await fetchResults.json();
       alert(json.message);
-      socket.emit("userCreated", usersInfo?.user?.id);
+      socket.emit("newLogin", usersInfo?.user?.id);
       history.push("/");
     } catch (err) {
       console.error(err);
