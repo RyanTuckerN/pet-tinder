@@ -24,7 +24,6 @@ import {
   Toolbar,
   Tooltip,
   Badge,
-  ClickAwayListener
 } from "@material-ui/core";
 
 import ChatIndex from "./Chat/ChatIndex";
@@ -49,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
   },
   appBar: {
-    // zIndex: theme.zIndex.drawer - ,
     height: 65,
     display: "flex",
     justifyContent: "space-around",
@@ -91,9 +89,6 @@ const useStyles = makeStyles((theme) => ({
     }),
     overflowX: "hidden",
     width: theme.spacing(7) + 18,
-    // [theme.breakpoints.up("sm")]: {
-    //   width: theme.spacing(9) + 2,
-    // },
   },
   title: {
     flexGrow: 1,
@@ -105,24 +100,18 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
-    backgroundColor: '#514949',
   },
-  content: {
-    backgroundColor: "#f3f0ee",
-  },
-  darkBackgroud: {
-    color: '#f3f0ee',
-    backgroundColor: '#514949'
-  }
+  content: {},
+  darkBackgroud: {},
 }));
 
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
-  justifyContent: 'center',
+  justifyContent: "center",
 }));
 
 export default function MainLayout(props) {
@@ -203,10 +192,7 @@ export default function MainLayout(props) {
         <CssBaseline /> {/* This is from MUI*/}
         <AppBar // THIS IS TOP NAVBAR
           position="fixed"
-          className={
-            clsx(classes.appBar, 
-              {[classes.appBarShift]: open,}
-              )}
+          className={clsx(classes.appBar, { [classes.appBarShift]: open })}
           style={{
             zIndex: width >= 600 ? theme.zIndex.drawer + 1 : 1,
             background:
@@ -247,7 +233,7 @@ export default function MainLayout(props) {
               <Badge badgeContent={notifications?.length} color="primary">
                 <Link to="/notifications">
                   <IconButton>
-                    <Notifications color="inherit" />
+                    <Notifications style={{ color: "#f3f0ee" }} />
                   </IconButton>
                 </Link>
               </Badge>
@@ -263,7 +249,6 @@ export default function MainLayout(props) {
           </Toolbar>
         </AppBar>
         {width >= 600 ? (
-          
           <Drawer // THIS IS SIDE NAVBAR
             variant={"permanent"}
             className={clsx(classes.drawer, {
@@ -276,17 +261,19 @@ export default function MainLayout(props) {
                 [classes.drawerClose]: !open,
               }),
             }}
-            // style={{ bac }}
-            
           >
             <div className={classes.toolbar}>
-              <IconButton onClick={handleDrawerClose} className={classes.darkBackgroud}>
+              <IconButton
+                onClick={handleDrawerClose}
+                className={classes.darkBackgroud}
+              >
                 {theme.direction === "rtl" ? <ChevronRight /> : <ChevronLeft />}
               </IconButton>
             </div>
             <Divider />
             <Tooltip title="View your profile">
-              <Link onClick={handleDrawerClose}
+              <Link
+                onClick={handleDrawerClose}
                 to={
                   usersInfo?.user?.dog
                     ? `/profile/${usersInfo?.user?.id}`
@@ -323,80 +310,80 @@ export default function MainLayout(props) {
             </Tooltip>
             <Divider />
             <Link to="/chat">
-              <MatchList matchListProps={matchListProps} handleDrawerClose={handleDrawerClose}/>
+              <MatchList
+                matchListProps={matchListProps}
+                handleDrawerClose={handleDrawerClose}
+              />
             </Link>
           </Drawer>
-        )
-        :
-        (<Drawer
-
-        sx={{
-          width: 500,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            // zIndex: 1400,
-            boxSizing: 'border-box',
-          },
-        }}
-        variant="persistent"
-        anchor="left"
-        
-        open={open}
-      >
-          <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? <ChevronLeft /> : <ChevronRight />}
-          </IconButton>
-        </DrawerHeader>
-          <Divider />
-          <Tooltip title="View your profile">
-            <Link
-            onClick={handleDrawerClose}
-              to={
-                usersInfo?.user?.dog
-                  ? `/profile/${usersInfo?.user?.id}`
-                  : "/create-profile"
-              }
-            >
-              <ListItem button>
-                <ListItemIcon>
-                  <AccountBox />
-                </ListItemIcon>
-                <ListItemText primary="Profile" />
-              </ListItem>
+        ) : (
+          <Drawer
+            sx={{
+              width: 500,
+              flexShrink: 0,
+              "& .MuiDrawer-paper": {
+                boxSizing: "border-box",
+              },
+            }}
+            variant="persistent"
+            anchor="left"
+            open={open}
+          >
+            <DrawerHeader>
+              <IconButton onClick={handleDrawerClose}>
+                {theme.direction === "ltr" ? <ChevronLeft /> : <ChevronRight />}
+              </IconButton>
+            </DrawerHeader>
+            <Divider />
+            <Tooltip title="View your profile">
+              <Link
+                onClick={handleDrawerClose}
+                to={
+                  usersInfo?.user?.dog
+                    ? `/profile/${usersInfo?.user?.id}`
+                    : "/create-profile"
+                }
+              >
+                <ListItem button>
+                  <ListItemIcon>
+                    <AccountBox />
+                  </ListItemIcon>
+                  <ListItemText primary="Profile" />
+                </ListItem>
+              </Link>
+            </Tooltip>
+            <Tooltip title="See potential matches">
+              <Link onClick={handleDrawerClose} to="/potentialmatches">
+                <ListItem button>
+                  <ListItemIcon>
+                    <Pets />
+                  </ListItemIcon>
+                  <ListItemText primary="Dogs" />
+                </ListItem>
+              </Link>
+            </Tooltip>
+            <Tooltip title="See your matches">
+              <Link onClick={handleDrawerClose} to="/matches">
+                <ListItem button>
+                  <ListItemIcon>
+                    <Favorite />
+                  </ListItemIcon>
+                  <ListItemText primary="Matches" />
+                </ListItem>
+              </Link>
+            </Tooltip>
+            <Divider />
+            <Link to="/chat">
+              <MatchList
+                matchListProps={matchListProps}
+                handleDrawerClose={handleDrawerClose}
+              />
             </Link>
-          </Tooltip>
-          <Tooltip title="See potential matches">
-            <Link onClick={handleDrawerClose} to="/potentialmatches">
-              <ListItem button>
-                <ListItemIcon>
-                  <Pets />
-                </ListItemIcon>
-                <ListItemText primary="Dogs" />
-              </ListItem>
-            </Link>
-          </Tooltip>
-          <Tooltip title="See your matches">
-            <Link onClick={handleDrawerClose} to="/matches">
-              <ListItem button>
-                <ListItemIcon>
-                  <Favorite />
-                </ListItemIcon>
-                <ListItemText primary="Matches" />
-              </ListItem>
-            </Link>
-          </Tooltip>
-          <Divider />
-          <Link to="/chat">
-            <MatchList matchListProps={matchListProps} handleDrawerClose={handleDrawerClose} />
-          </Link>
-        </Drawer>)}
+          </Drawer>
+        )}
         {/* ***THIS IS THE MAIN BODY DIV, EVERYTHING DYNAMIC WILL SHOW HERE!*** */}
         <main className={classes.content}>
           <div className={classes.toolbar} />
-
-          {/* <div id="body-container"> */}
-
           <Switch>
             <Route exact path="/">
               <Home />
@@ -408,6 +395,8 @@ export default function MainLayout(props) {
               <DisplayProfile
                 dog={usersInfo?.user?.dog}
                 usersInfo={usersInfo}
+                setChatTarget={setChatTarget}
+                socket={socket}
               />
             </Route>
             <Route exact path="/create-profile">
@@ -441,8 +430,6 @@ export default function MainLayout(props) {
               )}
             </Route>
           </Switch>
-
-          {/* </div> */}
         </main>
       </div>
     </Router>

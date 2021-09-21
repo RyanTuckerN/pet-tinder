@@ -69,9 +69,9 @@ function getStepContent(step, props) {
 }
 
 export default function CreateProfile(props) {
-  const { socket, usersInfo } = props
+  const { socket, usersInfo } = props;
   const classes = useStyles();
-  const history = useHistory()
+  const history = useHistory();
   const [activeStep, setActiveStep] = useState(0);
   const [name, setName] = useState("Rufus");
   const [photo_url, setPhoto_url] = useState(
@@ -97,21 +97,23 @@ export default function CreateProfile(props) {
       // THIS JS METHOD ASKS CLIENT FOR PERMISSION TO USE POSITION
       (position) => {
         // TAKES A CALLBACK
-        console.log(position); // LOG POSITION SO WE CAN SEE WHAT WE ARE WORKING WITH
         setLocation({
           lat: position.coords.latitude,
           lon: position.coords.longitude,
         });
-        return {lat : position.coords.latitude, lon: position.coords.longitude}
+        return {
+          lat: position.coords.latitude,
+          lon: position.coords.longitude,
+        };
       }
     );
   };
 
-  useEffect(()=>{
-    if(!usersInfo?.user?.dog?.location.lat || !usersInfo?.user?.dog){
-      getLocation()
+  useEffect(() => {
+    if (!usersInfo?.user?.dog?.location.lat || !usersInfo?.user?.dog) {
+      getLocation();
     }
-  }, [])
+  }, []);
 
   const creatingProfile = true;
   const stepperProps = {
@@ -168,10 +170,10 @@ export default function CreateProfile(props) {
       const json = await fetchResults.json();
       handleNext();
       console.log("response@!!->>", json);
-      socket.emit('newLogin', usersInfo?.user?.id)
-      
+      socket.emit("newLogin", usersInfo?.user?.id);
     } catch (err) {
-      alert(err);
+      console.error(err);
+      alert("There was an error! Please try again.");
     }
   };
 
@@ -200,7 +202,9 @@ export default function CreateProfile(props) {
                   😈 Enjoy Pet Tinder! 😈
                 </Typography>
                 <Typography variant="subtitle2">
-                  <Button onClick={()=>history.push('/')}>Click here to get started</Button>
+                  <Button onClick={() => history.push("/")}>
+                    Click here to get started
+                  </Button>
                 </Typography>
               </>
             ) : (

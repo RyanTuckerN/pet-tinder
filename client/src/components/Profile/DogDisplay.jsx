@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import { Chip, Grid } from "@material-ui/core";
@@ -8,21 +8,23 @@ import Typography from "@material-ui/core/Typography";
 import "../Matches/Matches.css";
 import distanceBetCoor from "../../functions/distanceBetCoor";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     borderRadius: 2,
-    // margin: 25,
     height: 500,
     textAlign: "left",
-    color: '#F3F0EE',
-    background:
-      // "linear-gradient(194deg, rgba(244,244,244,1) 0%, rgba(223,180,148,1) 68%, rgba(245,172,238,1) 100%)",
-      "#FF655B",
+    color: "#F3F0EE",
+    background: "#FF655B",
   },
   media: {
     height: 280,
   },
-});
+  chip: {
+    backgroundColor: "#f3f0ee",
+    color: "#514949",
+    fontFamily: "Montserrat",
+  },
+}));
 
 export default function DogDisplay(props) {
   const { dog, usersInfo } = props;
@@ -44,25 +46,30 @@ export default function DogDisplay(props) {
           image={dog.photo_url}
           title={dog.name}
         />
-        <Typography variant='caption' style={{display: 'flex', justifyContent: 'flex-end'}}>
+        <Typography
+          variant="caption"
+          style={{ display: "flex", justifyContent: "flex-end" }}
+        >
           {dog.location.lat && usersInfo?.user?.dog?.location?.lat
             ? distanceBetCoor.calcMiles([
-              dog.location.lat,
-              dog.location.lon,
-              usersInfo.user.dog.location.lat,
-              usersInfo.user.dog.location.lon,
-            ]) <5 ? 'Less than 5 miles away' : `About ${distanceBetCoor.calcMiles([
-              dog.location.lat,
-              dog.location.lon,
-              usersInfo.user.dog.location.lat,
-              usersInfo.user.dog.location.lon,
-            ])} miles away`
+                dog.location.lat,
+                dog.location.lon,
+                usersInfo.user.dog.location.lat,
+                usersInfo.user.dog.location.lon,
+              ]) < 5
+              ? "Less than 5 miles away"
+              : `About ${distanceBetCoor.calcMiles([
+                  dog.location.lat,
+                  dog.location.lon,
+                  usersInfo.user.dog.location.lat,
+                  usersInfo.user.dog.location.lon,
+                ])} miles away`
             : null}
         </Typography>
         <CardContent style={{ overflow: "auto", maxHeight: 320 }}>
           <span id="title">{`${dog.name}, `}</span>
           <span id="subtitle">{dog.is_female ? "female" : "male"}</span>
-          <Typography variant="caption"  component="p">
+          <Typography variant="caption" component="p">
             {dog.breed} | Age: {dog.age} | Weight: {dog.weight} lbs
           </Typography>
           <ul className="chips-list">
@@ -74,7 +81,7 @@ export default function DogDisplay(props) {
               );
             })}
           </ul>
-          <Typography variant="caption"  component="p">
+          <Typography variant="caption" component="p">
             {dog.ad_description}
           </Typography>
         </CardContent>

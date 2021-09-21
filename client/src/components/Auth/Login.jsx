@@ -18,7 +18,7 @@ const Login = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
       const fetchResults = await fetch("http://localhost:3333/user/login", {
         method: "POST",
@@ -76,7 +76,6 @@ const Login = (props) => {
             value={profile_name}
             onChange={handleProfileName}
           />
-
           <TextField
             variant="outlined"
             margin="normal"
@@ -86,14 +85,9 @@ const Login = (props) => {
             label="Password"
             type="password"
             id="password"
-            // autoComplete="current-password"
             value={password}
             onChange={handlePassword}
           />
-          {/* <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          /> */}
           <Button
             type="submit"
             fullWidth
@@ -104,11 +98,6 @@ const Login = (props) => {
             Sign In
           </Button>
           <Grid container>
-            {/* <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid> */}
             <Grid item>
               <Link onClick={toggleView} variant="body2">
                 {"Don't have an account? Sign Up"}

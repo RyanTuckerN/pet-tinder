@@ -1,10 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom'
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import React from "react";
+import { Link } from "react-router-dom";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
 export default function Dropdown(props) {
-  const { anchorEl, handleDropdownClose, clearToken } = props.dropdownProps
+  const { anchorEl, handleDropdownClose, clearToken } = props.dropdownProps;
 
   return (
     <div>
@@ -15,13 +15,13 @@ export default function Dropdown(props) {
         open={Boolean(anchorEl)}
         onClose={handleDropdownClose}
       >
-        <Link to='/edit-profile'>
+        <Link to="/edit-profile">
           <MenuItem onClick={handleDropdownClose}>Edit Profile</MenuItem>
         </Link>
-        <Link to='/account'>
+        <Link to="/account">
           <MenuItem onClick={handleDropdownClose}>My account</MenuItem>
         </Link>
-        <Link to='/'>
+        <Link to="/">
           <MenuItem onClick={clearToken}>Logout</MenuItem>
         </Link>
       </Menu>

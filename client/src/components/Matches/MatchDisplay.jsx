@@ -1,11 +1,10 @@
-// import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { Button, ButtonGroup, Grid, Card, Tooltip } from "@material-ui/core";
+import { Button, Grid, Card, Tooltip } from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
-import StarBorderIcon from "@material-ui/icons/StarBorder";
+import { StarBorder, AccountCircle } from "@material-ui/icons";
 import "./Matches.css";
 import distanceBetCoor from "../../functions/distanceBetCoor";
 
@@ -15,10 +14,8 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "left",
     flexGrow: 1,
     flexShrink: 1,
-    color: '#F3F0EE',
-    background:
-      // "linear-gradient(194deg, rgba(244,244,244,1) 0%, rgba(223,180,148,1) 68%, rgba(245,172,238,1) 100%)",
-      "#FF655B",
+    color: "#F3F0EE",
+    background: "#FF655B",
   },
   media: {
     height: 280,
@@ -26,10 +23,10 @@ const useStyles = makeStyles((theme) => ({
   superlike: {
     position: "absolute",
     margin: 5,
-    color: "rgb(255, 235, 201)",
+    color: "#f3f0ee",
     fontSize: 40,
     borderRadius: 20,
-    backgroundColor: "rgb(117, 52, 34)",
+    backgroundColor: "#FF655B",
   },
 }));
 
@@ -38,32 +35,37 @@ export default function MatchDisplay(props) {
   const classes = useStyles();
 
   const handleUnlike = async (id) => {
-    const unlikeFetch = await fetch(`http://localhost:3333/like/${id}`, {
-      method: "DELETE",
-      headers: new Headers({
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      }),
-    });
-    const deleteNotificationFetch = await fetch(
-      `http://localhost:3333/note/${id}`,
-      {
+    try {
+      const unlikeFetch = await fetch(`http://localhost:3333/like/${id}`, {
         method: "DELETE",
         headers: new Headers({
           "Content-Type": "application/json",
           Authorization: localStorage.getItem("token"),
         }),
-      }
-    );
-    const noteJson = await deleteNotificationFetch.json();
-    const unlikeJson = await unlikeFetch.json();
-    console.log(unlikeJson);
-    console.log(noteJson);
-    socket.emit("matchRequest", usersInfo?.user?.id);
-    socket.emit("notificationRequest", {
-      userId: usersInfo?.user?.id,
-      target: id,
-    });
+      });
+      const deleteNotificationFetch = await fetch(
+        `http://localhost:3333/note/${id}`,
+        {
+          method: "DELETE",
+          headers: new Headers({
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          }),
+        }
+      );
+      const noteJson = await deleteNotificationFetch.json();
+      const unlikeJson = await unlikeFetch.json();
+      console.log(unlikeJson);
+      console.log(noteJson);
+      socket.emit("matchRequest", usersInfo?.user?.id);
+      socket.emit("notificationRequest", {
+        userId: usersInfo?.user?.id,
+        target: id,
+      });
+    } catch (err) {
+      console.error(err);
+      alert("There was an error! Please try again.");
+    }
   };
 
   const buttonStyle = {
@@ -89,7 +91,7 @@ export default function MatchDisplay(props) {
       >
         {dog.user.likes[0].superlike && superlikeRef[dog.id] ? (
           <Tooltip title="SUPERMATCH!">
-            <StarBorderIcon id="superlike-star" className={classes.superlike} />
+            <StarBorder id="superlike-star" className={classes.superlike} />
           </Tooltip>
         ) : null}
         <CardMedia
@@ -97,6 +99,7 @@ export default function MatchDisplay(props) {
           image={dog.photo_url}
           title={dog.ad_description}
         />
+
         <Typography
           variant="caption"
           style={{ display: "flex", justifyContent: "flex-end" }}
@@ -118,9 +121,19 @@ export default function MatchDisplay(props) {
             : null}
         </Typography>
         <CardContent style={{ maxHeight: 320 }}>
+          <Link to={`/profile/${dog.id}`}>
+            <AccountCircle
+              style={{
+                color: "#f3f0ee",
+                padding: 2,
+                position: "relative",
+                top: 3,
+              }}
+            />
+          </Link>
           <span id="title">{`${dog.name}, `}</span>
           <span id="subtitle">{dog.is_female ? "female" : "male"}</span>
-          <Typography variant="caption"  component="p">
+          <Typography variant="caption" component="p">
             {dog.breed} | Age: {dog.age} | Weight: {dog.weight} lbs
           </Typography>
           <div
@@ -130,14 +143,9 @@ export default function MatchDisplay(props) {
               paddingTop: 18,
             }}
           >
-            <ButtonGroup>
-              <Button onClick={() => handleUnlike(dog.id)} style={buttonStyle}>
-                Unlike
-              </Button>
-              <Link to={`/profile/${dog.id}`}>
-                <Button style={buttonStyle}>{`${dog.name}'s Profile`}</Button>
-              </Link>
-            </ButtonGroup>
+            <Button onClick={() => handleUnlike(dog.id)} style={buttonStyle}>
+              Unlike
+            </Button>
           </div>
         </CardContent>
       </Card>

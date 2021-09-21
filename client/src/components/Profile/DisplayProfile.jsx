@@ -6,49 +6,67 @@ import {
   Container,
   makeStyles,
   Avatar,
+  Link,
+  IconButton,
 } from "@material-ui/core";
-import { LocationOn } from "@material-ui/icons";
+import { useHistory } from "react-router-dom";
+import { LocationOn, Email, Chat } from "@material-ui/icons";
 import NotConnected from "../MainLayoutComponents/NotConnected";
 
 const useStyles = makeStyles({
   root: {
     borderRadius: 2,
     height: 600,
-    // textAlign: "left",
     color: "#514949",
-    // backgroundColor:
-    // "#red",
   },
 });
 
 const DisplayProfile = (props) => {
   const classes = useStyles();
   const { dogId } = useParams();
-  const { usersInfo } = props;
+  const { usersInfo, setChatTarget, socket } = props;
   const [locale, setLocale] = useState(null);
+  const [ownDog, setOwnDog] = useState(null);
+  const history = useHistory();
   const currentDog =
     usersInfo?.matches?.filter((match) => match.id === parseInt(dogId))[0] ??
     usersInfo?.user?.dog;
 
-  useEffect( () => {
+  useEffect(() => {
+    setOwnDog(currentDog?.id === usersInfo?.user?.id ? true : false);
+  }, [currentDog, usersInfo?.user]);
+
+  useEffect(() => {
     if (!currentDog?.location?.lat || !currentDog?.location?.lon) return;
     const { lat, lon } = currentDog.location;
     try {
-      const localeFetch = async() => {
-      const res = await fetch(
-        `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`
-      );
-      const json = await res.json();
-      console.log("REVERSE GEO:", json);
-      setLocale({
-        locale: json.city ? json.city : json.locality,
-        state: json.principalSubdivision,
-      })}
-      localeFetch()
+      const localeFetch = async () => {
+        const res = await fetch(
+          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`
+        );
+        const json = await res.json();
+        console.log("REVERSE GEO:", json);
+        setLocale({
+          locale: json.city ? json.city : json.locality,
+          state: json.principalSubdivision,
+        });
+      };
+      localeFetch();
     } catch (err) {
       console.error(err);
     }
   }, [currentDog]);
+
+  const handleChatTarget = (dog) => {
+    setChatTarget(
+      //finds match that corresponds to target
+      usersInfo?.matches?.filter((match) => match.id == dog.id)[0]
+    );
+    socket.emit("chat", {
+      sender: usersInfo?.user,
+      receiver: { id: dog.id },
+    });
+  };
 
   return currentDog ? (
     <Container
@@ -82,9 +100,53 @@ const DisplayProfile = (props) => {
             <Avatar
               src={currentDog.photo_url}
               alt={currentDog.name}
-              style={{ width: 200, height: 200, borderRadius: "2%" }}
+              style={{ width: 200, height: 200, borderRadius: "50%" }}
             />
           </Grid>
+          {ownDog ? null : (
+            <Grid
+              container
+              item
+              xs={12}
+              direction="row"
+              justifyContent="space-evenly"
+              style={{ position: "relative", bottom: 10 }}
+            >
+              <Grid item xs={5}></Grid>
+              <Grid item xs={1}>
+                <IconButton
+                  onClick={() => {
+                    handleChatTarget(currentDog);
+                    history.push("/chat");
+                  }}
+                >
+                  <Chat
+                    style={{
+                      backgroundColor: "#514949",
+                      padding: 3,
+                      borderRadius: "50%",
+                      color: "#f3f0ee",
+                    }}
+                  />
+                </IconButton>
+              </Grid>
+              <Grid item xs={1}>
+                <Link href={`mailto:${currentDog.user?.email}`}>
+                  <IconButton>
+                    <Email
+                      style={{
+                        backgroundColor: "#514949",
+                        padding: 3,
+                        borderRadius: "50%",
+                        color: "#f3f0ee",
+                      }}
+                    />
+                  </IconButton>
+                </Link>
+              </Grid>
+              <Grid item xs={5}></Grid>
+            </Grid>
+          )}
           <Grid
             container
             item
@@ -119,8 +181,6 @@ const DisplayProfile = (props) => {
                 >
                   {`${currentDog.breed} | ${currentDog.age} years old | ${currentDog.weight} pounds`}
                 </Typography>
-                {/* <h1>{currentDog.name}</h1>  */}
-                {/* <br /> */}
                 <div style={{ display: "flex", alignItems: "flex-end" }}>
                   {locale ? <LocationOn /> : null}
                   <Typography>

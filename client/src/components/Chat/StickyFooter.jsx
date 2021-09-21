@@ -6,7 +6,6 @@ const StickyFooter = (props) => {
   const { handleChange, handleSubmit, chatMessage, open } = props;
   const { width } = useWindowDimensions();
   const bottomPush = {
-    
     position: "fixed",
     bottom: 0,
     textAlign: "center",
@@ -17,10 +16,9 @@ const StickyFooter = (props) => {
     paddingRight: "0 !important",
     paddingLeft: "0 !important",
     width: "100vw",
-    
   };
   return (
-    <div style={bottomPush} id='sticky-footer'>
+    <div style={bottomPush} id="sticky-footer">
       <form
         action="submit"
         onSubmit={handleSubmit}
@@ -36,7 +34,10 @@ const StickyFooter = (props) => {
           variant="outlined"
           value={chatMessage}
           onChange={handleChange}
-          style={{ width: width >= 600 ? open ? width - 320 : width - 180 : width - 100}}
+          style={{
+            width:
+              width >= 600 ? (open ? width - 320 : width - 180) : width - 100,
+          }}
         />
         <Button type="submit">SEND</Button>
       </form>

@@ -72,7 +72,7 @@ const ChatIndex = (props) => {
             </div>
           </div>
         ) : (
-          <div style={{margin: 100}}>
+          <div style={{ margin: 100 }}>
             {usersInfo?.matches?.length
               ? "Click a match in the side menu to start chatting!"
               : "Match with some dogs to start chatting!"}

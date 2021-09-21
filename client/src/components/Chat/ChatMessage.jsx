@@ -12,7 +12,7 @@ const ChatMessage = (props) => {
     padding: "8px",
     borderRadius: 12,
     marginLeft: 15,
-    marginRight: 15
+    marginRight: 15,
   };
   const targetStyle = {
     textAlign: "left",
@@ -20,12 +20,18 @@ const ChatMessage = (props) => {
     padding: "8px",
     borderRadius: 12,
     marginLeft: 15,
-    marginRight: 15
+    marginRight: 15,
   };
 
   return (
-    <Tooltip title={`Sent on: ${month}/${date}/${year}, ${time}`} placement='top'>
-      <div className='chat-message' style={{ color: "white", padding: "2px", display: "inline-block" }}>
+    <Tooltip
+      title={`Sent on: ${month}/${date}/${year}, ${time}`}
+      placement="top"
+    >
+      <div
+        className="chat-message"
+        style={{ color: "white", padding: "2px", display: "inline-block" }}
+      >
         <div
           key={message.id}
           style={
@@ -34,13 +40,16 @@ const ChatMessage = (props) => {
               : targetStyle
           }
         >
-          {/* <Typography variant="caption">{`${month}/${date}/${year}`}</Typography> */}
-          {/* <Typography variant="caption">{time}</Typography> */}
-          <Typography variant="caption" style={{ paddingLeft: 8, paddingRight: 8}}>{message.text}</Typography>
+          <Typography
+            variant="caption"
+            style={{ paddingLeft: 8, paddingRight: 8 }}
+          >
+            {message.text}
+          </Typography>
         </div>
       </div>
     </Tooltip>
   );
 };
 
-export default ChatMessage
+export default ChatMessage;

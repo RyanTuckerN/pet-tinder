@@ -18,7 +18,7 @@ const Signup = (props) => {
   const [email, setEmail] = useState("");
   const [passwordsMatch, setPasswordsMatch] = useState(null);
   const [usernameAvailable, setUsernameAvailable] = useState(null);
-  const { width } = useWindowDimensions()
+  const { width } = useWindowDimensions();
 
   const handleName = (e) => setName(e.target.value);
   const handleProfileName = (e) => setProfile_name(e.target.value);
@@ -27,16 +27,19 @@ const Signup = (props) => {
     setPassword2(e.target.value);
   };
   const handleEmail = (e) => setEmail(e.target.value);
-  const handleUsernameAvailable = async () => {
-    if (validateUsername(profile_name)) {
-      const usernameResults = await fetch(
-        `http://localhost:3333/user/checkAvail/${profile_name}`
-      );
-      const usernameJson = await usernameResults.json();
-      setUsernameAvailable(usernameJson);
-    } else if (profile_name.length<6){
-      setUsernameAvailable(null)
-    }
+  const handleUsernameAvailable = () => {
+    const userAvailFetch = async () => {
+      if (validateUsername(profile_name)) {
+        const usernameResults = await fetch(
+          `http://localhost:3333/user/checkAvail/${profile_name}`
+        );
+        const usernameJson = await usernameResults.json();
+        setUsernameAvailable(usernameJson);
+      } else if (profile_name.length < 6) {
+        setUsernameAvailable(null);
+      }
+    };
+    userAvailFetch();
   };
 
   const validateName = (fullName) => fullName.split(" ").length >= 2;
@@ -83,7 +86,10 @@ const Signup = (props) => {
         method: "POST",
         body: JSON.stringify({
           profile_name,
-          name: name.split(' ').map(name=>name[0].toUpperCase()+name.slice(1)).join(' '),
+          name: name
+            .split(" ")
+            .map((name) => name[0].toUpperCase() + name.slice(1))
+            .join(" "),
           password: password1,
           email,
         }),
@@ -92,9 +98,6 @@ const Signup = (props) => {
         }),
       });
       const json = await fetchResults.json();
-      // if(json?.error?.name === "SequelizeUniqueConstraintError"){
-      //   alert('User')
-      // }
       console.log("json response", json);
       updateToken(json.sessionToken);
     } catch (err) {
@@ -135,11 +138,14 @@ const Signup = (props) => {
             name="username"
             value={profile_name}
             onChange={handleProfileName}
-            autoComplete='false'
+            autoComplete="false"
           />
-          <Typography variant="caption" style={{
-            color: usernameAvailable ? 'green' : 'red'
-          }}>
+          <Typography
+            variant="caption"
+            style={{
+              color: usernameAvailable ? "green" : "red",
+            }}
+          >
             {usernameAvailable === true
               ? "Username available!"
               : usernameAvailable === false
@@ -158,49 +164,43 @@ const Signup = (props) => {
             value={email}
             onChange={handleEmail}
           />
-          {/* <div style={{ display: "flex", justifyContent: "space-between" }}> */}
-            <TextField
-              title="Please choose a password"
-              variant="outlined"
-              margin="normal"
-              required
-              // {width > 550?
-              style={ width > 550 ? {width: "48%", marginRight:'2%' } : null}
-              fullWidth={width<=550 ? true : false} 
-              // className='signup-password'
-              // fullWidth
-              
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              value={password1}
-              onChange={handlePassword1}
-            />
-            <TextField
-              title="Passwords must match!"
-              variant="outlined"
-              color={!passwordsMatch ? "secondary" : null}
-              margin="normal"
-              required
-              // fullWidth
-              style={ width > 550 ? {width: "48%", marginLeft:'2%' } : null}
-              fullWidth={width<=550 ? true : false} 
-              // // className='signup-password'
-              // // style={{ width: "48%" }}
-               
-              name="password"
-              label={
-                password2 ? passwordsMatch ? "Passwords match ✔" : "Passwords must match" : "Re-enter password"
-              }
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              value={password2}
-              onChange={handlePassword2}
-            />
-          {/* </div> */}
+          <TextField
+            title="Please choose a password"
+            variant="outlined"
+            margin="normal"
+            required
+            style={width > 550 ? { width: "48%", marginRight: "2%" } : null}
+            fullWidth={width <= 550 ? true : false}
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            value={password1}
+            onChange={handlePassword1}
+          />
+          <TextField
+            title="Passwords must match!"
+            variant="outlined"
+            color={!passwordsMatch ? "secondary" : null}
+            margin="normal"
+            required
+            style={width > 550 ? { width: "48%", marginLeft: "2%" } : null}
+            fullWidth={width <= 550 ? true : false}
+            name="password"
+            label={
+              password2
+                ? passwordsMatch
+                  ? "Passwords match ✔"
+                  : "Passwords must match"
+                : "Re-enter password"
+            }
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            value={password2}
+            onChange={handlePassword2}
+          />
           <Button
             type="submit"
             fullWidth

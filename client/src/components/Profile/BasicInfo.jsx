@@ -10,7 +10,6 @@ import FormLabel from "@material-ui/core/FormLabel";
 import breeds from "./assets/breedlist";
 
 export default function BasicInfo(props) {
-  // console.log(breeds)
   const {
     name,
     breed,
@@ -27,14 +26,11 @@ export default function BasicInfo(props) {
     setTemperament,
   } = props.zeroProps;
   const handleName = (e) => setName(e.target.value);
-  const handleBreed = (e) => setBreed(e.target.value)
+  const handleBreed = (e) => setBreed(e.target.value);
   const handleAge = (e) => setAge(e.target.value);
   const handleWeight = (e) => setWeight(e.target.value);
   const handleGender = (e) =>
     setIsFemale(e.target.value === "female" ? true : false);
-  // const handleLocation = (e) => setLocation({ zip: e.target.value });
-
-  
 
   useEffect(() => {
     if (creatingProfile) {
@@ -44,21 +40,25 @@ export default function BasicInfo(props) {
         //if the breed input is in this big breed list
         const breedFetch = async () => {
           //run this async fetch
-          const breedInfo = await fetch(
-            `https://api.thedogapi.com/v1/breeds/${
-              breeds.filter(
-                (b) => b.name.toLowerCase() === breed.toLowerCase()
-              )[0].id
-            }`
-          );
-          const breedJson = await breedInfo.json();
-          console.log(breedJson.temperament.split(","));
-          setTemperament(breedJson.temperament.split(","));
+          try {
+            const breedInfo = await fetch(
+              `https://api.thedogapi.com/v1/breeds/${
+                breeds.filter(
+                  (b) => b.name.toLowerCase() === breed.toLowerCase()
+                )[0].id
+              }`
+            );
+            const breedJson = await breedInfo.json();
+            console.log(breedJson.temperament.split(","));
+            setTemperament(breedJson.temperament.split(","));
+          } catch (err) {
+            console.error(err);
+          }
         };
-        breedFetch()
+        breedFetch();
       }
     }
-  }, [breed])
+  }, [breed]);
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -87,18 +87,6 @@ export default function BasicInfo(props) {
             onChange={handleBreed}
           />
         </Grid>
-        {/* <Grid item xs={12} sm={4}>
-          <TextField
-            required
-            id="zip"
-            name="zip"
-            label="Zip / Postal code"
-            fullWidth
-            value={location.zip}
-            autoComplete="shipping postal-code"
-            onChange={handleLocation}
-          />
-        </Grid> */}
         <Grid item xs={12} sm={6}>
           <TextField
             required

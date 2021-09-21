@@ -49,7 +49,7 @@ const Profile = (props) => {
   const { token, avatarPhoto, usersInfo, socket } = props.profileProps;
   const { user } = usersInfo;
   const { dog } = user;
-  const history = useHistory()
+  const history = useHistory();
   const classes = useStyles();
   const [name, setName] = useState(dog.name);
   const [photo_url, setPhoto_url] = useState(dog.photo_url);
@@ -68,24 +68,30 @@ const Profile = (props) => {
       // THIS JS METHOD ASKS CLIENT FOR PERMISSION TO USE POSITION
       (position) => {
         // TAKES A CALLBACK
-        console.log(position); // LOG POSITION SO WE CAN SEE WHAT WE ARE WORKING WITH
         setLocation({
           lat: position.coords.latitude,
           lon: position.coords.longitude,
         });
-        return {lat : position.coords.latitude, lon: position.coords.longitude}
+        return {
+          lat: position.coords.latitude,
+          lon: position.coords.longitude,
+        };
       }
     );
   };
 
-  useEffect(()=>{
-    if(!usersInfo?.user?.dog?.location.lat || !usersInfo?.user?.dog){
-      getLocation()
+  useEffect(() => {
+    if (!usersInfo?.user?.dog?.location.lat || !usersInfo?.user?.dog) {
+      getLocation();
     }
-  }, [])
+  }, []);
 
   const creatingProfile = false;
-  const properizeNoun = str => str.split(' ').map(word=>word[0]?.toUpperCase()+word.slice(1).toLowerCase()).join(' ')
+  const properizeNoun = (str) =>
+    str
+      .split(" ")
+      .map((word) => word[0]?.toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
   const handleClose = () => setOpen(false);
 
   const updateProps = {
@@ -139,7 +145,7 @@ const Profile = (props) => {
       const json = await fetchResults.json();
       alert(json.message);
       socket.emit("newLogin", usersInfo.user.id);
-      history.push('/')
+      history.push("/");
     } catch (err) {
       alert(err);
     }
@@ -191,7 +197,7 @@ const Profile = (props) => {
     </>
   ) : (
     <Backdrop className={classes.backdrop} open={open} onClick={handleClose}>
-       <CircularProgress color="inherit" />
+      <CircularProgress color="inherit" />
     </Backdrop>
   );
 };

@@ -1,18 +1,17 @@
 import CssBaseline from "@material-ui/core/CssBaseline";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Login from "./Login";
 import Signup from "./Signup";
-
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100vh",
   },
   image: {
-    backgroundImage: "url(http://images.unsplash.com/photo-1630359563592-c685967f83d7?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max)",
+    backgroundImage:
+      "url(http://images.unsplash.com/photo-1630359563592-c685967f83d7?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max)",
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "light"
@@ -34,9 +33,6 @@ const useStyles = makeStyles((theme) => ({
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
-    // display: 'flex',
-    // flexFlow: 'column wrap',
-    // justifyContent: 'space-between'
   },
   submit: {
     margin: theme.spacing(3, 0, 2),

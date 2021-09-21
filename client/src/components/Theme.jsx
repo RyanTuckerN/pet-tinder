@@ -43,7 +43,7 @@ const theme = createTheme({
     },
     body1: {
       fontFamily: "Ubuntu",
-      // fontWeight: 100,
+      fontSize: ".75rem",
     },
     body2: {
       fontFamily: "Ubuntu",
@@ -60,5 +60,4 @@ const theme = createTheme({
   },
 });
 
-
-export default theme
+export default theme;

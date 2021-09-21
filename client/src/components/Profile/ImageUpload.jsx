@@ -7,23 +7,27 @@ const ImageUpload = (props) => {
   const { photo_url, setPhoto_url } = props.twoProps;
 
   const uploadImage = async (e) => {
-    const files = e.target.files;
-    const data = new FormData();
-    data.append("file", files[0]);
-    data.append("upload_preset", "lvcrltpx");
-    const res = await fetch(
-      "https://api.cloudinary.com/v1_1/dpd08wa9g/image/upload",
-      {
-        method: "POST",
-        body: data,
-      }
-    );
-    const File = await res.json();
-    console.log(File);
-    setPhoto_url(File.secure_url);
+    try {
+      const files = e.target.files;
+      const data = new FormData();
+      data.append("file", files[0]);
+      data.append("upload_preset", "lvcrltpx");
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/dpd08wa9g/image/upload",
+        {
+          method: "POST",
+          body: data,
+        }
+      );
+      const File = await res.json();
+      console.log(File);
+      setPhoto_url(File.secure_url);
+    } catch (err) {
+      console.error(err);
+      alert("There was an error! Please try again");
+    }
   };
 
-  // const handlePhoto = e => setPhoto_url(e.target.value)
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -38,31 +42,15 @@ const ImageUpload = (props) => {
           />
         </Grid>
         <Grid item xs={12}>
-          {/* <TextField
-            required
-            type="file"
-            name="file"
-            label="Image URL"
-            // fullWidth
-            // value={photo_url}
-            // autoComplete="given-name"
-          /> */}
           <input
             accept="image/*"
-            // className={classes.input}
             onChange={uploadImage}
             style={{ display: "none" }}
             id="raised-button-file"
-            // multiple
             type="file"
           />
           <label htmlFor="raised-button-file">
-            <Button
-              variant="contained"
-              color='secondary'
-              component="span"
-              // className={classes.button}
-            >
+            <Button variant="contained" color="secondary" component="span">
               Upload an Image
             </Button>
           </label>

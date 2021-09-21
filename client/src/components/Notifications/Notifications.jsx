@@ -13,7 +13,6 @@ import { Button } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    // maxWidth: 752,
   },
   demo: {
     display: "flex",
@@ -64,7 +63,9 @@ export default function NotificationsPage(props) {
   };
 
   //clears notification on unmount
-  useEffect(()=> {return handleClear},[])
+  useEffect(() => {
+    return handleClear;
+  }, []);
 
   return (
     <div className={classes.root}>
@@ -74,9 +75,7 @@ export default function NotificationsPage(props) {
             Notifications
           </Typography>
           <div className={classes.demo}>
-            <List
-            // style={{display: 'flex', flexDirection: 'column', margin: 'auto'}}
-            >
+            <List>
               {notifications
                 ? notifications.length
                   ? notifications.map((n) => {

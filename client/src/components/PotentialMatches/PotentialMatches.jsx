@@ -26,177 +26,188 @@ const PotentialMatches = (props) => {
   // const handle10Filter = () => setPotentialFilter('10')
 
   const fetchPotentialMatches = async (filter) => {
-    const allLikes = await fetch("http://localhost:3333/like/mine", {
-      method: "GET",
-      headers: new Headers({
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      }),
-    });
-    const allDogs = await fetch("http://localhost:3333/dog/all", {
-      method: "GET",
-      headers: new Headers({
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      }),
-    });
-    const likesJson = await allLikes.json();
+    try {
+      const allLikes = await fetch("http://localhost:3333/like/mine", {
+        method: "GET",
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        }),
+      });
+      const allDogs = await fetch("http://localhost:3333/dog/all", {
+        method: "GET",
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        }),
+      });
+      const likesJson = await allLikes.json();
 
-    const dogsJson = await allDogs.json();
-    {
-      const likedIds = likesJson.length ? likesJson.map((el) => el.dog.id) : [];
-      const likesRemoved = dogsJson.dogs.filter(
-        (dog) => !likedIds.includes(dog.id)
-      );
-      originalArray = likesRemoved;
-      dogsState = likesRemoved;
-      setPotentialMatches(likesRemoved);
+      const dogsJson = await allDogs.json();
+      {
+        const likedIds = likesJson.length
+          ? likesJson.map((el) => el.dog.id)
+          : [];
+        const likesRemoved = dogsJson.dogs.filter(
+          (dog) => !likedIds.includes(dog.id)
+        );
+        originalArray = likesRemoved;
+        dogsState = likesRemoved;
+        setPotentialMatches(likesRemoved);
 
-      // switch (filter) {
-      //   case "males":
-      //     setPotentialMatches(likesRemoved.filter((d) => !d.is_female));
-      //     break;
-      //   case "females":
-      //     setPotentialMatches(likesRemoved.filter((d) => d.is_female));
-      //     break;
-      //   case "100":
-      //     setPotentialMatches(
-      //       likesRemoved.filter((d) => {
-      //         return distanceBetCoor.calcMiles([
-      //           d.location?.lat,
-      //           d.location?.lon,
-      //           usersInfo?.user?.dog?.location?.lat,
-      //           usersInfo?.user?.dog?.location?.lon,
-      //         ]) < 100;
-      //       })
-      //     );
-      //     break;
-      //   case "50":
-      //     setPotentialMatches(
-      //       likesRemoved.filter((d) => {
-      //         return distanceBetCoor.calcMiles([
-      //           d.location?.lat,
-      //           d.location?.lon,
-      //           usersInfo?.user?.dog?.location?.lat,
-      //           usersInfo?.user?.dog?.location?.lon,
-      //         ]) < 50;
-      //       })
-      //     );
-      //     break;
-      //   case "25":
-      //     setPotentialMatches(
-      //       likesRemoved.filter((d) => {
-      //         return distanceBetCoor.calcMiles([
-      //           d.location?.lat,
-      //           d.location?.lon,
-      //           usersInfo?.user?.dog?.location?.lat,
-      //           usersInfo?.user?.dog?.location?.lon,
-      //         ]) < 25;
-      //       })
-      //     );
-      //     break;
-      //   case "10":
-      //     setPotentialMatches(
-      //       likesRemoved.filter((d) => {
-      //         return distanceBetCoor.calcMiles([
-      //           d.location?.lat,
-      //           d.location?.lon,
-      //           usersInfo?.user?.dog?.location?.lat,
-      //           usersInfo?.user?.dog?.location?.lon,
-      //         ]) < 10;
-      //       })
-      //     );
-      //     break;
-      //   default:
-      //     setPotentialMatches(likesRemoved);
-      //     break;
-      // }
+        // switch (filter) {
+        //   case "males":
+        //     setPotentialMatches(likesRemoved.filter((d) => !d.is_female));
+        //     break;
+        //   case "females":
+        //     setPotentialMatches(likesRemoved.filter((d) => d.is_female));
+        //     break;
+        //   case "100":
+        //     setPotentialMatches(
+        //       likesRemoved.filter((d) => {
+        //         return distanceBetCoor.calcMiles([
+        //           d.location?.lat,
+        //           d.location?.lon,
+        //           usersInfo?.user?.dog?.location?.lat,
+        //           usersInfo?.user?.dog?.location?.lon,
+        //         ]) < 100;
+        //       })
+        //     );
+        //     break;
+        //   case "50":
+        //     setPotentialMatches(
+        //       likesRemoved.filter((d) => {
+        //         return distanceBetCoor.calcMiles([
+        //           d.location?.lat,
+        //           d.location?.lon,
+        //           usersInfo?.user?.dog?.location?.lat,
+        //           usersInfo?.user?.dog?.location?.lon,
+        //         ]) < 50;
+        //       })
+        //     );
+        //     break;
+        //   case "25":
+        //     setPotentialMatches(
+        //       likesRemoved.filter((d) => {
+        //         return distanceBetCoor.calcMiles([
+        //           d.location?.lat,
+        //           d.location?.lon,
+        //           usersInfo?.user?.dog?.location?.lat,
+        //           usersInfo?.user?.dog?.location?.lon,
+        //         ]) < 25;
+        //       })
+        //     );
+        //     break;
+        //   case "10":
+        //     setPotentialMatches(
+        //       likesRemoved.filter((d) => {
+        //         return distanceBetCoor.calcMiles([
+        //           d.location?.lat,
+        //           d.location?.lon,
+        //           usersInfo?.user?.dog?.location?.lat,
+        //           usersInfo?.user?.dog?.location?.lon,
+        //         ]) < 10;
+        //       })
+        //     );
+        //     break;
+        //   default:
+        //     setPotentialMatches(likesRemoved);
+        //     break;
+        // }
+      }
+    } catch (err) {
+      console.error(err);
+      alert("There was an error! Please try again.");
     }
   };
-  useEffect(()=>fetchPotentialMatches(potentialFilter), [potentialFilter]);
+  useEffect(() => fetchPotentialMatches(potentialFilter), [potentialFilter]);
 
   const handleLike = async (dir, id) => {
-    //First fetch matches
-    const firstMatchesFetch = await fetch(
-      "http://localhost:3333/like/matches",
-      {
-        method: "GET",
-        headers: new Headers({
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        }),
-      }
-    );
-    const firstRes = await firstMatchesFetch.json();
-    const firstCount = firstRes.count;
-    const firstMatches = firstRes.matches;
-    //Like the dog
-    const likeFetch = await fetch(`http://localhost:3333/like/${id}`, {
-      method: "POST",
-      headers: new Headers({
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      }),
-      body: JSON.stringify({ superlike: dir === "up" ? true : false }),
-    });
-    const json = await likeFetch.json();
-    console.log(json);
-    //send socket request that online users update current matches, might need to move/remove?
-    socket.emit("matchRequest", usersInfo?.user?.id);
-
-    //fetch matches again, see if there is a change
-    const secondMatchesFetch = await fetch(
-      "http://localhost:3333/like/matches",
-      {
-        method: "GET",
-        headers: new Headers({
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        }),
-      }
-    );
-    const secondRes = await secondMatchesFetch.json();
-    const secondCount = secondRes.count;
-    const secondMatches = secondRes.matches;
-    //if there is a new match...
-    if (secondCount > firstCount) {
-      const newMatch = secondMatches.filter(
-        (match) => !firstMatches.map((d) => d.id).includes(match.id)
-      )[0];
-      console.log("NEW MATCH: ", newMatch);
-      const selfNote = await fetch(
-        `http://localhost:3333/note/${usersInfo?.user?.id}`,
+    try {
+      //First fetch matches
+      const firstMatchesFetch = await fetch(
+        "http://localhost:3333/like/matches",
         {
+          method: "GET",
+          headers: new Headers({
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          }),
+        }
+      );
+      const firstRes = await firstMatchesFetch.json();
+      const firstCount = firstRes.count;
+      const firstMatches = firstRes.matches;
+      //Like the dog
+      const likeFetch = await fetch(`http://localhost:3333/like/${id}`, {
+        method: "POST",
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        }),
+        body: JSON.stringify({ superlike: dir === "up" ? true : false }),
+      });
+      const json = await likeFetch.json();
+      console.log(json);
+      socket.emit("matchRequest", usersInfo?.user?.id);
+
+      //fetch matches again, see if there is a change
+      const secondMatchesFetch = await fetch(
+        "http://localhost:3333/like/matches",
+        {
+          method: "GET",
+          headers: new Headers({
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          }),
+        }
+      );
+      const secondRes = await secondMatchesFetch.json();
+      const secondCount = secondRes.count;
+      const secondMatches = secondRes.matches;
+      //if there is a new match...
+      if (secondCount > firstCount) {
+        const newMatch = secondMatches.filter(
+          (match) => !firstMatches.map((d) => d.id).includes(match.id)
+        )[0];
+        console.log("NEW MATCH: ", newMatch);
+        const selfNote = await fetch(
+          `http://localhost:3333/note/${usersInfo?.user?.id}`,
+          {
+            method: "POST",
+            headers: new Headers({
+              "Content-Type": "application/json",
+              Authorization: localStorage.getItem("token"),
+            }),
+            body: JSON.stringify({
+              message: `You have a new match! Send ${newMatch.name} a chat.`,
+              target: newMatch?.id,
+            }),
+          }
+        );
+        const targetNote = await fetch(`http://localhost:3333/note/${id}`, {
           method: "POST",
           headers: new Headers({
             "Content-Type": "application/json",
             Authorization: localStorage.getItem("token"),
           }),
           body: JSON.stringify({
-            message: `You have a new match! Send ${newMatch.name} a chat.`,
-            target: newMatch?.id,
+            message: `You have a new match! Send ${usersInfo?.user?.dog?.name} a chat.`,
+            target: usersInfo?.user?.id,
           }),
-        }
-      );
-      const targetNote = await fetch(`http://localhost:3333/note/${id}`, {
-        method: "POST",
-        headers: new Headers({
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        }),
-        body: JSON.stringify({
-          message: `You have a new match! Send ${usersInfo?.user?.dog?.name} a chat.`,
-          target: usersInfo?.user?.id,
-        }),
-      });
+        });
 
-      const targetJson = await targetNote.json();
-      const selfJson = await selfNote.json();
-      console.log("NOTIFICATION RESPONSES: ", selfJson, targetJson);
-      socket.emit("notificationRequest", {
-        userId: usersInfo?.user?.id,
-        target: id,
-      });
+        const targetJson = await targetNote.json();
+        const selfJson = await selfNote.json();
+        console.log("NOTIFICATION RESPONSES: ", selfJson, targetJson);
+        socket.emit("notificationRequest", {
+          userId: usersInfo?.user?.id,
+          target: id,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      alert("There was an error! Please try again");
     }
   };
 
