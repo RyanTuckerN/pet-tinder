@@ -1,11 +1,12 @@
 import { Avatar, Typography } from "@material-ui/core";
+import { Link } from 'react-router-dom'
 import "./Chat.css";
 import React, { useState, useEffect, useRef } from "react";
 import ChatMessage from "./ChatMessage";
 import StickyFooter from "./StickyFooter";
 
 const ChatIndex = (props) => {
-  const { socket, usersInfo, chatTarget, setChatTarget, open } =
+  const { socket, usersInfo, chatTarget, setChatTarget, setChatActive, open } =
     props.chatProps;
   const [chatMessage, setChatMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -41,6 +42,11 @@ const ChatIndex = (props) => {
     setChatMessage("");
   };
 
+  useEffect(()=>{
+    setChatActive(true)
+    return ()=>setChatActive(false)
+  },[])
+
   useEffect(() => {
     if (socket) {
       socket.on("priorMessages", (conversation) =>
@@ -60,7 +66,9 @@ const ChatIndex = (props) => {
       <section id="chat-window">
         {chatTarget ? (
           <div className="chat-target-banner">
-            <Avatar src={chatTarget.photo_url} id="chat-target-avatar" />
+            <Link to={`/profile/${chatTarget.id}`}>
+              <Avatar src={chatTarget.photo_url} id="chat-target-avatar" />
+            </Link>
             <div>
               <Typography className="chat-target-text" variant="h6">
                 {chatTarget.name}

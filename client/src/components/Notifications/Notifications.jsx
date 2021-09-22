@@ -13,6 +13,7 @@ import { Button } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    color: 'white'
   },
   demo: {
     display: "flex",
@@ -87,7 +88,7 @@ export default function NotificationsPage(props) {
                                 src={matchImages ? matchImages[n.target] : null}
                               ></Avatar>
                             </ListItemAvatar>
-                            <ListItemText primary={n.message} />
+                            <ListItemText primary={n.message} style={{color: '#f3f0ee'}} />
                           </ListItem>
                         </Link>
                       );
@@ -96,7 +97,7 @@ export default function NotificationsPage(props) {
                 : "No Notifications to display!"}
             </List>
             {notifications?.length ? (
-              <Button onClick={handleClear} variant="outlined">
+              <Button onClick={handleClear} variant="outlined" style={{color: '#f3f0ee'}}>
                 CLEAR NOTIFICATIONS
               </Button>
             ) : null}

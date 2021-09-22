@@ -231,7 +231,7 @@ const PotentialMatches = (props) => {
         <Typography variant='h6'
           key={lastDirection}
           className="infoText"
-          style={{ color:'#574949', marginTop:15 }}
+          style={{ color:'#f3f0ee', marginTop:15 }}
         >
           {lastDirection === "left"
             ? "REJECTED!"
@@ -240,7 +240,7 @@ const PotentialMatches = (props) => {
             : "LIKED!"}
         </Typography>
       ) : (
-        <Typography variant='h6' className="infoText" style={{color:'#574949', marginTop:15}}>
+        <Typography variant='h6' className="infoText" style={{color:'#f3f0ee', marginTop:15}}>
           Swipe left to REJECT, swipe right to LIKE, swipe up to SUPERLIKE
         </Typography>
       )}
@@ -311,7 +311,7 @@ const PotentialMatches = (props) => {
     </div> */}
     </>
   ) : (
-    <Typography variant='h6'>
+    <Typography variant='h6' className="infoText" style={{color:'#f3f0ee', marginTop:15}}>
       You need to create a profile for your dog before you can see potential
       matches!
     </Typography>

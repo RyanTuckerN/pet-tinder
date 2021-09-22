@@ -13,16 +13,16 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 2,
     height: 500,
     textAlign: "left",
-    color: "#F3F0EE",
-    background: "#FF655B",
+    color: "#514949",
+    background: "#f3f0ee",
   },
   media: {
     height: 280,
   },
   chip: {
-    backgroundColor: "#f3f0ee",
-    color: "#514949",
-    fontFamily: "Montserrat",
+    backgroundColor: "#514949",
+    color: "#f3f0ee",
+    // fontFamily: "Montserrat",
   },
 }));
 

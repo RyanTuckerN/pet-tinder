@@ -122,7 +122,7 @@ const DisplayProfile = (props) => {
                 >
                   <Chat
                     style={{
-                      backgroundColor: "#514949",
+                      backgroundColor: "#fd2974",
                       padding: 3,
                       borderRadius: "50%",
                       color: "#f3f0ee",
@@ -135,7 +135,7 @@ const DisplayProfile = (props) => {
                   <IconButton>
                     <Email
                       style={{
-                        backgroundColor: "#514949",
+                        backgroundColor: "#fd2974",
                         padding: 3,
                         borderRadius: "50%",
                         color: "#f3f0ee",
@@ -182,9 +182,9 @@ const DisplayProfile = (props) => {
                   {`${currentDog.breed} | ${currentDog.age} years old | ${currentDog.weight} pounds`}
                 </Typography>
                 <div style={{ display: "flex", alignItems: "flex-end" }}>
-                  {locale ? <LocationOn /> : null}
-                  <Typography>
-                    {locale ? `${locale.locale}, ${locale.state}` : null}
+                  {locale ? <LocationOn color='secondary' /> : null}
+                  <Typography variant='subtitle1'>
+                    {locale ? `${locale.locale}, ${locale.state ?? ''}` : null}
                   </Typography>
                 </div>
               </div>

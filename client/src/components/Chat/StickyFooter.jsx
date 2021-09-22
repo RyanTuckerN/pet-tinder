@@ -11,11 +11,11 @@ const StickyFooter = (props) => {
     textAlign: "center",
     paddingBottom: 20,
     paddingTop: 20,
-    marginLeft: 10,
     height: "100px",
     paddingRight: "0 !important",
     paddingLeft: "0 !important",
     width: "100vw",
+    color: 'f3f0ee'
   };
   return (
     <div style={bottomPush} id="sticky-footer">
@@ -26,7 +26,9 @@ const StickyFooter = (props) => {
           width: "100%",
           display: "flex",
           justifyContent: width >= 600 ? "flex-start" : "center",
+          paddingLeft: 15
         }}
+        
       >
         <TextField
           label="Message"
@@ -35,8 +37,11 @@ const StickyFooter = (props) => {
           value={chatMessage}
           onChange={handleChange}
           style={{
+            backgroundColor:'#f3f0ee',
+            borderRadius: 5,
+
             width:
-              width >= 600 ? (open ? width - 320 : width - 180) : width - 100,
+              width >= 600 ? (open ? width - 320 : width - 190) : width - 90,
           }}
         />
         <Button type="submit">SEND</Button>

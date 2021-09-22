@@ -4,18 +4,21 @@ import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Login from "./Login";
 import Signup from "./Signup";
-import video from "./assets/puppies.mp4";
-import useWindowDimensions from "../customHooks/useWindowDimension";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100vh",
   },
   image: {
+    backgroundImage:
+      "url(http://images.unsplash.com/photo-1630359563592-c685967f83d7?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max)",
     backgroundRepeat: "no-repeat",
+    backgroundColor:
+      theme.palette.type === "light"
+        ? theme.palette.grey[50]
+        : theme.palette.grey[900],
     backgroundSize: "cover",
     backgroundPosition: "center",
-    height: '100vh'
   },
   paper: {
     margin: theme.spacing(8, 4),
@@ -40,20 +43,13 @@ export default function Auth(props) {
   const { updateToken, setUsersInfo } = props;
   const [loginShowing, setLoginShowing] = useState(true);
   const classes = useStyles();
-  const { width } = useWindowDimensions()
 
   const toggleView = () => setLoginShowing(!loginShowing);
 
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      {width >= 960 ? (<Grid item xs={false} sm={4} md={7} 
-      style={{display: 'flex', justifyContent: 'center'}}
-      >
-        <video autoPlay loop muted className={classes.image}>
-          <source src={video} />
-        </video>
-      </Grid>): null}
+      <Grid item xs={false} sm={4} md={7} className={classes.image} />
       {loginShowing ? (
         <Login
           classes={classes}
