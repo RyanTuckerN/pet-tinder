@@ -7,11 +7,13 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Pets from "@material-ui/icons/Pets";
 import Typography from "@material-ui/core/Typography";
+import useWindowDimensions from "../customHooks/useWindowDimension";
 
 const Login = (props) => {
   const { classes, updateToken, toggleView, setUsersInfo, usersInfo } = props;
   const [profile_name, setProfile_name] = useState("");
   const [password, setPassword] = useState("");
+  const { width } = useWindowDimensions();
 
   const handleProfileName = (e) => setProfile_name(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
@@ -55,8 +57,15 @@ const Login = (props) => {
   };
 
   return (
-    <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+    <Grid item xs={12} md={5} component={Paper} elevation={6} square>
       <div className={classes.paper}>
+        <Typography
+          component="h1"
+          variant={width>=960 ? "h2" : "h4"}
+          style={{ marginBottom: 30, fontStyle: "italic" }}
+        >
+          Welcome to Pet Tinder
+        </Typography>
         <Avatar className={classes.avatar}>
           <Pets />
         </Avatar>
