@@ -10,7 +10,7 @@ import distanceBetCoor from "../../functions/distanceBetCoor";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    borderRadius: 2,
+    borderRadius: 20,
     height: 500,
     textAlign: "left",
     color: "#514949",

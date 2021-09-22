@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import MatchDisplay from "./MatchDisplay";
 
 const Matches = (props) => {
@@ -49,7 +49,7 @@ const Matches = (props) => {
           />
         ))
       ) : (
-        <h2>No matches yet!</h2>
+        <Typography variant='h5' style={{color: 'white'}}>No Matches Yet</Typography>
       )}
     </Grid>
   );

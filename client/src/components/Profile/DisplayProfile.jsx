@@ -122,6 +122,8 @@ const DisplayProfile = (props) => {
                 >
                   <Chat
                     style={{
+                      position: 'relative',
+                      bottom: 13,
                       backgroundColor: "#fd2974",
                       padding: 3,
                       borderRadius: "50%",
@@ -135,6 +137,8 @@ const DisplayProfile = (props) => {
                   <IconButton>
                     <Email
                       style={{
+                        position: 'relative',
+                        bottom: 13,
                         backgroundColor: "#fd2974",
                         padding: 3,
                         borderRadius: "50%",
