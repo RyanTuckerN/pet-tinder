@@ -12,6 +12,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
+import "./Matches.css"
 
 const useStyles = makeStyles({
   root: {
@@ -81,6 +82,7 @@ export default function MatchDisplay(props) {
       xl={3}
       style={{ display: "flex", justifyContent: "space-around", padding: 18 }}
     >
+          
       <Card key={dog.id} className={classes.root}>
         {dog.user.likes[0].superlike && superlikeRef[dog.id] ? (
           <Tooltip title='SUPERMATCH!'>
@@ -117,6 +119,7 @@ export default function MatchDisplay(props) {
           </div>
         </CardContent>
       </Card>
+
     </Grid>
   );
 }
