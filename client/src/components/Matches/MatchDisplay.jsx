@@ -149,6 +149,7 @@ export default function MatchDisplay(props) {
           </div>
         </CardContent>
       </Card>
+
     </Grid>
   );
 }
