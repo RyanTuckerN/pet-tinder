@@ -4,9 +4,13 @@ body .background {
 }
 
 .background {
-    background-color: rgb(241, 235, 223);
-  
-
+    background: url("https://www.incimages.com/uploaded_files/image/1920x1080/getty_682329206_200013341653767264242_384393.jpg");
+    min-height: 100vh;
+    position: relative;
+    opacity: 0.85;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 
@@ -23,8 +27,9 @@ body .background {
 
 #home1 {
     font-family: 'Rampart One';
-    color: #B05B3B;
-    float: center;
+    color:#f3f0ee;
+    position: relative;
+    /* float: center; */
     font-size: 40px;
 }
 
@@ -37,7 +42,9 @@ body .background {
 
 #home2 {
     font-family: 'Rampart One';
-    color: #B05B3B;
+    color:#f3f0ee;
+    position: relative;
+    right: -200px;
     /* position: absolute; 
     bottom: 250px;
     right: 450px;   */
@@ -47,7 +54,7 @@ body .background {
     /* position: relative; */
     bottom: -205px;
     font-family: 'Azeret Mono', monospace;
-    color: rgb(82, 70, 49);
+    color:#f3f0ee;
     padding-top: 10px;
 }
 
@@ -55,10 +62,10 @@ body .background {
     /* position: relative; */
     bottom: -260px;
     font-family: 'Azeret Mono', monospace;
-    color: rgb(82, 70, 49);
+    color:#f3f0ee;
 }
 
-#doglogo {
+/* #doglogo {
 position: absolute;
 height: 60px;
 top: -148px;
@@ -75,7 +82,7 @@ z-index: 1;
     right: 200px;
     z-index: 1;
     }
-}
+} */
 /* 
  @media (min-width: 770px) {
     #doglogo {
@@ -86,7 +93,7 @@ z-index: 1;
     z-index: 1;
     }
 }  */
-
+/* 
 #chat {
 
     color: #B05B3B;
@@ -96,9 +103,9 @@ z-index: 1;
    justify-content: center;
    top: -165px;   
    right: 410px;
-}
+} */
 
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     #chat {
         color: #B05B3B;
         font-size: 60px;
@@ -108,7 +115,7 @@ z-index: 1;
         top: -125px;   
         right: 190px;
     }
-}
+} */
 
 
  /* @media (min-width: 770px) {
@@ -123,19 +130,13 @@ z-index: 1;
     }
 }  */
 
-.logo-container {
-    position: relative;
-    width: 100vw;
-    height: 30vh;
-
-}
-
+/* 
 .logo-merge {
     position: absolute; 
     top: 10;
     right: 0;
     width: 85vw;
-}
+} */
 
 .homepage {
     position: relative;
