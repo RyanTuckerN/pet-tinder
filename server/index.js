@@ -3,7 +3,7 @@ const express = require("express");
 const db = require("./db");
 const app = express();
 const PORT = process.env.PORT
-const CLIENT_PORT = process.env.CLIENT_PORT
+const CLIENT_URL = process.env.CLIENT_URL
 
 ////////////////////////
 //***CHAT ADDITIONS***//
@@ -14,7 +14,7 @@ const server = app.listen(PORT, () =>
 const cors = require("cors");
 const io = require("socket.io")(server, {
   cors: {
-    origin: `http://localhost:${CLIENT_PORT}`, //whatever port client runs on!
+    origin: CLIENT_URL, //whatever port client runs on!
     methods: ["GET", "POST"],
   },
 });

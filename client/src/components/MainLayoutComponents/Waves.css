@@ -23,6 +23,7 @@ body {
   text-align:center;
   background: linear-gradient(60deg, #fd2974 0%, #ff5864 66%, #ff655b 100%);
   color:white;
+  z-index: 0;
 }
 
 .header p{
@@ -59,6 +60,7 @@ body {
   align-items: center;
   text-align: center;
   flex-flow: row wrap;
+  
 }
 
 .waves {
@@ -72,7 +74,8 @@ body {
 
 .content {
   position:relative;
-  height:20vh;
+  height:22vh;
+  min-height: 500px;
   text-align:center;
   background-color: white;
 }

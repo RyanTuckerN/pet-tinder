@@ -8,6 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import Pets from "@material-ui/icons/Pets";
 import Typography from "@material-ui/core/Typography";
 import useWindowDimensions from "../customHooks/useWindowDimension";
+import API_URL from "../_helpers/environment";
 
 const Login = (props) => {
   const { classes, updateToken, toggleView, setUsersInfo, usersInfo } = props;
@@ -22,7 +23,7 @@ const Login = (props) => {
     e.preventDefault();
 
     try {
-      const fetchResults = await fetch("http://localhost:3333/user/login", {
+      const fetchResults = await fetch(`${API_URL}/user/login`, {
         method: "POST",
         body: JSON.stringify({ profile_name, password }),
         headers: new Headers({
@@ -35,7 +36,7 @@ const Login = (props) => {
         alert(json.message);
         return;
       }
-      const matchesFetch = await fetch("http://localhost:3333/like/matches", {
+      const matchesFetch = await fetch(`${API_URL}/like/matches`, {
         method: "GET",
         headers: new Headers({
           "Content-Type": "application/json",
@@ -59,13 +60,6 @@ const Login = (props) => {
   return (
     <Grid item xs={12} md={5} component={Paper} elevation={6} square>
       <div className={classes.paper}>
-        {/* <Typography
-          component="h1"
-          variant={width>=960 ? "h2" : "h4"}
-          style={{ marginBottom: 30, fontStyle: "italic" }}
-        >
-          Welcome to Pet Tinder
-        </Typography> */}
         <Avatar className={classes.avatar}>
           <Pets />
         </Avatar>

@@ -8,6 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import Pets from "@material-ui/icons/Pets";
 import Typography from "@material-ui/core/Typography";
 import useWindowDimensions from "../customHooks/useWindowDimension";
+import API_URL from "../_helpers/environment";
 
 const Signup = (props) => {
   const { classes, updateToken, toggleView } = props;
@@ -31,7 +32,7 @@ const Signup = (props) => {
     const userAvailFetch = async () => {
       if (validateUsername(profile_name)) {
         const usernameResults = await fetch(
-          `http://localhost:3333/user/checkAvail/${profile_name}`
+          `${API_URL}/user/checkAvail/${profile_name}`
         );
         const usernameJson = await usernameResults.json();
         setUsernameAvailable(usernameJson);
@@ -82,7 +83,7 @@ const Signup = (props) => {
     }
 
     try {
-      const fetchResults = await fetch("http://localhost:3333/user/signup", {
+      const fetchResults = await fetch(`${API_URL}/user/signup`, {
         method: "POST",
         body: JSON.stringify({
           profile_name,

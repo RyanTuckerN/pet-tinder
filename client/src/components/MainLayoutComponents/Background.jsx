@@ -8,9 +8,9 @@ const BackgroundWaves = () => {
   return (
     <div class="header">
       <div class="inner-header flex">
-        <img src={dogLogo} className='logo' />
+        {width>=348? <img src={dogLogo} className='logo' />: null}
         <h1>pet tinder</h1>
-        {width>=525?<p>...where puppy love starts</p>:null}
+        {width>=630?<p>...where puppy love starts</p>:null}
       </div>
       <div>
         <svg

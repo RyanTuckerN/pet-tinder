@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   chip: {
     background: "#fd2974",
     color: "#f3f0ee",
-    fontFamily: "Montserrat",
+    fontFamily: "Roboto",
   },
 }));
 

@@ -97,7 +97,7 @@ export default function NotificationsPage(props) {
                 : "No Notifications to display!"}
             </List>
             {notifications?.length ? (
-              <Button onClick={handleClear} variant="outlined" style={{color: '#f3f0ee'}}>
+              <Button onClick={handleClear} variant="outlined" style={{color: '#f3f0ee', border: 'solid white 1px'}}>
                 CLEAR NOTIFICATIONS
               </Button>
             ) : null}
