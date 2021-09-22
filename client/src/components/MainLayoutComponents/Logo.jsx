@@ -1,13 +1,19 @@
 import React from "react";
-import { Typography } from "@material-ui/core";
+import PetTinderLogo from "./assets/PetTinderLogo.png";
 
-const Logo = (props) => {
-  const {title} = props
+const Logo = () => {
+  const image = {
+    height: "100%",
+  };
+
+  const div = {
+    height: 50,
+  };
 
   return (
-    <Typography variant="h6" noWrap classStyle={title}>
-      Pet Tinder
-    </Typography>
+    <div style={div}>
+      <img style={image} src={PetTinderLogo} alt="Pet Tinder Logo" />
+    </div>
   );
 };
 

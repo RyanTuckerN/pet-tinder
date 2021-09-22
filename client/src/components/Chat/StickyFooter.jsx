@@ -1,5 +1,6 @@
 import { TextField, Button } from "@material-ui/core";
 import useWindowDimensions from "../customHooks/useWindowDimension";
+import "./Chat.css";
 
 const StickyFooter = (props) => {
   const { handleChange, handleSubmit, chatMessage, open } = props;
@@ -10,27 +11,33 @@ const StickyFooter = (props) => {
     textAlign: "center",
     paddingBottom: 20,
     paddingTop: 20,
+    marginLeft: 10,
     height: "100px",
-    // backgroundColor: 'rgb(255, 240, 240)', //MAKE SURE THIS MATCHES MAIN BACKGROUND!!
-    paddingRight: '0 !important',
-    paddingLeft: '0 !important',
-    width: '100vw'
-    
+    paddingRight: "0 !important",
+    paddingLeft: "0 !important",
+    width: "100vw",
   };
   return (
-    <div style={bottomPush}>
+    <div style={bottomPush} id="sticky-footer">
       <form
         action="submit"
         onSubmit={handleSubmit}
-        style={{ width: "100%",  display: open && width < 470 ? 'none' : 'flex' , justifyContent: "flex-start" }}
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: width >= 600 ? "flex-start" : "center",
+        }}
       >
         <TextField
-          label=""
-          id="outlined-size-normal"
+          label="Message"
+          className="chat-input"
           variant="outlined"
           value={chatMessage}
           onChange={handleChange}
-          style={{ width: open ? width - 320 : width - 180}}
+          style={{
+            width:
+              width >= 600 ? (open ? width - 320 : width - 180) : width - 100,
+          }}
         />
         <Button type="submit">SEND</Button>
       </form>
@@ -38,4 +45,4 @@ const StickyFooter = (props) => {
   );
 };
 
-export default StickyFooter
+export default StickyFooter;

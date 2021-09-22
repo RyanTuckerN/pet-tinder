@@ -1,11 +1,7 @@
 import React from "react";
 import Typography from "@material-ui/core/Typography";
 
-export default function Review(props) {
-  const { threeProps } = props
-  React.useEffect(()=>{
-    console.log(threeProps)
-  },[props])
+export default function Review() {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>

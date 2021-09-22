@@ -478,7 +478,7 @@ const breeds = [
   "Šarplaninac",
 ];
 const ipsum =
-  "Pit bull lap dog puppies chihuahua, german shephard peanut butter growl milk bone pomeranian sit. Squirrel stand english mastiff release dog bone growl dog bone, jump milk bone lab greyhound take it heel. Tennis ball stay jump beagle sit pretty german shephard pomsky. Dog milk bone bulldog german shephard dachshund, puppy speak shih tzu stand husky bark doberman pinscher dog stay. Bell bulldog release Morkie great dance paw tennis ball leash bulldog, dog come yorkshire terrier german shephard.";
+  "Pit bull lap dog puppies chihuahua, german shephard peanut baxter bark ruff day.";
 const pic =
   "https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c2lsbHklMjBkb2d8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60";
 const temp = [
@@ -502,26 +502,27 @@ const temp = [
   "Dominant",
 ];
 const pics = [
-  "https://images.dog.ceo/breeds/dachshund/dog-2643027_640.jpg",
   "https://images.unsplash.com/photo-1587300003388-59208cc962cb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
   "https://images.unsplash.com/photo-1477884213360-7e9d7dcc1e48?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
   "https://images.unsplash.com/photo-1560525821-d5615ef80c69?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
   "https://images.unsplash.com/photo-1588344862058-0072276d3542?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y2FuZSUyMGNvcnNvfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
   "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1049&q=80",
+  "https://images.unsplash.com/photo-1579926485382-e8342e1eedc9?ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8aHllbmF8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
   "https://images.unsplash.com/photo-1583512603805-3cc6b41f3edb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-  "https://images.dog.ceo/breeds/terrier-westhighland/n02098286_6041.jpg",
-  "https://images.dog.ceo/breeds/beagle/n02088364_14892.jpg",
   "https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c2lsbHklMjBkb2d8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-  "https://images.dog.ceo/breeds/dachshund/dog-2643027_640.jpg",
   "https://images.unsplash.com/photo-1587300003388-59208cc962cb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
   "https://images.unsplash.com/photo-1477884213360-7e9d7dcc1e48?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
   "https://images.unsplash.com/photo-1560525821-d5615ef80c69?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
   "https://images.unsplash.com/photo-1588344862058-0072276d3542?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y2FuZSUyMGNvcnNvfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
   "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1049&q=80",
-  "https://images.unsplash.com/photo-1583512603805-3cc6b41f3edb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-  "https://images.dog.ceo/breeds/terrier-westhighland/n02098286_6041.jpg",
-  "https://images.dog.ceo/breeds/beagle/n02088364_14892.jpg",
-  "https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c2lsbHklMjBkb2d8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+  "https://images.unsplash.com/photo-1598133894008-61f7fdb8cc3a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8M3x8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60",
+  "https://images.unsplash.com/photo-1610968755695-d7fcb5fd4b92?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8NDF8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
+  "https://images.unsplash.com/photo-1597746586349-c7effd1d6b40?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c2hlcGhlcmQlMjBkb2d8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+  "https://images.unsplash.com/photo-1556546346-ad2946663684?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8NjV8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
+  "https://images.unsplash.com/photo-1551820170-c5bb060f5750?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Nzd8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
+  "https://images.unsplash.com/photo-1589652045989-0fe2ed330576?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fGh5ZW5hfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+  "https://images.unsplash.com/photo-1545218553-6c2262f9f678?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8NzR8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
+  "https://images.unsplash.com/photo-1575785662490-1e3ce6806ed5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Nzl8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
 ];
 
 module.exports = { breeds, names, ipsum, pics, temp };

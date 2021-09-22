@@ -6,6 +6,8 @@ import MainLayout from "./components/MainLayout";
 // import CreateProfile from "./components/Profile/CreateProfile";
 // import NotConnected from './components/MainLayoutComponents/NotConnected'
 import jwt_decode from "jwt-decode";
+import theme from "./components/Theme";
+import { ThemeProvider } from '@material-ui/styles';
 
 function App() {
   //STATE VARIABLE AND SETTERS
@@ -113,18 +115,20 @@ function App() {
   };
 
   return (
-    <div className="App">
-      {token ? (
-        <MainLayout mainLayoutProps={mainLayoutProps} />
-      ) : (
-        <Auth
-          setUsersInfo={setUsersInfo}
-          updateToken={updateToken}
-          usersInfo={usersInfo}
-          socket={socket}
-        />
-      )}
-    </div>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        {token ? (
+          <MainLayout mainLayoutProps={mainLayoutProps} />
+        ) : (
+          <Auth
+            setUsersInfo={setUsersInfo}
+            updateToken={updateToken}
+            usersInfo={usersInfo}
+            socket={socket}
+          />
+        )}
+      </div>
+    </ThemeProvider>
   );
 }
 

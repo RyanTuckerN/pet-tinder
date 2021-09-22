@@ -5,7 +5,7 @@ import "./Home.css";
 const Home = (props) => {
   return (
     <div className="background">
-      <div id="spacer" /> 
+      {/* <div id="spacer" /> 
       <div className="logo-container">
         <h1 id="home1">Welcome To Pet Tinder</h1>
         <div className="logo-merge">
@@ -21,7 +21,7 @@ const Home = (props) => {
       <style>
         @import
         url('https://fonts.googleapis.com/css2?family=Rampart+One&display=swap');
-      </style>
+      </style> */}
     </div>
   );
 };

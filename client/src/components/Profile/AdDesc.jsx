@@ -11,10 +11,14 @@ const useStyles = makeStyles((theme) => ({
     listStyle: "none",
     margin: 0,
   },
-  chip: {},
+  chip: {
+    background: "#fd2974",
+    color: "#f3f0ee",
+    fontFamily: "Montserrat",
+  },
 }));
 
-export default function PaymentForm(props) {
+export default function AdDesc(props) {
   const {
     ad_description,
     temperament,
@@ -52,7 +56,7 @@ export default function PaymentForm(props) {
         Description
       </Typography>
       <Typography variant="subtitle1" gutterBottom>
-        Help other users get a feel for your dog! (500 character maximum length)
+        Help other users get a feel for your dog!
       </Typography>
       <div style={{ height: 20 }} />
       <Grid container spacing={3}>
@@ -66,12 +70,12 @@ export default function PaymentForm(props) {
             fullWidth
             value={ad_description}
             onChange={handleAdChange}
-            inputProps={{ maxLength: 500 }}
+            inputProps={{ maxLength: 200 }}
           />
         </Grid>
       </Grid>
       <div style={{ height: 20 }} />
-      <Typography variant="caption">{`${length}/500`} </Typography>
+      <Typography variant="caption">{`${length}/200`} </Typography>
       <div style={{ height: 20 }} />
       <Typography variant="h6" gutterBottom>
         Temperament

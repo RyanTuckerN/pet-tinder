@@ -1,11 +1,8 @@
-body .background {
-    height: 100%;
-    width: 100%;
-}
-
 .background {
-    background: url("https://www.incimages.com/uploaded_files/image/1920x1080/getty_682329206_200013341653767264242_384393.jpg");
-    min-height: 100vh;
+    /* background-color: rgb(241, 235, 223); */
+    background-image: url('https://res.cloudinary.com/dmvwjinuq/image/upload/v1632268030/dog_background2_whnbxi.jpg');
+    /* min-height: 100vh; */
+    max-width: 100%;
     position: relative;
     opacity: 0.85;
     background-position: center;
@@ -19,6 +16,16 @@ body .background {
         width: 100%;
     }
 }
+
+
+/* ALL OF THESE ARE NOT BEING USED  */
+body .background {
+    height: 100%;
+    width: 100%;
+}
+
+
+
 
  #spacer {
     height: 100px;

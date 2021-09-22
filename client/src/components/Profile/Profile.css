@@ -1,8 +1,8 @@
-*{
+* {
   box-sizing: border-box;
 }
 
-#profile-photo-wrapper{ 
+#profile-photo-wrapper {
   margin-bottom: 30px;
   padding: 1px;
   background-color: rgba(255, 127, 80, 0.404);
@@ -10,37 +10,43 @@
   box-shadow: 5px 5px 15px 5px rgba(241, 54, 54, 0.29);
 }
 
-.profile-section{
+.profile-section {
   padding: 10px;
   /* background-color: cornflowerblue; */
 }
 
-.chips-wrapper{
+.chips-wrapper {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   list-style: none;
 }
 
-.chip{
+.chip {
   padding: 3px;
   display: inline;
 }
 
-#title{
+#title {
   font-size: x-large;
 }
 
-#button-container{
+#button-container {
   width: auto;
   display: flex;
   justify-content: space-around;
   /* background-color: khaki; */
 }
 
-#tinder-wrapper{
+#tinder-wrapper {
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
+#profile-container {
+/* background-color: white; */
+
+}
+

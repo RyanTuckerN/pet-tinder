@@ -14,7 +14,7 @@ const OnlineStatus = (props) => {
     borderRadius: "50%",
     position: "relative",
     right: 24,
-    top: 15
+    top: 15,
   };
   return (
     <div

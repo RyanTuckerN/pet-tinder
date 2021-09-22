@@ -1,39 +1,21 @@
 import CssBaseline from "@material-ui/core/CssBaseline";
-import React, {useState} from "react";
-import Link from "@material-ui/core/Link";
-import Box from "@material-ui/core/Box";
+import React, { useState } from "react";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Login from "./Login";
 import Signup from "./Signup";
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import video from "./assets/puppies.mp4";
+import useWindowDimensions from "../customHooks/useWindowDimension";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100vh",
   },
   image: {
-    backgroundImage: "url(https://source.unsplash.com/random)",
     backgroundRepeat: "no-repeat",
-    backgroundColor:
-      theme.palette.type === "light"
-        ? theme.palette.grey[50]
-        : theme.palette.grey[900],
     backgroundSize: "cover",
     backgroundPosition: "center",
+    height: '100vh'
   },
   paper: {
     margin: theme.spacing(8, 4),
@@ -58,19 +40,25 @@ export default function Auth(props) {
   const { updateToken, setUsersInfo } = props;
   const [loginShowing, setLoginShowing] = useState(true);
   const classes = useStyles();
+  const { width } = useWindowDimensions()
 
   const toggleView = () => setLoginShowing(!loginShowing);
 
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
+      {width >= 960 ? (<Grid item xs={false} sm={4} md={7} 
+      style={{display: 'flex', justifyContent: 'center'}}
+      >
+        <video autoPlay loop muted className={classes.image}>
+          <source src={video} />
+        </video>
+      </Grid>): null}
       {loginShowing ? (
         <Login
           classes={classes}
           updateToken={updateToken}
           setUsersInfo={setUsersInfo}
-          // socket={socket}
           toggleView={toggleView}
         />
       ) : (
@@ -78,13 +66,9 @@ export default function Auth(props) {
           classes={classes}
           updateToken={updateToken}
           setUsersInfo={setUsersInfo}
-          // socket={socket}
           toggleView={toggleView}
         />
       )}
-      <Box mt={5}>
-        <Copyright />
-      </Box>
     </Grid>
   );
 }

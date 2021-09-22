@@ -20,13 +20,13 @@
 .tinderCards__cardContainer {
   display: flex;
   justify-content: center;
-  margin-top: 5vh;
+  /* margin-top: 5vh; */
 }
-
+/* 
 .infoText{
   position: relative;
   bottom: 60px;
-}
+} */
 
 .swipe {
   position: absolute; /* This absolute position will take them from the default position and will stack them on top of each other*/
