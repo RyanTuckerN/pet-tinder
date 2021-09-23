@@ -14,8 +14,8 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "left",
     flexGrow: 1,
     flexShrink: 1,
-    color: "#F3F0EE",
-    background: "#FF655B",
+    color: "rgb(81, 73, 73)",
+    background: "#F3F0EE",
   },
   media: {
     height: 280,
@@ -124,7 +124,7 @@ export default function MatchDisplay(props) {
           <Link to={`/profile/${dog.id}`}>
             <AccountCircle
               style={{
-                color: "#f3f0ee",
+                color: "#ff5864",
                 padding: 2,
                 position: "relative",
                 top: 3,

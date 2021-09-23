@@ -13,6 +13,7 @@ import BasicInfo from "./BasicInfo";
 import AdDesc from "./AdDesc";
 import ImageUpload from "./ImageUpload";
 import "./Profile.css";
+import API_URL from "../_helpers/environment";
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -134,7 +135,7 @@ const Profile = (props) => {
 
   const handleSubmit = async () => {
     try {
-      const fetchResults = await fetch(`http://localhost:3333/dog/${user.id}`, {
+      const fetchResults = await fetch(`${API_URL}/dog/${user.id}`, {
         method: "PUT",
         headers: new Headers({
           "Content-Type": "application/json",
@@ -149,6 +150,26 @@ const Profile = (props) => {
     } catch (err) {
       alert(err);
     }
+  };
+
+  const handleDelete = async () => {
+    if (
+      !window.confirm(
+        "This will delete your profile! Your user account will still be intact. Do you want to proceed?"
+      )
+    )
+      return;
+    const deleteFetch = await fetch(`${API_URL}/dog/`, {
+      method: "DELETE",
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: token,
+      }),
+    });
+    const json = await deleteFetch.json();
+    alert(json.message);
+    socket.emit("newLogin", usersInfo.user.id);
+    history.push("/");
   };
 
   return user?.dog ? (
@@ -182,6 +203,14 @@ const Profile = (props) => {
           </div>
           <React.Fragment>
             <div className={classes.buttons}>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                onClick={handleDelete}
+              >
+                Delete profile
+              </Button>
               <Button
                 variant="contained"
                 color="primary"

@@ -12,6 +12,7 @@ import AdDesc from "./AdDesc";
 import ImageUpload from "./ImageUpload";
 import Review from "./Review";
 import { useHistory } from "react-router-dom";
+import API_URL from "../_helpers/environment";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -81,7 +82,7 @@ export default function CreateProfile(props) {
   const [weight, setWeight] = useState(45);
   const [age, setAge] = useState(4);
   const [ad_description, setAdDescription] = useState(
-    "Rufus is cool and fun, he loves snow!"
+    "Rufus is awesome, we love him!"
   );
   const [length, setLength] = useState(ad_description.length);
   const [temperament, setTemperament] = useState([
@@ -91,6 +92,12 @@ export default function CreateProfile(props) {
   ]);
   const [is_female, setIsFemale] = useState(false);
   const [location, setLocation] = useState({});
+
+  const properizeNoun = (str) =>
+  str
+    .split(" ")
+    .map((word) => word[0]?.toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
 
   const getLocation = () => {
     navigator.geolocation.getCurrentPosition(
@@ -109,11 +116,44 @@ export default function CreateProfile(props) {
     );
   };
 
+  const getRandomDogPhoto = () => {
+    const randomPhotoFetch = async () => {
+      try {
+        const photoFetch = await fetch(
+          "https://dog.ceo/api/breeds/image/random"
+        );
+        const json = await photoFetch.json();
+        if (json.status === "success") setPhoto_url(json.message);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    randomPhotoFetch();
+  };
+  const getBreedList = () => {
+    const breedListFetch = async () => {
+      try {
+        const listFetch = await fetch("https://dog.ceo/api/breeds/list/all");
+        const json = await listFetch.json();
+        const breedArray = Object.keys(json.message);
+        setBreed(properizeNoun(breedArray[Math.floor(Math.random() * breedArray.length - 1)]));
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    breedListFetch();
+  };
+
+  useEffect(getRandomDogPhoto, []);
+  useEffect(getBreedList, []);
   useEffect(() => {
     if (!usersInfo?.user?.dog?.location.lat || !usersInfo?.user?.dog) {
       getLocation();
     }
   }, []);
+  useEffect(()=>{
+    setAdDescription(`${name} is awesome, we love ${is_female ? 'her' : 'him' }.`)
+  },[name, is_female])
 
   const creatingProfile = true;
   const stepperProps = {
@@ -159,7 +199,7 @@ export default function CreateProfile(props) {
   const handleBack = () => setActiveStep(activeStep - 1);
   const handleSubmit = async () => {
     try {
-      const fetchResults = await fetch("http://localhost:3333/dog/", {
+      const fetchResults = await fetch(`${API_URL}/dog/`, {
         method: "POST",
         headers: new Headers({
           "Content-Type": "application/json",
@@ -169,7 +209,7 @@ export default function CreateProfile(props) {
       });
       const json = await fetchResults.json();
       console.log("response@!!->>", json);
-      alert('😈 Thank you for creating a profile! Enjoy Pet Tinder! 😈')
+      alert("Thank you for creating a profile! Enjoy Pet Tinder!");
       socket.emit("newLogin", usersInfo?.user?.id);
       handleNext();
     } catch (err) {
@@ -200,10 +240,10 @@ export default function CreateProfile(props) {
                   Thank you for creating a profile!
                 </Typography>
                 <Typography variant="subtitle1" gutterBottom>
-                  😈 Enjoy Pet Tinder! 😈
+                  Enjoy Pet Tinder!
                 </Typography>
                 <Typography variant="subtitle2">
-                  <Button onClick={() => history.push("/")}>
+                  <Button onClick={() => history.push("/potentialmatches")}>
                     Click here to get started
                   </Button>
                 </Typography>

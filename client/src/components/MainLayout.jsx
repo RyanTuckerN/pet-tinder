@@ -37,6 +37,7 @@ import PotentialMatches from "./PotentialMatches/PotentialMatches";
 import EditProfile from "./Profile/EditProfile";
 import Home from "./Home/Home";
 import NotificationsPage from "./Notifications/Notifications";
+import BackgroundWaves from "./MainLayoutComponents/Background";
 import DisplayProfile from "./Profile/DisplayProfile";
 import Account from "./MainLayoutComponents/Account";
 import Logo from "./MainLayoutComponents/Logo";
@@ -139,6 +140,7 @@ export default function MainLayout(props) {
   const [chatTarget, setChatTarget] = useState(null);
   const [avatarPhoto, setAvatarPhoto] = useState(dogPic);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [chatActive, setChatActive] = useState(false);
 
   //FUNCTIONS FOR DRAWER OPEN/CLOSE
   const handleDrawerOpen = () => setOpen(true);
@@ -165,6 +167,7 @@ export default function MainLayout(props) {
     socket,
     open,
     setChatTarget,
+    setChatActive
   };
 
   const matchListProps = {
@@ -197,8 +200,9 @@ export default function MainLayout(props) {
           className={clsx(classes.appBar, { [classes.appBarShift]: open })}
           style={{
             zIndex: width >= 600 ? theme.zIndex.drawer + 1 : 1,
-            background:
-              "radial-gradient(circle, #ff655b 1%, #ff5864 35%, #fd2974 100%)",
+            background: chatActive
+              ? "radial-gradient(circle, #ff655b 1%, #ff5864 35%, #fd2974 100%)"
+              : "white",
           }}
         >
           <Toolbar
@@ -217,7 +221,8 @@ export default function MainLayout(props) {
               }}
             >
               <IconButton
-                color="inherit"
+                // color="primary"
+                style={{color: chatActive ? '#f3f0ee' : '#514949'}}
                 aria-label="open drawer"
                 onClick={handleDrawerOpen}
                 edge="start"
@@ -235,10 +240,10 @@ export default function MainLayout(props) {
             </div>
             <div style={{ marginLeft: "auto" }}>
               {width >= 300 ? (
-                <Badge badgeContent={notifications?.length} color="primary">
+                <Badge badgeContent={notifications?.length} color={chatActive ? "primary" : "secondary"}>
                   <Link to="/notifications">
                     <IconButton>
-                      <Notifications style={{ color: "#f3f0ee" }} />
+                      <Notifications style={{color: chatActive ? '#f3f0ee' : '#514949'}} />
                     </IconButton>
                   </Link>
                 </Badge>
@@ -392,7 +397,8 @@ export default function MainLayout(props) {
           <div className={classes.toolbar} />
           <Switch>
             <Route exact path="/">
-              <Home />
+              {/* <Home /> */}
+              <BackgroundWaves usersInfo={usersInfo}/>
             </Route>
             <Route exact path="/account">
               <Account usersInfo={usersInfo} socket={socket} />

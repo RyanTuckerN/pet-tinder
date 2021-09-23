@@ -1,11 +1,12 @@
 import { Avatar, Typography } from "@material-ui/core";
+import { Link } from 'react-router-dom'
 import "./Chat.css";
 import React, { useState, useEffect, useRef } from "react";
 import ChatMessage from "./ChatMessage";
 import StickyFooter from "./StickyFooter";
 
 const ChatIndex = (props) => {
-  const { socket, usersInfo, chatTarget, setChatTarget, open } =
+  const { socket, usersInfo, chatTarget, setChatTarget, setChatActive, open } =
     props.chatProps;
   const [chatMessage, setChatMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -23,12 +24,10 @@ const ChatIndex = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!chatTarget) {
-      console.log("no chat target");
       alert("Please select a dog to bark at!");
       return;
     } else {
       if (chatMessage.length >= 255) {
-        console.log("message too long!");
         alert("Your message is too long! Keep it under 255 characters.");
       } else {
         socket.emit("message", {
@@ -40,6 +39,11 @@ const ChatIndex = (props) => {
     }
     setChatMessage("");
   };
+
+  useEffect(()=>{
+    setChatActive(true)
+    return ()=>setChatActive(false)
+  },[])
 
   useEffect(() => {
     if (socket) {
@@ -60,7 +64,9 @@ const ChatIndex = (props) => {
       <section id="chat-window">
         {chatTarget ? (
           <div className="chat-target-banner">
-            <Avatar src={chatTarget.photo_url} id="chat-target-avatar" />
+            <Link to={`/profile/${chatTarget.id}`}>
+              <Avatar src={chatTarget.photo_url} id="chat-target-avatar" />
+            </Link>
             <div>
               <Typography className="chat-target-text" variant="h6">
                 {chatTarget.name}

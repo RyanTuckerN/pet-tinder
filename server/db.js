@@ -1,11 +1,8 @@
 const { Sequelize } = require("sequelize");
 
 const db = new Sequelize(
-  "pet-tinder",
-  process.env.dbName,
-  process.env.dbPass,
+  process.env.DATABASE_URL,
   {
-    host: "localhost",
     dialect: "postgres",
     logging: false //comment out for SQL commands in console
   }

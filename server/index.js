@@ -2,17 +2,19 @@ require("dotenv").config();
 const express = require("express");
 const db = require("./db");
 const app = express();
+const PORT = process.env.PORT
+const CLIENT_URL = process.env.CLIENT_URL
 
 ////////////////////////
 //***CHAT ADDITIONS***//
 ////////////////////////
-const server = app.listen(process.env.PORT, () =>
-  console.log(`🚢 Server listening on port ${process.env.PORT} 🚢`)
+const server = app.listen(PORT, () =>
+  console.log(`🚢 Server listening on port ${PORT} 🚢`)
 );
 const cors = require("cors");
 const io = require("socket.io")(server, {
   cors: {
-    origin: `http://localhost:${process.env.CLIENT_PORT || 3000}`, //whatever port client runs on!
+    origin: CLIENT_URL, //whatever port client runs on!
     methods: ["GET", "POST"],
   },
 });

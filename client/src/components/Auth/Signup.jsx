@@ -8,9 +8,11 @@ import Grid from "@material-ui/core/Grid";
 import Pets from "@material-ui/icons/Pets";
 import Typography from "@material-ui/core/Typography";
 import useWindowDimensions from "../customHooks/useWindowDimension";
+import API_URL from "../_helpers/environment";
 
 const Signup = (props) => {
   const { classes, updateToken, toggleView } = props;
+  const { width } = useWindowDimensions();
   const [name, setName] = useState("");
   const [profile_name, setProfile_name] = useState("");
   const [password1, setPassword1] = useState("");
@@ -18,7 +20,6 @@ const Signup = (props) => {
   const [email, setEmail] = useState("");
   const [passwordsMatch, setPasswordsMatch] = useState(null);
   const [usernameAvailable, setUsernameAvailable] = useState(null);
-  const { width } = useWindowDimensions();
 
   const handleName = (e) => setName(e.target.value);
   const handleProfileName = (e) => setProfile_name(e.target.value);
@@ -29,14 +30,18 @@ const Signup = (props) => {
   const handleEmail = (e) => setEmail(e.target.value);
   const handleUsernameAvailable = () => {
     const userAvailFetch = async () => {
-      if (validateUsername(profile_name)) {
-        const usernameResults = await fetch(
-          `http://localhost:3333/user/checkAvail/${profile_name}`
-        );
-        const usernameJson = await usernameResults.json();
-        setUsernameAvailable(usernameJson);
-      } else if (profile_name.length < 6) {
-        setUsernameAvailable(null);
+      try {
+        if (validateUsername(profile_name)) {
+          const usernameResults = await fetch(
+            `${API_URL}/user/checkAvail/${profile_name}`
+          );
+          const usernameJson = await usernameResults.json();
+          setUsernameAvailable(usernameJson);
+        } else if (profile_name.length < 6) {
+          setUsernameAvailable(null);
+        }
+      } catch (err) {
+        console.error(err);
       }
     };
     userAvailFetch();
@@ -82,7 +87,7 @@ const Signup = (props) => {
     }
 
     try {
-      const fetchResults = await fetch("http://localhost:3333/user/signup", {
+      const fetchResults = await fetch(`${API_URL}/user/signup`, {
         method: "POST",
         body: JSON.stringify({
           profile_name,
@@ -106,15 +111,15 @@ const Signup = (props) => {
   };
 
   return (
-    <Grid item xs={12} md={5} component={Paper} elevation={6} square>
+    <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
       <div className={classes.paper}>
-        <Typography
+        {/* <Typography
           component="h1"
           variant={width>=960 ? "h2" : "h4"}
           style={{ marginBottom: 30, fontStyle: "italic" }}
         >
           Welcome to Pet Tinder
-        </Typography>
+        </Typography> */}
         <Avatar className={classes.avatar}>
           <Pets />
         </Avatar>

@@ -7,7 +7,6 @@ const Conversation = sequelize.define('conversation', {
 });
 
 Conversation.findOrCreateConversation = function(user1Id, user2Id) {
-  // console.log(user1Id, user2Id)
   return Conversation.findOne({
     where: {
       user1Id: {
@@ -24,7 +23,6 @@ Conversation.findOrCreateConversation = function(user1Id, user2Id) {
       if(conversation) {  
         return conversation;
       } else {
-         console.log('✏✏✏📑 creating new conversation!')  
         return Conversation.create({
           user1Id,
           user2Id

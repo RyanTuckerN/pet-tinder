@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import MatchDisplay from "./MatchDisplay";
 
 const Matches = (props) => {
@@ -39,7 +39,14 @@ const Matches = (props) => {
   return (
     <Grid container justifyContent="center">
       {usersInfo?.matches?.length ? (
-        usersInfo?.matches?.map((match) => (
+        [
+          ...usersInfo?.matches?.filter(
+            (match) => match.user.likes[0].superlike && superlikeRef[match.id]
+          ),
+          ...usersInfo?.matches?.filter(
+            (match) => !match.user.likes[0].superlike || !superlikeRef[match.id]
+          ),
+        ].map((match) => (
           <MatchDisplay
             dog={match}
             socket={socket}
@@ -49,7 +56,9 @@ const Matches = (props) => {
           />
         ))
       ) : (
-        <h2>No matches yet!</h2>
+        <Typography variant="h5" style={{ color: "white" }}>
+          No Matches Yet
+        </Typography>
       )}
     </Grid>
   );

@@ -2,6 +2,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 94vh;
+  background-color: #f3f0ee;
 }
 
 .chat-target-banner {
