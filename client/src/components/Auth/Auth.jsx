@@ -12,13 +12,13 @@ const useStyles = makeStyles((theme) => ({
   image: {
     backgroundImage:
       "url(http://images.unsplash.com/photo-1630359563592-c685967f83d7?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max)",
-    backgroundRepeat: "no-repeat",
-    backgroundColor:
-      theme.palette.type === "light"
-        ? theme.palette.grey[50]
-        : theme.palette.grey[900],
-    backgroundSize: "cover",
-    backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+      backgroundColor:
+        theme.palette.type === "light"
+          ? theme.palette.grey[50]
+          : theme.palette.grey[900],
+      backgroundSize: "cover",
+      backgroundPosition: "center",
   },
   paper: {
     margin: theme.spacing(8, 4),

@@ -12,6 +12,7 @@ import API_URL from "../_helpers/environment";
 
 const Signup = (props) => {
   const { classes, updateToken, toggleView } = props;
+  const { width } = useWindowDimensions();
   const [name, setName] = useState("");
   const [profile_name, setProfile_name] = useState("");
   const [password1, setPassword1] = useState("");
@@ -19,7 +20,6 @@ const Signup = (props) => {
   const [email, setEmail] = useState("");
   const [passwordsMatch, setPasswordsMatch] = useState(null);
   const [usernameAvailable, setUsernameAvailable] = useState(null);
-  const { width } = useWindowDimensions();
 
   const handleName = (e) => setName(e.target.value);
   const handleProfileName = (e) => setProfile_name(e.target.value);
@@ -30,14 +30,18 @@ const Signup = (props) => {
   const handleEmail = (e) => setEmail(e.target.value);
   const handleUsernameAvailable = () => {
     const userAvailFetch = async () => {
-      if (validateUsername(profile_name)) {
-        const usernameResults = await fetch(
-          `${API_URL}/user/checkAvail/${profile_name}`
-        );
-        const usernameJson = await usernameResults.json();
-        setUsernameAvailable(usernameJson);
-      } else if (profile_name.length < 6) {
-        setUsernameAvailable(null);
+      try {
+        if (validateUsername(profile_name)) {
+          const usernameResults = await fetch(
+            `${API_URL}/user/checkAvail/${profile_name}`
+          );
+          const usernameJson = await usernameResults.json();
+          setUsernameAvailable(usernameJson);
+        } else if (profile_name.length < 6) {
+          setUsernameAvailable(null);
+        }
+      } catch (err) {
+        console.error(err);
       }
     };
     userAvailFetch();
@@ -107,7 +111,7 @@ const Signup = (props) => {
   };
 
   return (
-    <Grid item xs={12} md={5} component={Paper} elevation={6} square>
+    <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
       <div className={classes.paper}>
         {/* <Typography
           component="h1"

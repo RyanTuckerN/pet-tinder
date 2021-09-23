@@ -24,12 +24,10 @@ const ChatIndex = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!chatTarget) {
-      console.log("no chat target");
       alert("Please select a dog to bark at!");
       return;
     } else {
       if (chatMessage.length >= 255) {
-        console.log("message too long!");
         alert("Your message is too long! Keep it under 255 characters.");
       } else {
         socket.emit("message", {

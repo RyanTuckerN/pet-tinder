@@ -7,7 +7,6 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Pets from "@material-ui/icons/Pets";
 import Typography from "@material-ui/core/Typography";
-import useWindowDimensions from "../customHooks/useWindowDimension";
 import API_URL from "../_helpers/environment";
 
 const Login = (props) => {
@@ -55,7 +54,7 @@ const Login = (props) => {
   };
 
   return (
-    <Grid item xs={12} md={5} component={Paper} elevation={6} square>
+    <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <Pets />

@@ -42,14 +42,13 @@ const DisplayProfile = (props) => {
     try {
       const localeFetch = async () => {
         const res = await fetch(
-          `https://api.bigdatacloud.net/data/reverse-
-          geocode-client?latitude=${lat}&longitude=
-          ${lon}&localityLanguage=en`
+          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`
         );
         const json = await res.json();
         console.log("REVERSE GEO:", json);
+        if(!json.locality && !json.city)return
         setLocale({
-          locale: json.city ? json.city : json.locality,
+          locale: json.city ? json.city : json.locality ,
           state: json.principalSubdivision,
         });
       };
