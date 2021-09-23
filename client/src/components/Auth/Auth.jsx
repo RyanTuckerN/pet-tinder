@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
     backgroundPosition: "center",
-    height: '100vh'
+    height: '100vh',
   },
   paper: {
     margin: theme.spacing(8, 4),
@@ -48,7 +48,7 @@ export default function Auth(props) {
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
       {width >= 960 ? (<Grid item xs={false} sm={4} md={7} 
-      style={{display: 'flex', justifyContent: 'center'}}
+      style={{display: 'flex', justifyContent: 'center', overflow: 'hidden'}}
       >
         <video autoPlay loop muted className={classes.image}>
           <source src={video} />

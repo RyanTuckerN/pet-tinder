@@ -11,7 +11,7 @@ const Home = (props) => {
         <div className="logo-merge">
         {/* <img id="doglogo" src={PetTinderLogo} /> */}
         {/* <ChatBubbleIcon id="chat" /> */}
-        </div>
+        {/* </div>
         </div>
       <div className="homepage">
       <h2 id="home2">Where Puppy Love Begins</h2>
@@ -21,7 +21,7 @@ const Home = (props) => {
       <style>
         @import
         url('https://fonts.googleapis.com/css2?family=Rampart+One&display=swap');
-      </style> */}
+      </style> */} 
     </div>
   );
 };
