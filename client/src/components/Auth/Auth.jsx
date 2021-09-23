@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
           : theme.palette.grey[900],
       backgroundSize: "cover",
       backgroundPosition: "center",
+
   },
   paper: {
     margin: theme.spacing(8, 4),
