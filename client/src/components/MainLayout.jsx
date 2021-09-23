@@ -398,7 +398,7 @@ export default function MainLayout(props) {
           <Switch>
             <Route exact path="/">
               {/* <Home /> */}
-              <BackgroundWaves />
+              <BackgroundWaves usersInfo={usersInfo}/>
             </Route>
             <Route exact path="/account">
               <Account usersInfo={usersInfo} socket={socket} />

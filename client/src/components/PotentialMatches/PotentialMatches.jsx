@@ -6,11 +6,16 @@ import {
   Radio,
   Typography,
   FormControlLabel,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  DialogContent,
 } from "@material-ui/core";
 import TinderCard from "react-tinder-card";
 import "../Profile/Profile.css";
 import "./PotentialMatches.css";
 import distanceBetCoor from "../../functions/distanceBetCoor";
+import API_URL from '../_helpers/environment'
 
 let dogsState, originalArray;
 
@@ -22,6 +27,15 @@ const PotentialMatches = (props) => {
   const [lastDirection, setLastDirection] = useState();
   const [params, setParams] = useState({ sorted: false });
   const [value, setValue] = React.useState(null);
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleFemaleFilter = () => {
     setParams({ ...params, sex: "females" });
@@ -34,14 +48,14 @@ const PotentialMatches = (props) => {
 
   const fetchPotentialMatches = async (paramsObject) => {
     try {
-      const allLikes = await fetch("http://localhost:3333/like/mine", {
+      const allLikes = await fetch(`${API_URL}/like/mine`, {
         method: "GET",
         headers: new Headers({
           "Content-Type": "application/json",
           Authorization: localStorage.getItem("token"),
         }),
       });
-      const allDogs = await fetch("http://localhost:3333/dog/all", {
+      const allDogs = await fetch(`${API_URL}/dog/all`, {
         method: "GET",
         headers: new Headers({
           "Content-Type": "application/json",
@@ -55,24 +69,24 @@ const PotentialMatches = (props) => {
         const likedIds = likesJson.length
           ? likesJson.map((el) => el.dog.id)
           : [];
-        const likesRemoved = dogsJson.dogs.filter(
-          (dog) => !likedIds.includes(dog.id)
-        ).sort((a, b) => {
-          const dist1 = distanceBetCoor.calcMiles([
-            b.location?.lat ?? 0,
-            b.location?.lon ?? 0,
-            usersInfo?.user?.dog?.location?.lat ?? 0,
-            usersInfo?.user?.dog?.location?.lon ?? 0,
-          ]);
-          const dist2 = distanceBetCoor.calcMiles([
-            a.location?.lat ?? 0,
-            a.location?.lon ?? 0,
-            usersInfo?.user?.dog?.location?.lat ?? 0,
-            usersInfo?.user?.dog?.location?.lon ?? 0,
-          ]);
-          // console.log("DISTANCES: ", dist1, dist2);
-          return dist1 > dist2 ? 1 : -1;
-        });
+        const likesRemoved = dogsJson.dogs
+          .filter((dog) => !likedIds.includes(dog.id))
+          .sort((a, b) => {
+            const dist1 = distanceBetCoor.calcMiles([
+              b.location?.lat ?? 0,
+              b.location?.lon ?? 0,
+              usersInfo?.user?.dog?.location?.lat ?? 0,
+              usersInfo?.user?.dog?.location?.lon ?? 0,
+            ]);
+            const dist2 = distanceBetCoor.calcMiles([
+              a.location?.lat ?? 0,
+              a.location?.lon ?? 0,
+              usersInfo?.user?.dog?.location?.lat ?? 0,
+              usersInfo?.user?.dog?.location?.lon ?? 0,
+            ]);
+            // console.log("DISTANCES: ", dist1, dist2);
+            return dist1 > dist2 ? 1 : -1;
+          });
         let results =
           paramsObject?.sex === "females"
             ? likesRemoved.filter((dog) => dog.is_female)
@@ -94,7 +108,7 @@ const PotentialMatches = (props) => {
     try {
       //First fetch matches
       const firstMatchesFetch = await fetch(
-        "http://localhost:3333/like/matches",
+        `${API_URL}/like/matches`,
         {
           method: "GET",
           headers: new Headers({
@@ -107,7 +121,7 @@ const PotentialMatches = (props) => {
       const firstCount = firstRes.count;
       const firstMatches = firstRes.matches;
       //Like the dog
-      const likeFetch = await fetch(`http://localhost:3333/like/${id}`, {
+      const likeFetch = await fetch(`${API_URL}/like/${id}`, {
         method: "POST",
         headers: new Headers({
           "Content-Type": "application/json",
@@ -121,7 +135,7 @@ const PotentialMatches = (props) => {
 
       //fetch matches again, see if there is a change
       const secondMatchesFetch = await fetch(
-        "http://localhost:3333/like/matches",
+        `${API_URL}/like/matches`,
         {
           method: "GET",
           headers: new Headers({
@@ -140,7 +154,7 @@ const PotentialMatches = (props) => {
         )[0];
         console.log("NEW MATCH: ", newMatch);
         const selfNote = await fetch(
-          `http://localhost:3333/note/${usersInfo?.user?.id}`,
+          `${API_URL}/note/${usersInfo?.user?.id}`,
           {
             method: "POST",
             headers: new Headers({
@@ -153,7 +167,7 @@ const PotentialMatches = (props) => {
             }),
           }
         );
-        const targetNote = await fetch(`http://localhost:3333/note/${id}`, {
+        const targetNote = await fetch(`${API_URL}/note/${id}`, {
           method: "POST",
           headers: new Headers({
             "Content-Type": "application/json",
@@ -194,7 +208,7 @@ const PotentialMatches = (props) => {
   };
 
   return usersInfo?.user?.dog ? (
-    <div id='tinder-card-page-wrapper'>
+    <div id="tinder-card-page-wrapper">
       {lastDirection ? (
         <Typography
           variant="h6"
@@ -236,46 +250,73 @@ const PotentialMatches = (props) => {
             </Grid>
           </TinderCard>
         ))}
-        <div id="radio-buttons">
-          <FormControlLabel
-            value="a"
-            control={
-              <Radio
-                checked={value === "a"}
-                onChange={handleFemaleFilter}
-                value="a"
-                name="radio-button-female"
-                inputProps={{ "aria-label": "females only" }}
-              />
-            }
-            label="girl dogs"
-            labelPlacement="top"
-          />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleClickOpen}
+            id="filter-button"
+          >
+            Filter
+          </Button>
+        <div>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"show me..."}
+            </DialogTitle>
+            <DialogContent>
+              <div id="radio-buttons">
+                <FormControlLabel
+                  value="a"
+                  control={
+                    <Radio
+                      checked={value === "a"}
+                      onChange={handleFemaleFilter}
+                      value="a"
+                      name="radio-button-female"
+                      inputProps={{ "aria-label": "females only" }}
+                    />
+                  }
+                  label="girl dogs"
+                  labelPlacement="top"
+                />
 
-          <FormControlLabel
-            value="a"
-            control={
-              <Radio
-                checked={value === "b"}
-                onChange={handleMaleFilter}
-                value="b"
-                name="radio-button-male"
-                inputProps={{ "aria-label": "males only" }}
-              />
-            }
-            label="boy dogs"
-            labelPlacement="top"
-          />
-          {/* <div> */}
-            <Button
-              onClick={() => {
-                setParams({});
-                setValue("");
-              }}
-            >
-              clear filters
-            </Button>
-          {/* </div> */}
+                <FormControlLabel
+                  value="a"
+                  control={
+                    <Radio
+                      checked={value === "b"}
+                      onChange={handleMaleFilter}
+                      value="b"
+                      name="radio-button-male"
+                      inputProps={{ "aria-label": "males only" }}
+                    />
+                  }
+                  label="boy dogs"
+                  labelPlacement="top"
+                />
+                {/* <div> */}
+                <Button
+                  onClick={() => {
+                    setParams({});
+                    setValue("");
+                  }}
+                >
+                  clear
+                </Button>
+                {/* </div> */}
+              </div>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} autoFocus>
+                Close
+              </Button>
+            </DialogActions>
+          </Dialog>
         </div>
       </div>
     </div>

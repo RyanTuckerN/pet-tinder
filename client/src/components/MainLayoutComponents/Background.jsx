@@ -3,7 +3,8 @@ import dogLogo from '../MainLayoutComponents/assets/PetTinderLogo.png'
 import useWindowDimensions from "../customHooks/useWindowDimension";
 import { Link } from 'react-router-dom'
 
-const BackgroundWaves = () => {
+const BackgroundWaves = (props) => {
+  const { usersInfo } = props
   const { width } = useWindowDimensions()
 
   return (
@@ -14,7 +15,7 @@ const BackgroundWaves = () => {
           <h1>pet tinder</h1>
           {width>=630?<p>...where puppy love starts</p>:null}
         </div>
-        <Link to='potentialmatches'>
+        <Link to={usersInfo?.user?.dog ? 'potentialmatches' : 'create-profile'}>
           <p id='buttonlink'><i><strong>get started</strong></i></p>
         </Link>
       <div>

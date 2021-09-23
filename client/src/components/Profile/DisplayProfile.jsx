@@ -42,7 +42,9 @@ const DisplayProfile = (props) => {
     try {
       const localeFetch = async () => {
         const res = await fetch(
-          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`
+          `https://api.bigdatacloud.net/data/reverse-
+          geocode-client?latitude=${lat}&longitude=
+          ${lon}&localityLanguage=en`
         );
         const json = await res.json();
         console.log("REVERSE GEO:", json);
@@ -122,7 +124,7 @@ const DisplayProfile = (props) => {
                 >
                   <Chat
                     style={{
-                      position: 'relative',
+                      position: "relative",
                       bottom: 13,
                       backgroundColor: "#fd2974",
                       padding: 3,
@@ -133,11 +135,21 @@ const DisplayProfile = (props) => {
                 </IconButton>
               </Grid>
               <Grid item xs={1}>
-                <Link href={`mailto:${currentDog.user?.email}`}>
+                <Link
+                  href={`mailto:${currentDog.user?.email}
+                    ?subject=Interested in ${currentDog.name}
+                    &body=${
+                      usersInfo?.user?.email
+                        ? "You can reach me at " +
+                          usersInfo?.user?.email +
+                          ", or just send me a chat in the app!"
+                        : "Why we using email?? Just hit me on the app!"
+                    }`}
+                >
                   <IconButton>
                     <Email
                       style={{
-                        position: 'relative',
+                        position: "relative",
                         bottom: 13,
                         backgroundColor: "#fd2974",
                         padding: 3,
@@ -186,9 +198,9 @@ const DisplayProfile = (props) => {
                   {`${currentDog.breed} | ${currentDog.age} years old | ${currentDog.weight} pounds`}
                 </Typography>
                 <div style={{ display: "flex", alignItems: "flex-end" }}>
-                  {locale ? <LocationOn color='secondary' /> : null}
-                  <Typography variant='subtitle1'>
-                    {locale ? `${locale.locale}, ${locale.state ?? ''}` : null}
+                  {locale ? <LocationOn color="secondary" /> : null}
+                  <Typography variant="subtitle1">
+                    {locale ? `${locale.locale}, ${locale.state ?? ""}` : null}
                   </Typography>
                 </div>
               </div>
