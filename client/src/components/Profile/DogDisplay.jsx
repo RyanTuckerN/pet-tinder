@@ -7,14 +7,17 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import "../Matches/Matches.css";
 import distanceBetCoor from "../../functions/distanceBetCoor";
+import useWindowDimension from "../customHooks/useWindowDimension";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     borderRadius: 20,
-    height: 500,
+    height: 600,
+    // minWidth:320,
     textAlign: "left",
     color: "#514949",
     background: "#f3f0ee",
+    // height: 'calc(80vh-200)'
   },
   media: {
     height: 280,
@@ -28,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function DogDisplay(props) {
   const { dog, usersInfo } = props;
+  const { height, width } = useWindowDimension();
   const classes = useStyles();
 
   return (
@@ -40,11 +44,16 @@ export default function DogDisplay(props) {
       <Card
         key={dog.id}
         className={[classes.root, "matches-card-body"].join(" ")}
+        style={{ 
+          width: width < 400 ? width - 35 : 375,
+          // height: height < 600 ? height - 200 : height < 800 ? height -275 : 500
+        }}
       >
         <CardMedia
           className={classes.media}
           image={dog.photo_url}
           title={dog.name}
+          // style={{height: height < 800 ? height - 500 : 280}}
         />
         <Typography
           variant="caption"

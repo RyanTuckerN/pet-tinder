@@ -81,7 +81,7 @@ export default function NotificationsPage(props) {
                 ? notifications.length
                   ? notifications.map((n) => {
                       return (
-                        <Link to="/chat">
+                        <Link to="/chat" key={n.id} >
                           <ListItem onClick={() => handleChatTarget(n)}>
                             <ListItemAvatar>
                               <Avatar

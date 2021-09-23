@@ -1,6 +1,6 @@
 .card {
   position: relative;
-  width: 600px;
+  /* width: 600px; */
   padding: 20px;
   max-width: 85vw;
   height: 50vh;
@@ -30,4 +30,16 @@
 
 .swipe {
   position: absolute; /* This absolute position will take them from the default position and will stack them on top of each other*/
+}
+
+#radio-buttons{
+  position: relative;
+  /* bottom: -550px; */
+  bottom: -72vh;
+  background-color: white;
+  border-radius: 20px;
+}
+
+#tinder-card-page-wrapper{
+  min-height: 600px
 }

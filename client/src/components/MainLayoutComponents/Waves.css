@@ -10,6 +10,7 @@ body {
   letter-spacing: 2px;
   font-size:48px;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.466);
+  color: white;  
 }
 .header p {
   font-family: 'Lato', sans-serif;
@@ -23,7 +24,7 @@ body {
   text-align:center;
   background: linear-gradient(60deg, #fd2974 0%, #ff5864 66%, #ff655b 100%);
   color:white;
-  z-index: 0;
+  overflow: hidden;
 }
 
 .header p{
@@ -60,7 +61,13 @@ body {
   align-items: center;
   text-align: center;
   flex-flow: row wrap;
-  
+  /* overflow: hidden; */
+}
+
+#buttonlink{
+  position: relative;
+  height: 10px;
+  bottom: 50px;
 }
 
 .waves {
@@ -74,10 +81,10 @@ body {
 
 .content {
   position:relative;
-  height:22vh;
-  min-height: 500px;
+  height:30vh;
   text-align:center;
   background-color: white;
+  overflow: hidden;
 }
 
 /* Animation */

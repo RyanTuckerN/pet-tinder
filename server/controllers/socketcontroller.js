@@ -3,10 +3,9 @@ const sequelize = require("../db");
 const mobileSockets = {};
 
 module.exports = (socket) => {
+  
   //***LOGIN EVENT***//
   socket.on("newLogin", (id) => {
-    console.log("ON CONNECTION: ", mobileSockets);
-    console.log("🛂🛂🛂 CREDENTIALS: ", id);
     Promise.all([
       User.findOne({ where: { id }, include: { model: Dog } }),
       sequelize.models.like.getMatches(id),
@@ -19,10 +18,8 @@ module.exports = (socket) => {
         });
         socket.emit("newUser", { mobileSockets });
         socket.broadcast.emit("newUser", { mobileSockets });
-
-        console.log("SOCKET USERS ONLINE: ", mobileSockets);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
   });
 
   //***CHAT EVENT***//
@@ -31,17 +28,12 @@ module.exports = (socket) => {
       users.sender.id,
       users.receiver.id
     ).then((conversation) => {
-      console.log(
-        `🔸🔸🔸 Current conversation between user ${conversation.dataValues.user1Id} and user ${conversation.dataValues.user2Id}. 🔸🔸🔸`
-      );
-      console.log("Sending Conversation 🚚🚚🚚");
       socket.emit("priorMessages", conversation);
-    });
+    })
+    .catch(err=>console.error(err))
   });
 
   socket.on("matchRequest", (id) => {
-    console.log("ON MATCH REQUEST: ", mobileSockets);
-    console.log("🛂 CREDENTIALS: ", id);
     Promise.all([
       User.findOne({ where: { id }, include: { model: Dog } }),
       sequelize.models.like.getMatches(id),
@@ -58,21 +50,17 @@ module.exports = (socket) => {
           message: "update your matches",
         });
 
-        console.log("SOCKET USERS ONLINE: ", mobileSockets);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
   });
 
   //*** NOTIFICATION EVENT- SENDS NOTIFICATIONS TO BOTH PARTIES UPON MATCHING***//
   socket.on("notificationRequest", async (targets) => {
     const { userId, target } = targets;
-    console.log("USERS AND TARGET: ", targets);
     const userNotification = await Notification.findAll({ where: { userId } });
-    console.log(userNotification);
     const targetNotification = await Notification.findAll({
       where: { userId: target },
     });
-    console.log(targetNotification);
     socket.emit("notificationResponse", userNotification);
     mobileSockets[target]
       ? socket

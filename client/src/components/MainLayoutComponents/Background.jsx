@@ -1,20 +1,25 @@
 import "./Waves.css";
 import dogLogo from '../MainLayoutComponents/assets/PetTinderLogo.png'
 import useWindowDimensions from "../customHooks/useWindowDimension";
+import { Link } from 'react-router-dom'
 
 const BackgroundWaves = () => {
   const { width } = useWindowDimensions()
 
   return (
-    <div class="header">
-      <div class="inner-header flex">
-        {width>=348? <img src={dogLogo} className='logo' />: null}
-        <h1>pet tinder</h1>
-        {width>=630?<p>...where puppy love starts</p>:null}
-      </div>
+    <div className="header">
+      
+        <div className="inner-header flex">
+          {width>=348? <img src={dogLogo} className='logo' />: null}
+          <h1>pet tinder</h1>
+          {width>=630?<p>...where puppy love starts</p>:null}
+        </div>
+        <Link to='potentialmatches'>
+          <p id='buttonlink'><i><strong>get started</strong></i></p>
+        </Link>
       <div>
         <svg
-          class="waves"
+          className="waves"
           xmlns="http://www.w3.org/2000/svg"
           xmlnsXlink="http://www.w3.org/1999/xlink"
           viewBox="0 24 150 28"
@@ -27,7 +32,7 @@ const BackgroundWaves = () => {
               d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"
             />
           </defs>
-          <g class="parallax">
+          <g className="parallax">
             <use
               xlinkHref="#gentle-wave"
               x="48"
@@ -49,7 +54,7 @@ const BackgroundWaves = () => {
             <use xlinkHref="#gentle-wave" x="48" y="7" fill="#fff" />
           </g>
         </svg>
-        <div class="content flex">
+        <div className="content flex">
           {/* Could put a footer here */}
         </div>
       </div>

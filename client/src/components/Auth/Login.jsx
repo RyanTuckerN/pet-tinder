@@ -14,7 +14,6 @@ const Login = (props) => {
   const { classes, updateToken, toggleView, setUsersInfo, usersInfo } = props;
   const [profile_name, setProfile_name] = useState("");
   const [password, setPassword] = useState("");
-  const { width } = useWindowDimensions();
 
   const handleProfileName = (e) => setProfile_name(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
@@ -31,7 +30,6 @@ const Login = (props) => {
         }),
       });
       const json = await fetchResults.json();
-      console.log("User Info from login: ", json);
       if (!json.user || !json.sessionToken) {
         alert(json.message);
         return;
@@ -44,7 +42,6 @@ const Login = (props) => {
         }),
       });
       const matchesJson = await matchesFetch.json();
-      console.log("Match List from login: ", matchesJson);
       setUsersInfo({
         ...usersInfo,
         user: json.user,

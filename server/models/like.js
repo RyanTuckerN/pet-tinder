@@ -20,14 +20,7 @@ const Like = sequelize.define("like", {
 });
 
 Like.getMatches = (user_id) => {
-  console.log("Getting Matches");
-  console.log("User ID: ", user_id);
   return Like.findAll({ where: { liked_dog_id: user_id } }).then((data) => {
-    console.log(
-      "🔥🔥",
-      data.map((e) => e.userId)
-    );
-
     const dogsThatLikeYou = data;
     return Like.findAll({ where: { userId: user_id } }).then((data) => {
       const dogsYouLike = data;
